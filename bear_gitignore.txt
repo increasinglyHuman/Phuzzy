@@ -1,0 +1,176 @@
+# Phuzzy Bear Project .gitignore
+# ================================
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+pip-wheel-metadata/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Virtual Environment (Bear Habitat)
+venv/
+env/
+ENV/
+bear-env/
+
+# Bear Data & Memory
+data/memory_dumps/*
+data/performance_logs/*
+data/bear_profiles/private_*
+!data/training_data/.gitkeep
+!data/memory_dumps/.gitkeep
+!data/performance_logs/.gitkeep
+!data/research_datasets/.gitkeep
+
+# Bear System Logs
+*.log
+logs/
+bear_*.log
+alice_bear.log
+bob_bear.log
+charlie_bear.log
+
+# Bear Configuration (keep examples, ignore secrets)
+config/*_local.yaml
+config/*_private.yaml
+config/secrets.yaml
+config/.env.local
+.env
+
+# IDE & Editors
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.sublime-workspace
+.sublime-project
+
+# Operating System
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Bear Testing & Coverage
+.coverage
+.coverage.*
+htmlcov/
+.pytest_cache/
+.tox/
+.nox/
+coverage.xml
+*.cover
+.hypothesis/
+
+# Bear Documentation Build
+docs/_build/
+docs/build/
+site/
+.mkdocs/
+
+# Jupyter Notebook (Bear Research)
+.ipynb_checkpoints
+*/.ipynb_checkpoints/*
+
+# Bear Performance Data
+*.prof
+*.lprof
+performance_*.json
+
+# Bear Model Outputs
+models/checkpoints/
+models/temp/
+*.pkl
+*.joblib
+
+# Bear Communication Logs
+communication_logs/
+message_history/
+
+# Raspberry Pi Specific
+boot_config_backup.txt
+*.img
+*.zip
+
+# Bear Development Temporary Files
+tmp/
+temp/
+.tmp/
+bear_temp/
+
+# Bear Cache
+.cache/
+bear_cache/
+fuzzy_cache/
+
+# Bear Backups
+backup/
+*.backup
+*_backup.*
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+
+# Bear Media (large files - use Git LFS)
+*.mp4
+*.avi
+*.mov
+docs/media/videos/*.mp4
+chronicles/assets/videos/*.mp4
+
+# Keep important bear directories but ignore their contents
+docs/media/bear-photos/*
+!docs/media/bear-photos/.gitkeep
+chronicles/assets/bear-documentation/*
+!chronicles/assets/bear-documentation/.gitkeep
+
+# Bear Experimental Code
+experiments/
+sandbox/
+scratch/
+playground/
+
+# Distribution / Packaging
+.Python
+build/
+develop-eggs/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+pip-wheel-metadata/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
