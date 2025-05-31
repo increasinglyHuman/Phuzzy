@@ -88,6 +88,10 @@ coverage.xml
 # Bear Documentation Build
 docs/_build/
 docs/build/
+docs/drafts/
+docs/planning
+docs/archive/
+assets/unused/
 site/
 .mkdocs/
 
