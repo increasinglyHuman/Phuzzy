@@ -1,16 +1,28 @@
+<div align="center">
+  
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://capsule-render.vercel.app/api?type=waving&color=A67153&height=200&section=header&text=&fontSize=0">
+  <img src="https://capsule-render.vercel.app/api?type=waving&color=A67153&height=200&section=header&text=&fontSize=0" width="100%">
+</picture>
+
+<img src="assets/phuzzy-bear.png" alt="Phuzzy Bear - Your Fuzzy Logic AI Companion" width="280" style="margin-top: -100px"/>
+
 # 🐻 Phuzzy - Fuzzy Logic Virtual Development Team
 
-<div align="center">
-  <img src="assets/phuzzy-bear.png" alt="Phuzzy Bear - Your Fuzzy Logic AI Companion" width="200"/>
-  
-  > *"Sometimes the most logical thing is to embrace the fuzzy."*
-  
-  **Building AI agents with human-quality reasoning through fuzzy logic and collaborative intelligence.**
+#### *"Sometimes the most logical thing is to embrace the fuzzy."*
+
+**Building AI agents with human-quality reasoning through fuzzy logic and collaborative intelligence.**
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://capsule-render.vercel.app/api?type=waving&color=A67153&height=100&section=footer&text=&fontSize=0&reversal=true">
+  <img src="https://capsule-render.vercel.app/api?type=waving&color=A67153&height=100&section=footer&text=&fontSize=0&reversal=true" width="100%">
+</picture>
+
 </div>
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/)
-[![Raspberry Pi](https://img.shields.io/badge/Hardware-Raspberry%20Pi-red.svg)](https://www.raspberrypi.org/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-D2691E.svg)](https://opensource.org/licenses/MIT)
+[![Python 3.11+](https://img.shields.io/badge/python-3.11+-8B4513.svg)](https://www.python.org/downloads/)
+[![Raspberry Pi](https://img.shields.io/badge/Hardware-Raspberry%20Pi-A0522D.svg)](https://www.raspberrypi.org/)
 
 ## Meet Phuzzy 🐻
 
