@@ -1,7 +1,7 @@
 # 🐻 Phuzzy - Fuzzy Logic Virtual Development Team
 
 <div align="center">
-  <img src="docs/media/phuzzy-bear-logo.png" alt="Phuzzy Bear - Your Fuzzy Logic AI Companion" width="200"/>
+  <img src="assets/phuzzy-bear.png" alt="Phuzzy Bear - Your Fuzzy Logic AI Companion" width="200"/>
   
   > *"Sometimes the most logical thing is to embrace the fuzzy."*
   
