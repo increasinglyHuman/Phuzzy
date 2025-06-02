@@ -1,0 +1,1183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🐻 Bear Necessities: Think & Feel - Interactive Training</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .header h1 {
+            color: #5a67d8;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            color: #666;
+            font-size: 1.2em;
+        }
+        
+        .score-tracker {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: white;
+            padding: 15px 25px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            font-weight: bold;
+            color: #5a67d8;
+            z-index: 100;
+        }
+        
+        .scenario-box {
+            background: #f7fafc;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 30px;
+            border: 2px solid #e2e8f0;
+        }
+        
+        .scenario-title {
+            color: #2d3748;
+            font-size: 1.4em;
+            margin-bottom: 15px;
+        }
+        
+        .scenario-text {
+            color: #4a5568;
+            line-height: 1.8;
+            font-size: 1.1em;
+            margin-bottom: 20px;
+            font-style: italic;
+        }
+        
+        .claim {
+            background: #fff;
+            padding: 15px;
+            border-left: 4px solid #5a67d8;
+            margin: 20px 0;
+            font-weight: bold;
+            color: #2d3748;
+        }
+        
+        .interactive-section {
+            background: linear-gradient(135deg, #f6e05e 0%, #f6ad55 100%);
+            border-radius: 15px;
+            padding: 25px;
+            margin: 30px 0;
+            color: #744210;
+        }
+        
+        .quiz-question {
+            font-size: 1.3em;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+        
+        .quiz-options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .quiz-option {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 3px solid transparent;
+            text-align: center;
+        }
+        
+        .quiz-option:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .quiz-option.selected {
+            border-color: #5a67d8;
+            background: #e6f2ff;
+        }
+        
+        .submit-button {
+            background: #5a67d8;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            font-size: 1.1em;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: block;
+            margin: 0 auto;
+        }
+        
+        .submit-button:hover:not(:disabled) {
+            background: #4c51bf;
+            transform: translateY(-2px);
+        }
+        
+        .submit-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .analysis-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+            opacity: 0;
+            transition: opacity 1s ease;
+        }
+        
+        .analysis-grid.visible {
+            opacity: 1;
+        }
+        
+        .bear-panel {
+            background: #fff;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+        
+        .bear-panel:hover {
+            transform: translateY(-5px);
+        }
+        
+        .logic-panel {
+            border-top: 4px solid #4299e1;
+        }
+        
+        .emotion-panel {
+            border-top: 4px solid #ed64a6;
+        }
+        
+        .bear-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .bear-emoji {
+            font-size: 3em;
+            margin-right: 15px;
+        }
+        
+        .bear-name {
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+        
+        .logic-name {
+            color: #4299e1;
+        }
+        
+        .emotion-name {
+            color: #ed64a6;
+        }
+        
+        .metric {
+            margin: 15px 0;
+        }
+        
+        .metric-label {
+            font-weight: 600;
+            color: #4a5568;
+            margin-bottom: 5px;
+        }
+        
+        .meter-container {
+            background: #e2e8f0;
+            border-radius: 10px;
+            height: 30px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .meter-fill {
+            height: 100%;
+            border-radius: 10px;
+            transition: width 1s ease-out;
+            position: relative;
+        }
+        
+        .logic-fill {
+            background: linear-gradient(90deg, #4299e1, #3182ce);
+        }
+        
+        .emotion-fill {
+            background: linear-gradient(90deg, #ed64a6, #d53f8c);
+        }
+        
+        .meter-value {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: white;
+            font-weight: bold;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+        }
+        
+        .wisdom-panel {
+            background: linear-gradient(135deg, #f6e05e 0%, #f6ad55 100%);
+            border-radius: 15px;
+            padding: 25px;
+            margin-top: 30px;
+            color: #744210;
+            display: none;
+            opacity: 0;
+            transition: opacity 1s ease;
+        }
+        
+        .wisdom-panel.visible {
+            display: block;
+            opacity: 1;
+        }
+        
+        .wisdom-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .wisdom-content {
+            font-size: 1.1em;
+            line-height: 1.6;
+        }
+        
+        .balance-meter {
+            margin: 20px 0;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 10px;
+        }
+        
+        .balance-label {
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+        }
+        
+        .balance-visual {
+            height: 40px;
+            background: linear-gradient(90deg, #4299e1 0%, #f6e05e 50%, #ed64a6 100%);
+            border-radius: 20px;
+            position: relative;
+            overflow: visible;
+            margin-bottom: 10px;
+        }
+        
+        .balance-indicator {
+            position: absolute;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            width: 40px;
+            height: 40px;
+            background: white;
+            border-radius: 50%;
+            transition: left 1s ease-out;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5em;
+        }
+        
+        .balance-labels {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.9em;
+            color: #666;
+        }
+        
+        .button-container {
+            text-align: center;
+            margin-top: 30px;
+        }
+        
+        .next-button {
+            background: #5a67d8;
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.1em;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .next-button:hover {
+            background: #4c51bf;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .factors-list {
+            margin-top: 15px;
+        }
+        
+        .factor-item {
+            display: flex;
+            align-items: center;
+            margin: 8px 0;
+            padding: 8px;
+            background: #f7fafc;
+            border-radius: 8px;
+        }
+        
+        .factor-emoji {
+            margin-right: 10px;
+            font-size: 1.2em;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        .thinking {
+            animation: pulse 2s infinite;
+        }
+        
+        .result-feedback {
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 15px;
+            text-align: center;
+            font-size: 1.2em;
+            display: none;
+        }
+        
+        .result-feedback.correct {
+            background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+            color: white;
+        }
+        
+        .result-feedback.incorrect {
+            background: linear-gradient(135deg, #f56565 0%, #e53e3e 100%);
+            color: white;
+        }
+        
+        .badge-celebration {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            display: none;
+            z-index: 1000;
+        }
+        
+        .badge {
+            font-size: 5em;
+            margin-bottom: 20px;
+            animation: sparkle 2s infinite;
+        }
+        
+        @keyframes sparkle {
+            0%, 100% { transform: scale(1) rotate(0deg); }
+            25% { transform: scale(1.1) rotate(-5deg); }
+            50% { transform: scale(1.2) rotate(0deg); }
+            75% { transform: scale(1.1) rotate(5deg); }
+        }
+        
+        .share-buttons {
+            margin-top: 20px;
+        }
+        
+        .share-button {
+            display: inline-block;
+            margin: 0 10px;
+            padding: 10px 20px;
+            border-radius: 10px;
+            text-decoration: none;
+            color: white;
+            font-weight: bold;
+            transition: transform 0.3s ease;
+        }
+        
+        .share-button:hover {
+            transform: translateY(-3px);
+        }
+        
+        .share-linkedin { background: #0077b5; }
+        .share-twitter { background: #1da1f2; }
+        .share-facebook { background: #1877f2; }
+        
+        #manipulation-warning {
+            margin-top: 15px;
+            padding: 15px;
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+            border-radius: 10px;
+            display: none;
+            color: white;
+            box-shadow: 0 4px 15px rgba(238, 90, 36, 0.3);
+        }
+    </style>
+</head>
+<body>
+    <div class="score-tracker">
+        <div style="font-size: 0.9em; color: #9ca3af;">Critical Thinking</div>
+        <div style="font-size: 1.8em;">💫 RIZ: <span id="user-score">0</span>/10</div>
+        <div id="honey-pots" style="margin-top: 10px;">
+            🍯🍯🍯
+        </div>
+    </div>
+    
+    <div class="container">
+        <div class="header">
+            <h1>🐻 Phuzzy's Think Tank</h1>
+            <p>Where Bears Balance Brain & Heart</p>
+        </div>
+        
+        <div class="scenario-box">
+            <h2 class="scenario-title" id="scenario-title">Loading scenario...</h2>
+            <p class="scenario-text" id="scenario-text"></p>
+            <div class="claim" id="claim-text"></div>
+        </div>
+        
+        <div class="interactive-section" id="quiz-section">
+            <div class="quiz-question">What's the PRIMARY issue with this argument?</div>
+            <div class="quiz-options">
+                <div class="quiz-option" data-value="logic">Weak logical evidence</div>
+                <div class="quiz-option" data-value="emotion">Emotional manipulation</div>
+                <div class="quiz-option" data-value="balanced">Actually well-balanced</div>
+                <div class="quiz-option" data-value="agenda">Hidden agenda/bias</div>
+            </div>
+            <button class="submit-button" onclick="submitAnswer()" disabled>Submit Answer</button>
+        </div>
+        
+        <div class="result-feedback" id="result-feedback"></div>
+        
+        <div class="analysis-grid" id="analysis-grid">
+            <div class="bear-panel logic-panel">
+                <div class="bear-header">
+                    <span class="bear-emoji thinking" id="logic-bear">🧠</span>
+                    <span class="bear-name logic-name">Logic Bear</span>
+                </div>
+                
+                <div class="metric">
+                    <div class="metric-label">Evidence Quality</div>
+                    <div class="meter-container">
+                        <div class="meter-fill logic-fill" id="evidence-meter" style="width: 0%">
+                            <span class="meter-value" id="evidence-value">0/10</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="metric">
+                    <div class="metric-label">Logical Consistency</div>
+                    <div class="meter-container">
+                        <div class="meter-fill logic-fill" id="logic-meter" style="width: 0%">
+                            <span class="meter-value" id="logic-value">0/10</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="metric">
+                    <div class="metric-label">Source Reliability</div>
+                    <div class="meter-container">
+                        <div class="meter-fill logic-fill" id="source-meter" style="width: 0%">
+                            <span class="meter-value" id="source-value">0/10</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="metric">
+                    <div class="metric-label">Hidden Agenda Risk</div>
+                    <div class="meter-container">
+                        <div class="meter-fill logic-fill" id="agenda-meter" style="width: 0%">
+                            <span class="meter-value" id="agenda-value">0/10</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="factors-list">
+                    <h4>Logical Issues Found:</h4>
+                    <div id="logic-factors"></div>
+                </div>
+            </div>
+            
+            <div class="bear-panel emotion-panel">
+                <div class="bear-header">
+                    <span class="bear-emoji thinking" id="emotion-bear">💖</span>
+                    <span class="bear-name emotion-name">Emotion Bear</span>
+                </div>
+                
+                <div class="metric">
+                    <div class="metric-label">Fear/Safety Appeal</div>
+                    <div class="meter-container">
+                        <div class="meter-fill emotion-fill" id="fear-meter" style="width: 0%">
+                            <span class="meter-value" id="fear-value">0/10</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="metric">
+                    <div class="metric-label">Belonging/Identity</div>
+                    <div class="meter-container">
+                        <div class="meter-fill emotion-fill" id="belonging-meter" style="width: 0%">
+                            <span class="meter-value" id="belonging-value">0/10</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="metric">
+                    <div class="metric-label">Pride/Status Appeal</div>
+                    <div class="meter-container">
+                        <div class="meter-fill emotion-fill" id="pride-meter" style="width: 0%">
+                            <span class="meter-value" id="pride-value">0/10</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="metric">
+                    <div class="metric-label">Emotional Manipulation Risk</div>
+                    <div class="meter-container">
+                        <div class="meter-fill emotion-fill" id="emotion-agenda-meter" style="width: 0%">
+                            <span class="meter-value" id="emotion-agenda-value">0/10</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="factors-list">
+                    <h4>Emotional Triggers Detected:</h4>
+                    <div id="emotion-factors"></div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="wisdom-panel">
+            <div class="wisdom-header">
+                <span class="bear-emoji">🦉</span>
+                <span class="bear-name">Wisdom Bear's Integration</span>
+            </div>
+            <div class="wisdom-content" id="wisdom-content">
+                Analyzing the balance between logic and emotion...
+            </div>
+            
+            <div class="balance-meter">
+                <div class="balance-label">Logic ↔ Emotion Balance</div>
+                <div class="balance-visual">
+                    <div class="balance-indicator" id="balance-indicator" style="left: 50%">
+                        <span id="balance-icon">⚖️</span>
+                    </div>
+                </div>
+                <div class="balance-labels">
+                    <span>🧠 Pure Logic</span>
+                    <span>⚖️ Balanced</span>
+                    <span>💖 Pure Emotion</span>
+                </div>
+            </div>
+            
+            <div id="manipulation-warning">
+                <strong style="font-size: 1.2em;">🚨 Manipulation Alert!</strong>
+                <div id="manipulation-text" style="margin-top: 8px; font-size: 1.05em;"></div>
+            </div>
+        </div>
+        
+        <div class="button-container">
+            <button class="next-button" onclick="nextScenario()">Next Scenario →</button>
+        </div>
+    </div>
+    
+    <div class="badge-celebration" id="badge-celebration">
+        <div class="badge" id="badge-emoji">🏆</div>
+        <h2 id="badge-title">Achievement Unlocked!</h2>
+        <p id="badge-message">You've mastered critical thinking!</p>
+        <div class="share-buttons">
+            <a href="#" class="share-button share-linkedin" onclick="shareScore('linkedin')">Share on LinkedIn</a>
+            <a href="#" class="share-button share-twitter" onclick="shareScore('twitter')">Share on Twitter</a>
+            <a href="#" class="share-button share-facebook" onclick="shareScore('facebook')">Share on Facebook</a>
+        </div>
+        <button class="submit-button" onclick="closeBadge()" style="margin-top: 20px;">Continue</button>
+    </div>
+    
+    <script>
+        // 10 Brand new scenarios!
+        const scenarios = [
+            {
+                title: "The Miracle Diet Discovery",
+                text: `Your aunt forwards a breathless email: "Girls, I HAD to share this! My friend Jennifer - you remember her from book club - lost 30 pounds in ONE MONTH with this amazing coffee! It's all natural, just regular coffee with a special herb from the Amazon. Her husband is a doctor and even HE was shocked at the results! The company is having a sale this week only - buy 3 months get 1 free. I already ordered mine! Don't wait - Jennifer says they might run out because some celebrity just posted about it. Only $199 for the starter pack!"`,
+                claim: "This special coffee causes dramatic weight loss and is doctor-approved",
+                correctAnswer: "emotion",
+                logic: {
+                    evidence: 1.5,
+                    consistency: 2.0,
+                    source: 2.5,
+                    agenda: 9.0,
+                    issues: [
+                        "📊 No clinical studies mentioned",
+                        "🎭 Anecdotal evidence only",
+                        "⏰ False scarcity tactics",
+                        "💰 Clear profit motive ($199!)"
+                    ]
+                },
+                emotion: {
+                    fear: 7.0,
+                    belonging: 8.5,
+                    pride: 6.5,
+                    emotionAgenda: 9.5,
+                    triggers: [
+                        "😰 FOMO - 'might run out'",
+                        "👯 Trust in aunt/friend network",
+                        "🏃‍♀️ Body image pressure",
+                        "⭐ Celebrity endorsement appeal"
+                    ]
+                },
+                wisdom: "Classic MLM-style manipulation combining trust networks with body insecurity. The 'doctor husband' detail adds false authority while urgent scarcity drives quick decisions. Real medical weight loss never promises 30 pounds in a month safely.",
+                manipulation: true,
+                manipulationText: "Trust network exploitation + body shame + false scarcity = MLM tactics"
+            },
+            {
+                title: "The School Board Data Presentation",
+                text: `The district superintendent projects a detailed slide: "Over the past 5 years, our AP enrollment has increased 34%, with pass rates climbing from 67% to 74%. However, we're seeing concerning gaps: only 12% of our economically disadvantaged students enroll in AP courses compared to 43% overall. Our proposed solution involves three evidence-based interventions: automatic enrollment for students meeting GPA thresholds, covering all exam fees, and adding preparation courses. Similar programs in Austin and Denver showed 3x increase in underrepresented student success. The total cost is $185,000 annually, or 0.3% of our budget."`,
+                claim: "We should fund programs to increase AP access for disadvantaged students",
+                correctAnswer: "balanced",
+                logic: {
+                    evidence: 9.0,
+                    consistency: 8.5,
+                    source: 9.0,
+                    agenda: 2.0,
+                    issues: [
+                        "✅ Specific data provided",
+                        "✅ Comparative examples cited",
+                        "✅ Cost-benefit transparent",
+                        "✅ Problem clearly defined"
+                    ]
+                },
+                emotion: {
+                    fear: 2.0,
+                    belonging: 3.5,
+                    pride: 4.0,
+                    emotionAgenda: 2.5,
+                    triggers: [
+                        "📊 Equity concern (mild)",
+                        "🎓 Student success focus",
+                        "💡 Hope for improvement",
+                        "🤝 Community values"
+                    ]
+                },
+                wisdom: "This is how responsible advocacy works: strong data, transparent costs, evidence from comparable programs, and proportionate emotional appeal. The mild emotional component appropriately highlights equity without manipulation.",
+                manipulation: false,
+                manipulationText: ""
+            },
+            {
+                title: "The Crypto Investment Guru",
+                text: `The Instagram reel shows a 22-year-old in a Lamborghini: "Six months ago I was BROKE working at Subway. Now? I make $50K a WEEK! How? I discovered this crypto trading bot that literally PRINTS MONEY. While you sleep, it's making trades. While you work your 9-5, it's multiplying your investment. My mentor charges $5,000 for this information but I'm giving it away for FREE! Just comment 'FREEDOM' and I'll DM you the link. But hurry - the government is trying to shut us down because banks are SCARED of how much money we're making!"`,
+                claim: "This crypto bot can make you wealthy quickly with no risk",
+                correctAnswer: "agenda",
+                logic: {
+                    evidence: 0.5,
+                    consistency: 1.0,
+                    source: 1.0,
+                    agenda: 10.0,
+                    issues: [
+                        "🚫 No verifiable proof",
+                        "💰 Obvious scam structure",
+                        "🎪 'Government conspiracy' nonsense",
+                        "🎯 Targeting desperate people"
+                    ]
+                },
+                emotion: {
+                    fear: 8.0,
+                    belonging: 7.5,
+                    pride: 9.5,
+                    emotionAgenda: 10.0,
+                    triggers: [
+                        "💸 Financial desperation",
+                        "😤 Anti-establishment anger",
+                        "🏎️ Lifestyle envy",
+                        "⏰ Urgency manipulation"
+                    ]
+                },
+                wisdom: "Textbook financial scam hitting every manipulation trigger: lifestyle porn, conspiracy theories, false urgency, and 'secret knowledge.' The maximum agenda scores (10/10) reflect pure predatory intent targeting vulnerable people.",
+                manipulation: true,
+                manipulationText: "Financial desperation + conspiracy theories + lifestyle envy = predatory scam"
+            },
+            {
+                title: "The Climate Action Student Speech",
+                text: `Maya takes the microphone at the assembly: "Last summer, our town hit 112°F - the hottest ever recorded. My grandfather, who's lived here 80 years, had never seen anything like it. The data is clear: we've had 7 of our 10 hottest years in the last decade. But this isn't about fear - it's about action. Our environmental club's proposal is simple: solar panels on the gym roof. The district's own analysis shows it'll save $40,000 annually after a 5-year payback period. Lincoln High did this two years ago and is already saving money. We're not asking you to save the world - just to make a smart financial decision that happens to help the planet."`,
+                claim: "The school should install solar panels for financial and environmental benefits",
+                correctAnswer: "balanced",
+                logic: {
+                    evidence: 8.0,
+                    consistency: 8.5,
+                    source: 7.5,
+                    agenda: 3.0,
+                    issues: [
+                        "✅ Local temperature data",
+                        "✅ Financial analysis included",
+                        "✅ Successful example cited",
+                        "✅ Realistic scope"
+                    ]
+                },
+                emotion: {
+                    fear: 3.5,
+                    belonging: 4.5,
+                    pride: 5.0,
+                    emotionAgenda: 3.0,
+                    triggers: [
+                        "🌡️ Personal experience shared",
+                        "👴 Generational perspective",
+                        "💚 Environmental values",
+                        "💰 Practical benefits"
+                    ]
+                },
+                wisdom: "Student activism done right: personal connection backed by data, realistic proposal, financial benefits highlighted, and successful precedent shown. The emotional elements enhance rather than replace logical arguments.",
+                manipulation: false,
+                manipulationText: ""
+            },
+            {
+                title: "The Wellness Influencer's Warning",
+                text: `@CleanLivingMama's post has 500K likes: "MOMS - I'm SHAKING right now! Just found out that regular shampoo has CHEMICALS that seep into your bloodstream! My daughter had headaches for MONTHS until I switched to my all-natural hair care line. Big Beauty doesn't want you to know this! One mom told me her son's ADHD symptoms disappeared after ditching toxic products! As a mother, I couldn't stay silent. My pure botanical shampoo is normally $89 but for the next 24 hours it's only $49. Use code SAVEOURBABIES. Don't let THEM poison your family!"`,
+                claim: "Regular shampoo causes health problems and natural alternatives cure conditions",
+                correctAnswer: "emotion",
+                logic: {
+                    evidence: 0.5,
+                    consistency: 1.5,
+                    source: 2.0,
+                    agenda: 9.5,
+                    issues: [
+                        "🧪 'Chemicals' fear mongering",
+                        "❌ False medical claims",
+                        "🎭 Anecdotal 'evidence'",
+                        "💰 $89 shampoo sale"
+                    ]
+                },
+                emotion: {
+                    fear: 10.0,
+                    belonging: 7.0,
+                    pride: 8.0,
+                    emotionAgenda: 9.5,
+                    triggers: [
+                        "👶 Maternal protection instinct",
+                        "☠️ 'Poison' language",
+                        "🏢 Big company conspiracy",
+                        "⏰ 24-hour urgency"
+                    ]
+                },
+                wisdom: "Peak wellness industry manipulation: maximum fear (10/10) about children's safety, false medical claims, conspiracy theories, and expensive 'solution.' The 'SAVEOURBABIES' code is shameless emotional exploitation.",
+                manipulation: true,
+                manipulationText: "Parental fear + false medical claims + conspiracy theory = wellness grift"
+            },
+            {
+                title: "The Teacher's Technology Request",
+                text: `Mr. Rodriguez presents to the PTA: "I know budgets are tight, but I want to show you something. This is Maria's essay from September - handwritten, two paragraphs. This is her essay from last month, typed on our old computers - two full pages. When students can edit easily, they write more and better. We have 6 working computers for 28 students. The refurbished Chromebooks I'm requesting cost $150 each. That's $2,100 for 14 units - enough for paired work. Three parents have already offered to donate $100 each. I'm not saying technology solves everything, but when kids spend 20 minutes waiting for a turn, that's learning time lost."`,
+                claim: "The PTA should fund additional computers for the classroom",
+                correctAnswer: "balanced",
+                logic: {
+                    evidence: 7.5,
+                    consistency: 8.0,
+                    source: 8.5,
+                    agenda: 2.5,
+                    issues: [
+                        "✅ Concrete example shown",
+                        "✅ Specific numbers provided",
+                        "✅ Partial funding secured",
+                        "✅ Acknowledges limitations"
+                    ]
+                },
+                emotion: {
+                    fear: 2.0,
+                    belonging: 5.0,
+                    pride: 4.0,
+                    emotionAgenda: 2.0,
+                    triggers: [
+                        "📝 Student success story",
+                        "⏱️ Lost time concern",
+                        "🤝 Community support shown",
+                        "💻 Practical need"
+                    ]
+                },
+                wisdom: "Effective grassroots advocacy: specific evidence (Maria's improvement), transparent costs, partial funding already secured, and realistic claims. The moderate emotional appeal focuses on student success without manipulation.",
+                manipulation: false,
+                manipulationText: ""
+            },
+            {
+                title: "The Gaming Addiction Documentary",
+                text: `The Netflix trailer shows dark footage of teens at computers: "Video games killed my son," a crying mother states. "Not literally - but they killed his soul. He played 18 hours a day." Dr. Williams, identified as 'Technology Addiction Expert,' warns: "Gaming activates the same brain regions as cocaine. We're seeing kids hospitalized with malnutrition, blood clots from sitting, destroyed futures. The gaming industry KNOWS this and keeps making games more addictive. One child played until he had a seizure. Parents - if your child games more than 2 hours daily, they're already addicted. Watch this documentary before it's too late."`,
+                claim: "Video gaming is as dangerous as drug addiction and destroys children",
+                correctAnswer: "emotion",
+                logic: {
+                    evidence: 3.0,
+                    consistency: 3.5,
+                    source: 4.0,
+                    agenda: 7.0,
+                    issues: [
+                        "🎬 Extreme cases presented as normal",
+                        "🧠 Oversimplified brain science",
+                        "⚡ Correlation ≠ causation",
+                        "📺 Documentary needs viewers"
+                    ]
+                },
+                emotion: {
+                    fear: 9.5,
+                    belonging: 4.0,
+                    pride: 7.0,
+                    emotionAgenda: 8.5,
+                    triggers: [
+                        "💀 'Killed his soul' imagery",
+                        "🏥 Medical horror stories",
+                        "💊 Drug comparison",
+                        "⏰ 'Too late' urgency"
+                    ]
+                },
+                wisdom: "Documentary sensationalism at its worst: extreme outlier cases, oversimplified science, and maximum parental fear. While gaming addiction exists, this presentation abandons nuance for emotional impact and viewership.",
+                manipulation: true,
+                manipulationText: "Parental terror + medical horror stories + false equivalence = panic marketing"
+            },
+            {
+                title: "The Neighborhood Safety App Pitch",
+                text: `The NextDoor post from Tom Chen reads: "Hey neighbors! After the recent package thefts, I researched security options. The CommunityWatch app is $4.99/month and lets us share real-time alerts. Here's what I found: Oakwood reduced package theft by 45% after adopting it (per their police stats). The app doesn't share data with law enforcement without consent. It has bias training built in - you can't post alerts based solely on someone's appearance. Five families on our block already joined. I'm not affiliated with the company - just want us all to feel safer. Happy to answer questions at the block party Saturday!"`,
+                claim: "Neighbors should subscribe to a community safety app",
+                correctAnswer: "logic",
+                logic: {
+                    evidence: 7.0,
+                    consistency: 7.5,
+                    source: 6.5,
+                    agenda: 3.5,
+                    issues: [
+                        "✅ Specific statistics cited",
+                        "✅ Privacy concerns addressed",
+                        "✅ Bias prevention mentioned",
+                        "⚠️ Single source for stats"
+                    ]
+                },
+                emotion: {
+                    fear: 4.5,
+                    belonging: 6.0,
+                    pride: 3.0,
+                    emotionAgenda: 3.5,
+                    triggers: [
+                        "🏘️ Community connection",
+                        "📦 Recent theft reference",
+                        "🤝 Neighbor trust",
+                        "🛡️ Safety desire"
+                    ]
+                },
+                wisdom: "Reasonable community proposal with good intentions. While there's some emotional appeal to safety, it's backed by data and addresses key concerns. The main weakness is relying on single-source statistics.",
+                manipulation: false,
+                manipulationText: ""
+            },
+            {
+                title: "The University Mental Health Crisis",
+                text: `The student newspaper editorial begins: "TRIGGER WARNING: We're losing classmates to suicide. Three this semester. The counseling center has a 6-week wait. The administration's response? Yoga classes and a meditation app. This is CRIMINAL NEGLIGENCE. Other schools have 24/7 crisis hotlines and one counselor per 1,000 students - we have one per 4,000. The dean makes $400K while we suffer. If you're struggling, you're not alone, but this university has ABANDONED us. Share this until they're forced to act. Our lives depend on it. #MentalHealthMatters #AdminBloodOnTheirHands"`,
+                claim: "The university administration is criminally negligent about student mental health",
+                correctAnswer: "emotion",
+                logic: {
+                    evidence: 5.5,
+                    consistency: 5.0,
+                    source: 5.0,
+                    agenda: 4.5,
+                    issues: [
+                        "📊 Real statistics provided",
+                        "⚖️ Valid comparisons made",
+                        "❌ 'Criminal' hyperbole",
+                        "🎯 Inflammatory hashtags"
+                    ]
+                },
+                emotion: {
+                    fear: 8.5,
+                    belonging: 7.0,
+                    pride: 8.0,
+                    emotionAgenda: 7.5,
+                    triggers: [
+                        "💔 Suicide mentions",
+                        "😡 Anger at authority",
+                        "🆘 Crisis language",
+                        "#️⃣ Activism hashtags"
+                    ]
+                },
+                wisdom: "Serious issue undermined by inflammatory rhetoric. While the statistics support concern, calling it 'criminal negligence' and using 'blood on their hands' language prioritizes viral outrage over constructive solutions.",
+                manipulation: true,
+                manipulationText: "Real crisis + inflammatory language + viral activism = outrage optimization"
+            },
+            {
+                title: "The Local Restaurant's Plea",
+                text: `Posted on the door of Giovanni's Italian: "Dear customers, after 32 years, we need your help. COVID hit us hard - we're down to 40% of pre-pandemic sales. Our landlord raised rent 30% this year. We've already cut our own salaries and reduced staff hours as much as possible. If we can't increase sales by 20% in the next two months, we'll have to close. We're not asking for handouts - just your business. Try our new lunch specials ($8.99), tell friends about us, or buy gift cards for later. Every meal helps save 8 local jobs. Thank you for three decades of memories. - The Rossi Family"`,
+                claim: "The community should support this local restaurant to prevent closure",
+                correctAnswer: "balanced",
+                logic: {
+                    evidence: 7.0,
+                    consistency: 8.0,
+                    source: 9.0,
+                    agenda: 5.0,
+                    issues: [
+                        "✅ Specific challenges explained",
+                        "✅ Clear timeline given",
+                        "✅ Multiple solutions offered",
+                        "💰 Self-interest acknowledged"
+                    ]
+                },
+                emotion: {
+                    fear: 5.5,
+                    belonging: 8.0,
+                    pride: 6.0,
+                    emotionAgenda: 5.0,
+                    triggers: [
+                        "👨‍👩‍👧 Family business appeal",
+                        "🏘️ Community tradition",
+                        "💼 Local jobs at stake",
+                        "🙏 Humble request"
+                    ]
+                },
+                wisdom: "Honest plea balancing emotional connection with business reality. The high belonging score (8.0) reflects genuine community ties built over 32 years. The moderate agenda score (5.0) shows transparent self-interest without manipulation.",
+                manipulation: false,
+                manipulationText: ""
+            }
+        ];
+        
+        let currentScenario = 0;
+        let userScore = 0;
+        let selectedAnswer = null;
+        let hasAnswered = false;
+        
+        function animateMeter(elementId, value, duration = 1000) {
+            const element = document.getElementById(elementId);
+            const valueElement = document.getElementById(elementId.replace('-meter', '-value'));
+            
+            setTimeout(() => {
+                element.style.width = `${value * 10}%`;
+                if (valueElement) {
+                    valueElement.textContent = `${value}/10`;
+                }
+            }, duration);
+        }
+        
+        function displayFactors(containerId, factors) {
+            const container = document.getElementById(containerId);
+            container.innerHTML = '';
+            
+            factors.forEach((factor, index) => {
+                setTimeout(() => {
+                    const item = document.createElement('div');
+                    item.className = 'factor-item';
+                    item.innerHTML = factor;
+                    container.appendChild(item);
+                }, 200 * (index + 1));
+            });
+        }
+        
+        function calculateBalance(logicAvg, emotionAvg) {
+            const total = logicAvg + emotionAvg;
+            if (total === 0) return 50;
+            return (emotionAvg / total) * 100;
+        }
+        
+        function selectOption(element) {
+            if (hasAnswered) return;
+            
+            document.querySelectorAll('.quiz-option').forEach(opt => {
+                opt.classList.remove('selected');
+            });
+            element.classList.add('selected');
+            selectedAnswer = element.dataset.value;
+            document.querySelector('.submit-button').disabled = false;
+        }
+        
+        function submitAnswer() {
+            if (!selectedAnswer || hasAnswered) return;
+            
+            hasAnswered = true;
+            const correct = selectedAnswer === scenarios[currentScenario].correctAnswer;
+            
+            if (correct) {
+                userScore++;
+                document.getElementById('user-score').textContent = userScore;
+            }
+            
+            // Show feedback
+            const feedback = document.getElementById('result-feedback');
+            feedback.className = `result-feedback ${correct ? 'correct' : 'incorrect'}`;
+            feedback.innerHTML = correct 
+                ? "🎉 Excellent analysis! You identified the key issue!"
+                : `🤔 Not quite - the main issue was ${scenarios[currentScenario].correctAnswer === 'emotion' ? 'emotional manipulation' : scenarios[currentScenario].correctAnswer === 'logic' ? 'weak logical evidence' : scenarios[currentScenario].correctAnswer === 'agenda' ? 'hidden agenda/bias' : 'actually well-balanced'}`;
+            feedback.style.display = 'block';
+            
+            // Show analysis
+            document.getElementById('analysis-grid').classList.add('visible');
+            document.getElementById('quiz-section').style.opacity = '0.6';
+            document.querySelector('.submit-button').disabled = true;
+            
+            // Load full analysis
+            loadAnalysis(currentScenario);
+            
+            // Check for badges
+            if (userScore === 3) showBadge('🥉', 'Bronze Thinker', 'You\'re developing critical thinking skills!');
+            if (userScore === 5) showBadge('🥈', 'Silver Analyst', 'Your logic-emotion detection is improving!');
+            if (userScore === 8) showBadge('🥇', 'Gold Mind Reader', 'You see through manipulation like a pro!');
+            if (userScore === 10) showBadge('💎', 'Diamond Sage', 'Perfect score! You\'ve mastered balanced thinking!');
+        }
+        
+        function showBadge(emoji, title, message) {
+            const badge = document.getElementById('badge-celebration');
+            document.getElementById('badge-emoji').textContent = emoji;
+            document.getElementById('badge-title').textContent = title;
+            document.getElementById('badge-message').textContent = message;
+            badge.style.display = 'block';
+        }
+        
+        function closeBadge() {
+            document.getElementById('badge-celebration').style.display = 'none';
+        }
+        
+        function shareScore(platform) {
+            const score = userScore;
+            const text = `I scored ${score}/10 on Bear Necessities: Think & Feel! Can you master critical thinking and emotional intelligence? 🐻🧠💖`;
+            const url = window.location.href;
+            
+            const shareUrls = {
+                linkedin: `https://www.linkedin.com/sharing/share-offsite/?url=${url}`,
+                twitter: `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${url}`,
+                facebook: `https://www.facebook.com/sharer/sharer.php?u=${url}&quote=${encodeURIComponent(text)}`
+            };
+            
+            window.open(shareUrls[platform], '_blank');
+        }
+        
+        function loadScenario(index) {
+            const scenario = scenarios[index];
+            
+            // Reset for new scenario
+            hasAnswered = false;
+            selectedAnswer = null;
+            document.querySelectorAll('.quiz-option').forEach(opt => {
+                opt.classList.remove('selected');
+            });
+            document.querySelector('.submit-button').disabled = true;
+            document.getElementById('result-feedback').style.display = 'none';
+            document.getElementById('analysis-grid').classList.remove('visible');
+            document.getElementById('quiz-section').style.opacity = '1';
+            
+            // Update text
+            document.getElementById('scenario-title').textContent = `Scenario ${index + 1}: ${scenario.title}`;
+            document.getElementById('scenario-text').textContent = scenario.text;
+            document.getElementById('claim-text').textContent = `Claim: "${scenario.claim}"`;
+            
+            // Add click handlers to options
+            document.querySelectorAll('.quiz-option').forEach(opt => {
+                opt.onclick = () => selectOption(opt);
+            });
+        }
+        
+        function loadAnalysis(index) {
+            const scenario = scenarios[index];
+            
+            // Reset animations
+            document.getElementById('logic-bear').classList.add('thinking');
+            document.getElementById('emotion-bear').classList.add('thinking');
+            
+            // Animate logic meters
+            setTimeout(() => {
+                animateMeter('evidence-meter', scenario.logic.evidence, 0);
+                animateMeter('logic-meter', scenario.logic.consistency, 200);
+                animateMeter('source-meter', scenario.logic.source, 400);
+                animateMeter('agenda-meter', scenario.logic.agenda, 600);
+                displayFactors('logic-factors', scenario.logic.issues);
+                document.getElementById('logic-bear').classList.remove('thinking');
+            }, 1000);
+            
+            // Animate emotion meters
+            setTimeout(() => {
+                animateMeter('fear-meter', scenario.emotion.fear, 0);
+                animateMeter('belonging-meter', scenario.emotion.belonging, 200);
+                animateMeter('pride-meter', scenario.emotion.pride, 400);
+                animateMeter('emotion-agenda-meter', scenario.emotion.emotionAgenda, 600);
+                displayFactors('emotion-factors', scenario.emotion.triggers);
+                document.getElementById('emotion-bear').classList.remove('thinking');
+            }, 1500);
+            
+            // Show wisdom analysis
+            setTimeout(() => {
+                document.getElementById('wisdom-content').textContent = scenario.wisdom;
+                
+                // Calculate averages
+                const logicAvg = (scenario.logic.evidence + scenario.logic.consistency + scenario.logic.source) / 3;
+                const emotionAvg = (scenario.emotion.fear + scenario.emotion.belonging + scenario.emotion.pride) / 3;
+                
+                // Animate balance indicator
+                const balance = calculateBalance(logicAvg, emotionAvg);
+                document.getElementById('balance-indicator').style.left = `${balance}%`;
+                
+                // Update balance icon
+                const icon = balance < 30 ? '🧠' : balance > 70 ? '💖' : '⚖️';
+                document.getElementById('balance-icon').textContent = icon;
+                
+                // Show manipulation warning if needed
+                const manipWarning = document.getElementById('manipulation-warning');
+                if (scenario.manipulation) {
+                    document.getElementById('manipulation-text').textContent = scenario.manipulationText;
+                    manipWarning.style.display = 'block';
+                } else {
+                    manipWarning.style.display = 'none';
+                }
+            }, 3000);
+        }
+        
+        function nextScenario() {
+            currentScenario = (currentScenario + 1) % scenarios.length;
+            
+            // Scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            
+            // Reset all meters
+            ['evidence', 'logic', 'source', 'agenda', 'fear', 'belonging', 'pride', 'emotion-agenda'].forEach(type => {
+                document.getElementById(`${type}-meter`).style.width = '0%';
+                const valueEl = document.getElementById(`${type}-value`);
+                if (valueEl) valueEl.textContent = '0/10';
+            });
+            
+            // Clear factors
+            document.getElementById('logic-factors').innerHTML = '';
+            document.getElementById('emotion-factors').innerHTML = '';
+            
+            // Load new scenario
+            loadScenario(currentScenario);
+        }
+        
+        // Initialize
+        loadScenario(0);
+    </script>
+</body>
+</html>

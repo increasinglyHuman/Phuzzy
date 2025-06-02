@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🐻 Phuzzy's Think Tank - Where Bears Balance Brain & Heart</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .header h1 {
+            color: #5a67d8;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            color: #666;
+            font-size: 1.2em;
+        }
+        
+        .score-tracker {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: white;
+            padding: 15px 25px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            font-weight: bold;
+            color: #5a67d8;
+            z-index: 100;
+            transition: all 0.3s ease;
+            opacity: 0;
+            transform: translateY(-20px);
+        }
+        
+        .score-tracker.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .honey-pot-container {
+            margin-top: 10px;
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+        }
+        
+        .honey-pot {
+            font-size: 2em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+        }
+        
+        .honey-pot:hover:not(.honey-used) {
+            transform: translateY(-3px) scale(1.1);
+            filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
+        }
+        
+        .honey-pot.honey-used {
+            opacity: 0.3;
+            cursor: not-allowed;
+            filter: grayscale(1);
+        }
+        
+        .scenario-box {
+            background: #f7fafc;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 30px;
+            border: 2px solid #e2e8f0;
+        }
+        
+        .scenario-title {
+            color: #2d3748;
+            font-size: 1.4em;
+            margin-bottom: 15px;
+        }
+        
+        .scenario-text {
+            color: #4a5568;
+            line-height: 1.8;
+            font-size: 1.1em;
+            margin-bottom: 20px;
+            font-style: italic;
+        }
+        
+        .claim {
+            background: #fff;
+            padding: 15px;
+            border-left: 4px solid #5a67d8;
+            margin: 20px 0;
+            font-weight: bold;
+            color: #2d3748;
+        }
+        
+        .interactive-section {
+            background: linear-gradient(135deg, #f6e05e 0%, #f6ad55 100%);
+            border-radius: 15px;
+            padding: 25px;
+            margin: 30px 0;
+            color: #744210;
+        }
+        
+        .quiz-question {
+            font-size: 1.3em;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+        
+        .quiz-options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .quiz-option {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 3px solid transparent;
+            text-align: center;
+        }
+        
+        .quiz-option:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .quiz-option.selected {
+            border-color: #5a67d8;
+            background: #e6f2ff;
+        }
+        
+        .hint-button {
+            background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+            color: #78350f;
+            border: none;
+            padding: 8px 20px;
+            font-size: 1em;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 15px auto;
+            display: block;
+            font-weight: bold;
+        }
+        
+        .hint-button:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(245, 158, 11, 0.3);
+        }
+        
+        .hint-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .submit-button {
+            background: #5a67d8;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            font-size: 1.1em;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: block;
+            margin: 0 auto;
+        }
+        
+        .submit-button:hover:not(:disabled) {
+            background: #4c51bf;
+            transform: translateY(-2px);
+        }
+        
+        .submit-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .button-container {
+            text-align: center;
+            margin-top: 30px;
+        }
+        
+        .next-button {
+            background: #5a67d8;
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.1em;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: none;
+        }
+        
+        .next-button.visible {
+            display: inline-block;
+        }
+        
+        .next-button:hover {
+            background: #4c51bf;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .hint-highlight {
+            background: rgba(251, 191, 36, 0.3);
+            padding: 2px 4px;
+            border-radius: 4px;
+            animation: pulse-highlight 2s ease-in-out infinite;
+        }
+        
+        @keyframes pulse-highlight {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+        
+        .bear-reaction {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 8em;
+            z-index: 200;
+            animation: bearPop 1.5s ease-out forwards;
+            pointer-events: none;
+        }
+        
+        @keyframes bearPop {
+            0% { 
+                opacity: 0;
+                transform: translate(-50%, -50%) scale(0.5);
+            }
+            50% { 
+                opacity: 1;
+                transform: translate(-50%, -50%) scale(1.2);
+            }
+            100% { 
+                opacity: 0;
+                transform: translate(-50%, -50%) scale(1);
+            }
+        }
+        
+        .sparkle {
+            position: fixed;
+            font-size: 1.5em;
+            animation: floatUp 2s ease-out forwards;
+            pointer-events: none;
+            z-index: 150;
+        }
+        
+        @keyframes floatUp {
+            0% {
+                opacity: 1;
+                transform: translateY(0) rotate(0deg);
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(-150px) rotate(360deg);
+            }
+        }
+        
+        .analysis-section {
+            display: none;
+            margin-top: 30px;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+        
+        .analysis-section.visible {
+            display: block;
+            opacity: 1;
+        }
+        
+        .bear-panel {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px 0;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .logic-panel {
+            border-top: 4px solid #4299e1;
+        }
+        
+        .emotion-panel {
+            border-top: 4px solid #ed64a6;
+        }
+        
+        .bear-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+            font-weight: bold;
+        }
+        
+        .bear-emoji {
+            font-size: 2em;
+            margin-right: 10px;
+        }
+        
+        .meter-container {
+            background: #e2e8f0;
+            border-radius: 10px;
+            height: 30px;
+            margin: 10px 0;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .meter-fill {
+            height: 100%;
+            border-radius: 10px;
+            transition: width 1s ease-out;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding-right: 10px;
+            color: white;
+            font-weight: bold;
+        }
+        
+        .logic-fill {
+            background: linear-gradient(90deg, #4299e1, #3182ce);
+        }
+        
+        .emotion-fill {
+            background: linear-gradient(90deg, #ed64a6, #d53f8c);
+        }
+        
+        .end-game {
+            display: none;
+            text-align: center;
+            padding: 40px;
+            background: linear-gradient(135deg, #f6e05e 0%, #f6ad55 100%);
+            border-radius: 20px;
+            margin-top: 30px;
+        }
+        
+        .end-game.visible {
+            display: block;
+        }
+        
+        .final-badge {
+            font-size: 6em;
+            margin: 20px 0;
+            animation: sparkle 2s infinite;
+        }
+        
+        @keyframes sparkle {
+            0%, 100% { transform: scale(1) rotate(0deg); }
+            25% { transform: scale(1.1) rotate(-5deg); }
+            50% { transform: scale(1.2) rotate(0deg); }
+            75% { transform: scale(1.1) rotate(5deg); }
+        }
+        
+        .share-buttons {
+            margin-top: 20px;
+        }
+        
+        .share-button {
+            display: inline-block;
+            margin: 0 10px;
+            padding: 10px 20px;
+            border-radius: 10px;
+            text-decoration: none;
+            color: white;
+            font-weight: bold;
+            background: #5a67d8;
+        }
+    </style>
+</head>
+<body>
+    <div class="score-tracker" id="score-tracker">
+        <div style="font-size: 1.8em;">💫 RIZ: <span id="user-score">0</span>/<span id="total-scenarios">3</span></div>
+        <div class="honey-pot-container" id="honey-pots">
+            <span class="honey-pot" onclick="useHoneyPot()">🍯</span>
+            <span class="honey-pot" onclick="useHoneyPot()">🍯</span>
+            <span class="honey-pot" onclick="useHoneyPot()">🍯</span>
+        </div>
+    </div>
+    
+    <div class="container">
+        <div class="header">
+            <h1>🐻 Phuzzy's Think Tank</h1>
+            <p>Where Bears Balance Brain & Heart</p>
+        </div>
+        
+        <div id="game-content">
+            <div class="scenario-box">
+                <h2 class="scenario-title" id="scenario-title">Scenario 1: The School Safety Email</h2>
+                <p class="scenario-text" id="scenario-text">
+                    Mrs. Henderson sent an urgent email to all parents: Our children are in danger! Three schools in our state had incidents this month. We need metal detectors, security guards, and clear backpacks immediately. Every day we wait puts our babies at risk. The security company gave us a quote for $200,000. Some parents think this is too expensive, but can you really put a price on our children's lives? If even ONE child gets hurt because we didn't act, their blood is on our hands. Vote YES at tomorrow's meeting!
+                </p>
+                <div class="claim" id="claim-text">
+                    Claim: "We must implement expensive security measures immediately or children will be hurt"
+                </div>
+            </div>
+            
+            <div class="interactive-section" id="quiz-section">
+                <div class="quiz-question">What's the PRIMARY issue with this argument?</div>
+                <div class="quiz-options">
+                    <div class="quiz-option" data-value="logic" onclick="selectOption(this)">Weak logical evidence</div>
+                    <div class="quiz-option" data-value="emotion" onclick="selectOption(this)">Emotional manipulation</div>
+                    <div class="quiz-option" data-value="balanced" onclick="selectOption(this)">Actually well-balanced</div>
+                    <div class="quiz-option" data-value="agenda" onclick="selectOption(this)">Hidden agenda/bias</div>
+                </div>
+                <button class="hint-button" onclick="useHoneyPot()" id="hint-button">
+                    🍯 Use Honey Pot for Hint (<span id="honey-count">3</span> left)
+                </button>
+                <button class="submit-button" onclick="submitAnswer()" disabled id="submit-button">Submit Answer</button>
+            </div>
+            
+            <div class="analysis-section" id="analysis-section">
+                <div class="bear-panel logic-panel">
+                    <div class="bear-header">
+                        <span class="bear-emoji">🧠</span>
+                        <span>Logic Bear Analysis</span>
+                    </div>
+                    <div class="meter-container">
+                        <div class="meter-fill logic-fill" id="logic-meter" style="width: 0%">
+                            <span id="logic-score">0/10</span>
+                        </div>
+                    </div>
+                    <p id="logic-analysis">Analyzing logical structure...</p>
+                </div>
+                
+                <div class="bear-panel emotion-panel">
+                    <div class="bear-header">
+                        <span class="bear-emoji">💖</span>
+                        <span>Emotion Bear Analysis</span>
+                    </div>
+                    <div class="meter-container">
+                        <div class="meter-fill emotion-fill" id="emotion-meter" style="width: 0%">
+                            <span id="emotion-score">0/10</span>
+                        </div>
+                    </div>
+                    <p id="emotion-analysis">Detecting emotional triggers...</p>
+                </div>
+            </div>
+            
+            <div class="button-container">
+                <button class="next-button" id="next-button" onclick="nextScenario()">Next Scenario →</button>
+            </div>
+        </div>
+        
+        <div class="end-game" id="end-game">
+            <h2>🎉 Game Complete!</h2>
+            <div class="final-badge" id="final-badge">🏆</div>
+            <h3 id="badge-title">Fuzzy Thinker</h3>
+            <p id="final-score-text">You scored 0/3</p>
+            <p id="badge-message">You've completed Phuzzy's Think Tank!</p>
+            <div class="share-buttons">
+                <a href="#" class="share-button" onclick="shareScore()">Share Your RIZ</a>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        const scenarios = [
+            {
+                title: "The School Safety Email",
+                text: "Mrs. Henderson sent an urgent email to all parents: Our children are in danger! Three schools in our state had incidents this month. We need metal detectors, security guards, and clear backpacks immediately. Every day we wait puts our babies at risk. The security company gave us a quote for $200,000. Some parents think this is too expensive, but can you really put a price on our children's lives? If even ONE child gets hurt because we didn't act, their blood is on our hands. Vote YES at tomorrow's meeting!",
+                claim: "We must implement expensive security measures immediately or children will be hurt",
+                correctAnswer: "emotion",
+                logicScore: 3,
+                emotionScore: 9,
+                logicAnalysis: "Uses fear-based reasoning with no local crime data or evidence these measures work.",
+                emotionAnalysis: "Extreme emotional manipulation using parent's protective instincts and guilt."
+            },
+            {
+                title: "The Science Fair Data",
+                text: "The science teacher presented her findings: Over the past 3 years, our school's science fair participation increased from 45 students to 127 students after we added the mentorship program. Test scores in science improved by an average of 12 percent. The program costs $15,000 annually, which works out to $118 per participating student. Similar programs in nearby districts show comparable results. However, we should note that other factors like new textbooks may have also contributed to the improvement.",
+                claim: "The mentorship program improves science engagement and should continue",
+                correctAnswer: "balanced",
+                logicScore: 8,
+                emotionScore: 3,
+                logicAnalysis: "Strong data with specific numbers, cost analysis, and acknowledgment of other factors.",
+                emotionAnalysis: "Minimal emotional appeal, focuses on facts and student success metrics."
+            },
+            {
+                title: "The Gaming Ban Proposal",
+                text: "A concerned parent addressed the PTA: Video games are destroying our children! My neighbor's son played games for 10 hours a day and failed all his classes. Another family I know had their daughter become completely antisocial after getting a gaming console. We must ban all video games for students under 18. Some so-called experts claim games can be educational, but they're probably paid by the gaming industry. Don't let Big Gaming corrupt our kids! Sign my petition today!",
+                claim: "Video games should be banned for all students under 18",
+                correctAnswer: "logic",
+                logicScore: 2,
+                emotionScore: 7,
+                logicAnalysis: "Relies entirely on anecdotes, dismisses expert opinions without evidence, extreme solution.",
+                emotionAnalysis: "Uses fear of corruption and child harm, but less intense than pure manipulation."
+            }
+        ];
+        
+        let currentScenario = 0;
+        let userScore = 0;
+        let selectedAnswer = null;
+        let hasAnswered = false;
+        let honeyPots = 3;
+        let scenariosCompleted = [];
+        
+        function selectOption(element) {
+            if (hasAnswered) return;
+            
+            document.querySelectorAll('.quiz-option').forEach(opt => {
+                opt.classList.remove('selected');
+            });
+            element.classList.add('selected');
+            selectedAnswer = element.dataset.value;
+            document.getElementById('submit-button').disabled = false;
+        }
+        
+        function updateHoneyDisplay() {
+            const honeyContainer = document.getElementById('honey-pots');
+            const honeyPotElements = honeyContainer.querySelectorAll('.honey-pot');
+            
+            honeyPotElements.forEach((pot, index) => {
+                if (index >= honeyPots) {
+                    pot.classList.add('honey-used');
+                } else {
+                    pot.classList.remove('honey-used');
+                }
+            });
+            
+            document.getElementById('honey-count').textContent = honeyPots;
+            document.getElementById('hint-button').disabled = honeyPots === 0 || hasAnswered;
+            
+            if (honeyPots === 0) {
+                document.getElementById('hint-button').innerHTML = '🍯 No Honey Pots Left!';
+            }
+        }
+        
+        function useHoneyPot() {
+            if (honeyPots === 0 || hasAnswered) return;
+            
+            honeyPots--;
+            updateHoneyDisplay();
+            
+            const scenario = scenarios[currentScenario];
+            const text = document.getElementById('scenario-text');
+            let highlightedText = text.textContent;
+            
+            if (scenario.correctAnswer === 'emotion') {
+                const emotionWords = ['danger', 'babies', 'blood', 'hurt', 'immediately'];
+                emotionWords.forEach(word => {
+                    const regex = new RegExp(word, 'gi');
+                    highlightedText = highlightedText.replace(regex, '<span class="hint-highlight">$&</span>');
+                });
+            } else if (scenario.correctAnswer === 'logic') {
+                const logicWords = ['neighbor', 'another family', 'probably'];
+                logicWords.forEach(word => {
+                    const regex = new RegExp(word, 'gi');
+                    highlightedText = highlightedText.replace(regex, '<span class="hint-highlight">$&</span>');
+                });
+            }
+            
+            text.innerHTML = highlightedText;
+        }
+        
+        function createSparkle(x, y) {
+            const sparkles = ['✨', '💫', '⭐', '🌟'];
+            const sparkle = document.createElement('div');
+            sparkle.className = 'sparkle';
+            sparkle.textContent = sparkles[Math.floor(Math.random() * sparkles.length)];
+            sparkle.style.left = x + 'px';
+            sparkle.style.top = y + 'px';
+            document.body.appendChild(sparkle);
+            
+            setTimeout(() => sparkle.remove(), 2000);
+        }
+        
+        function showBearReaction(isCorrect) {
+            const bear = document.createElement('div');
+            bear.className = 'bear-reaction';
+            bear.textContent = isCorrect ? '🎉' : '😢';
+            document.body.appendChild(bear);
+            
+            setTimeout(() => bear.remove(), 1500);
+        }
+        
+        function createSparkleExplosion() {
+            const scoreTracker = document.getElementById('score-tracker');
+            const rect = scoreTracker.getBoundingClientRect();
+            
+            for (let i = 0; i < 15; i++) {
+                setTimeout(() => {
+                    const x = rect.left + rect.width / 2 + (Math.random() - 0.5) * 100;
+                    const y = rect.top + rect.height / 2 + (Math.random() - 0.5) * 50;
+                    createSparkle(x, y);
+                }, i * 100);
+            }
+        }
+        
+        function showAnalysis() {
+            const scenario = scenarios[currentScenario];
+            const analysisSection = document.getElementById('analysis-section');
+            
+            analysisSection.classList.add('visible');
+            
+            // Animate meters
+            setTimeout(() => {
+                document.getElementById('logic-meter').style.width = (scenario.logicScore * 10) + '%';
+                document.getElementById('logic-score').textContent = scenario.logicScore + '/10';
+                document.getElementById('emotion-meter').style.width = (scenario.emotionScore * 10) + '%';
+                document.getElementById('emotion-score').textContent = scenario.emotionScore + '/10';
+            }, 100);
+            
+            setTimeout(() => {
+                document.getElementById('logic-analysis').textContent = scenario.logicAnalysis;
+                document.getElementById('emotion-analysis').textContent = scenario.emotionAnalysis;
+            }, 1000);
+            
+            document.getElementById('next-button').classList.add('visible');
+        }
+        
+        function submitAnswer() {
+            if (!selectedAnswer || hasAnswered) return;
+            
+            hasAnswered = true;
+            scenariosCompleted.push(currentScenario);
+            const correct = selectedAnswer === scenarios[currentScenario].correctAnswer;
+            
+            if (correct) {
+                userScore++;
+                document.getElementById('user-score').textContent = userScore;
+                createSparkleExplosion();
+            }
+            
+            showBearReaction(correct);
+            showAnalysis();
+            
+            document.getElementById('submit-button').disabled = true;
+            document.getElementById('hint-button').disabled = true;
+        }
+        
+        function nextScenario() {
+            // Find next unplayed scenario
+            let nextIndex = -1;
+            for (let i = 0; i < scenarios.length; i++) {
+                if (!scenariosCompleted.includes(i)) {
+                    nextIndex = i;
+                    break;
+                }
+            }
+            
+            if (nextIndex === -1 || scenariosCompleted.length >= scenarios.length) {
+                // Game over
+                showEndGame();
+                return;
+            }
+            
+            currentScenario = nextIndex;
+            hasAnswered = false;
+            selectedAnswer = null;
+            
+            // Reset UI
+            document.querySelectorAll('.quiz-option').forEach(opt => {
+                opt.classList.remove('selected');
+            });
+            document.getElementById('submit-button').disabled = true;
+            document.getElementById('hint-button').disabled = honeyPots === 0;
+            document.getElementById('analysis-section').classList.remove('visible');
+            document.getElementById('next-button').classList.remove('visible');
+            
+            // Reset meters
+            document.getElementById('logic-meter').style.width = '0%';
+            document.getElementById('emotion-meter').style.width = '0%';
+            
+            // Load new scenario
+            const scenario = scenarios[currentScenario];
+            document.getElementById('scenario-title').textContent = `Scenario ${scenariosCompleted.length + 1}: ${scenario.title}`;
+            document.getElementById('scenario-text').textContent = scenario.text;
+            document.getElementById('claim-text').textContent = `Claim: "${scenario.claim}"`;
+            
+            // Scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+        
+        function showEndGame() {
+            document.getElementById('game-content').style.display = 'none';
+            document.getElementById('end-game').classList.add('visible');
+            
+            const percentage = (userScore / scenarios.length) * 100;
+            let badge, title, message;
+            
+            if (percentage === 100) {
+                badge = '💎';
+                title = 'Diamond Mind';
+                message = 'Perfect score! You have mastered fuzzy thinking!';
+            } else if (percentage >= 66) {
+                badge = '🥇';
+                title = 'Gold Thinker';
+                message = 'Excellent work! You see through most manipulation.';
+            } else if (percentage >= 33) {
+                badge = '🥈';
+                title = 'Silver Analyst';
+                message = 'Good job! Keep practicing your critical thinking.';
+            } else {
+                badge = '🥉';
+                title = 'Bronze Bear';
+                message = 'Nice start! There\'s room to grow your skills.';
+            }
+            
+            document.getElementById('final-badge').textContent = badge;
+            document.getElementById('badge-title').textContent = title;
+            document.getElementById('final-score-text').textContent = `You scored ${userScore}/${scenarios.length}`;
+            document.getElementById('badge-message').textContent = message;
+        }
+        
+        function shareScore() {
+            const text = `I got ${userScore}/${scenarios.length} RIZ in Phuzzy's Think Tank! Can you balance logic and emotion? 🐻🧠💖`;
+            const url = window.location.href;
+            
+            // Try to share using Web Share API if available
+            if (navigator.share) {
+                navigator.share({
+                    title: 'Phuzzy\'s Think Tank',
+                    text: text,
+                    url: url
+                });
+            } else {
+                // Fallback to copying to clipboard
+                navigator.clipboard.writeText(text + ' ' + url);
+                alert('Score copied to clipboard!');
+            }
+        }
+        
+        // Scroll detection for score tracker
+        window.addEventListener('scroll', function() {
+            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            const scoreTracker = document.getElementById('score-tracker');
+            
+            if (scrollTop > 100) {
+                scoreTracker.classList.add('visible');
+            } else {
+                scoreTracker.classList.remove('visible');
+            }
+        });
+        
+        // Initialize
+        updateHoneyDisplay();
+        document.getElementById('total-scenarios').textContent = scenarios.length;
+    </script>
+</body>
+</html>

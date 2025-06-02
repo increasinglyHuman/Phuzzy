@@ -93,7 +93,8 @@ class PhuzzyGameEngine {
         this.analyticsTracker.trackAnswer({
             scenarioId: this.currentScenario.id,
             userAnswer: userAnswer,
-            correct: evaluation.score === 100,
+            correct: evaluation.feedbackLevel === 'perfect',
+            points: evaluation.points,
             timeSpent: Date.now() - this.analyticsTracker.scenarioStartTime
         });
         

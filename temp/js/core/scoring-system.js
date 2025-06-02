@@ -19,42 +19,50 @@ class ScoringSystem {
     
     evaluateAnswer(userAnswer, scenario) {
         var weights = scenario.answerWeights;
-        var score = weights[userAnswer] || 0;
+        var weightScore = weights[userAnswer] || 0;
+        
+        // Convert weight score to 0-3 point scale
+        var points;
+        var feedbackLevel;
+        
+        if (weightScore === 100) {
+            points = 3;
+            feedbackLevel = 'perfect';
+        } else if (weightScore >= 80) {
+            points = 2;
+            feedbackLevel = 'close';
+        } else if (weightScore >= 50) {
+            points = 1;
+            feedbackLevel = 'partial';
+        } else {
+            points = 0;
+            feedbackLevel = 'wrong';
+        }
         
         // Track performance by type
         var correctType = scenario.correctAnswer;
         this.performanceByType[correctType].total++;
         
-        if (score === 100) {
+        if (points === 3) {
             this.performanceByType[correctType].correct++;
-            this.totalScore += 1;
         }
         
-        this.possibleScore += 1;
-        
-        // Determine feedback level
-        var feedbackLevel;
-        if (score === 100) {
-            feedbackLevel = 'perfect';
-        } else if (score >= 80) {
-            feedbackLevel = 'close';
-        } else if (score >= 50) {
-            feedbackLevel = 'partial';
-        } else {
-            feedbackLevel = 'wrong';
-        }
+        this.totalScore += points;
+        this.possibleScore += 3; // Max 3 points per scenario
         
         var feedback = this.getFeedbackMessage(feedbackLevel, userAnswer, scenario);
         
         this.answerHistory.push({
             scenarioId: scenario.id,
             userAnswer,
-            score,
+            score: weightScore,
+            points: points,
             feedbackLevel
         });
         
         return {
-            score,
+            score: weightScore,
+            points: points,
             feedbackLevel,
             feedback,
             explanation: this.getExplanation(userAnswer, scenario)
@@ -65,22 +73,22 @@ class ScoringSystem {
         const messages = {
             perfect: {
                 emoji: '🎉',
-                text: 'Perfect!',
+                text: 'Perfect! (+3 points)',
                 detail: 'You correctly identified the primary issue.'
             },
             close: {
                 emoji: '😊',
-                text: 'Almost there!',
+                text: 'So Close! (+2 points)',
                 detail: this.getCloseExplanation(userAnswer, scenario)
             },
             partial: {
                 emoji: '🤔',
-                text: 'Keep thinking...',
+                text: 'Not quite (+1 point)',
                 detail: 'You identified a secondary issue, but missed the main one.'
             },
             wrong: {
-                emoji: '😢',
-                text: 'Study harder!',
+                emoji: '😅',
+                text: 'Oh no! (0 points)',
                 detail: 'This answer misses the key elements of the argument.'
             }
         };
@@ -134,29 +142,35 @@ class ScoringSystem {
     getBadge() {
         var accuracy = this.getAccuracy();
         
-        if (accuracy === 100) {
+        if (accuracy >= 90) {
             return {
                 emoji: '💎',
                 title: 'Phuzzy Diamond Master',
-                message: 'Perfect score! You have mastered Phuzzy thinking!'
+                message: 'Outstanding mastery! You have exceptional Phuzzy thinking skills!'
             };
-        } else if (accuracy >= 66) {
+        } else if (accuracy >= 75) {
             return {
                 emoji: '🥇',
                 title: 'Phuzzy Gold Guardian',
-                message: 'Excellent work! You see through most manipulation.'
+                message: 'Excellent work! You see through most manipulation with confidence.'
             };
-        } else if (accuracy >= 33) {
+        } else if (accuracy >= 50) {
             return {
                 emoji: '🥈',
                 title: 'Phuzzy Silver Scout',
-                message: 'Good job! Keep practicing your Phuzzy thinking.'
+                message: 'Good progress! Your Phuzzy thinking skills are developing well.'
             };
-        } else {
+        } else if (accuracy >= 25) {
             return {
                 emoji: '🥉',
                 title: 'Phuzzy Bronze Cub',
-                message: 'Nice start! There\'s room to grow your skills.'
+                message: 'Nice start! Keep practicing to grow your critical thinking skills.'
+            };
+        } else {
+            return {
+                emoji: '🐻',
+                title: 'Phuzzy Apprentice',
+                message: 'Every expert was once a beginner. Keep learning, future Phuzzy master!'
             };
         }
     }

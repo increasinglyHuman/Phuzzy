@@ -3,7 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🐻 Phuzzy's Think Tank - Where Bears Balance Brain & Heart</title>
+    <title>Phuzzy's Think Tank - Where Bears Balance Brain & Heart</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🐻</text></svg>">
+    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🐻</text></svg>">
     
     <!-- CSS Files -->
     <link rel="stylesheet" href="css/main.css">
@@ -23,11 +27,16 @@
 <body>
     <!-- Score Tracker -->
     <div class="score-tracker" id="score-tracker">
-        <div style="font-size: 1.8em;">💫 RIZ: <span id="user-score">0</span>/<span id="total-scenarios">0</span></div>
+        <div style="font-size: 1.8em; margin-left: -3px;">💫 RIZ: <span id="user-score">0</span></div>
         <div class="honey-pot-container" id="honey-pots">
             <span class="honey-pot" id="honey-pot-1">🍯</span>
             <span class="honey-pot" id="honey-pot-2">🍯</span>
             <span class="honey-pot" id="honey-pot-3">🍯</span>
+        </div>
+        <div class="question-progress">
+            <div class="question-progress-track">
+                <div class="question-progress-bar" id="question-progress-bar"></div>
+            </div>
         </div>
     </div>
     
@@ -143,8 +152,8 @@
                         <a href="#" class="social-button social-facebook" id="share-facebook">
                             <span>📘</span> Facebook
                         </a>
-                        <a href="#" class="social-button social-twitter" id="share-twitter">
-                            <span>🐦</span> Twitter/X
+                        <a href="#" class="social-button social-instagram" id="share-instagram">
+                            <span>📸</span> Instagram
                         </a>
                         <a href="#" class="social-button social-linkedin" id="share-linkedin">
                             <span>💼</span> LinkedIn
@@ -251,12 +260,24 @@
                 // Start game
                 await gameEngine.startGame();
                 
-                // Make score tracker visible after scroll
-                let hasScrolled = false;
-                window.addEventListener('scroll', () => {
-                    if (!hasScrolled && window.pageYOffset > 100) {
-                        hasScrolled = true;
-                        elements.scoreTracker.classList.add('visible');
+                // Add honey pot click handlers
+                document.querySelectorAll('.honey-pot').forEach(honeyPot => {
+                    honeyPot.addEventListener('click', () => {
+                        if (!honeyPot.classList.contains('used') && quizInterface.hasAnswered === false) {
+                            quizInterface.useHoneyPot();
+                        }
+                    });
+                });
+                
+                // Scroll detection for score tracker fade-in effect
+                window.addEventListener('scroll', function() {
+                    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+                    const scoreTracker = document.getElementById('score-tracker');
+                    
+                    if (scrollTop > 100) {
+                        scoreTracker.classList.add('visible');
+                    } else {
+                        scoreTracker.classList.remove('visible');
                     }
                 });
                 
