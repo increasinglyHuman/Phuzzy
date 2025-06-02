@@ -173,22 +173,25 @@
         </div>
     </div>
     
+    <!-- Load scripts in order (ES5 compatible) -->
+    <script src="./js/core/scenario-manager.js"></script>
+    <script src="./js/core/scoring-system.js"></script>
+    <script src="./js/core/honey-pot-manager.js"></script>
+    <script src="./js/utils/analytics-tracker.js"></script>
+    <script src="./js/ui/bear-analysis.js"></script>
+    <script src="./js/ui/quiz-interface.js"></script>
+    <script src="./js/ui/social-sharing.js"></script>
+    <script src="./js/core/game-engine.js"></script>
+    
     <!-- Main Game Script -->
-    <script type="module">
-        // Import all modules
-        import { PhuzzyGameEngine } from './js/core/game-engine.js';
-        import { ScenarioManager } from './js/core/scenario-manager.js';
-        import { ScoringSystem } from './js/core/scoring-system.js';
-        import { HoneyPotManager } from './js/core/honey-pot-manager.js';
-        import { AnalyticsTracker } from './js/utils/analytics-tracker.js';
-        import { QuizInterface } from './js/ui/quiz-interface.js';
-        import { SocialSharing } from './js/ui/social-sharing.js';
+    <script>
+        // ES5 compatible initialization
         
         // Initialize game
         async function initializeGame() {
             try {
                 // Create game engine
-                const gameEngine = new PhuzzyGameEngine(window.PHUZZY_CONFIG);
+                const gameEngine = new window.PhuzzyGameEngine(window.PHUZZY_CONFIG);
                 
                 // Get UI elements
                 const elements = {
@@ -230,11 +233,11 @@
                 };
                 
                 // Create UI controller
-                const quizInterface = new QuizInterface(gameEngine, elements);
+                const quizInterface = new window.QuizInterface(gameEngine, elements);
                 gameEngine.uiController = quizInterface;
                 
                 // Initialize social sharing
-                const socialSharing = new SocialSharing();
+                const socialSharing = new window.SocialSharing();
                 socialSharing.init();
                 
                 // Initialize game

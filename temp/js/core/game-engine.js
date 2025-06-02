@@ -1,9 +1,10 @@
 // ===== CORE/GAME-ENGINE.JS =====
 
-import { ScenarioManager } from './scenario-manager.js';
-import { ScoringSystem } from './scoring-system.js';
-import { HoneyPotManager } from './honey-pot-manager.js';
-import { AnalyticsTracker } from '../utils/analytics-tracker.js';
+// ES5 compatible - objects will be available globally
+// import { ScenarioManager } from './scenario-manager.js';
+// import { ScoringSystem } from './scoring-system.js';
+// import { HoneyPotManager } from './honey-pot-manager.js';
+// import { AnalyticsTracker } from '../utils/analytics-tracker.js';
 
 class PhuzzyGameEngine {
     constructor(config = {}) {
@@ -14,10 +15,10 @@ class PhuzzyGameEngine {
             ...config
         };
         
-        this.scenarioManager = new ScenarioManager(this.config);
-        this.scoringSystem = new ScoringSystem();
-        this.honeyPotManager = new HoneyPotManager(this.config.honeyPotsPerRound);
-        this.analyticsTracker = new AnalyticsTracker();
+        this.scenarioManager = new window.ScenarioManager(this.config);
+        this.scoringSystem = new window.ScoringSystem();
+        this.honeyPotManager = new window.HoneyPotManager(this.config.honeyPotsPerRound);
+        this.analyticsTracker = new window.AnalyticsTracker();
         this.uiController = null; // Set by UI layer
         
         this.currentScenario = null;
