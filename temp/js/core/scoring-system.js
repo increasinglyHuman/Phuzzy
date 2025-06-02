@@ -161,4 +161,7 @@ class ScoringSystem {
         }
     }
 }
-export { ScoringSystem };
+// Export for global usage
+if (typeof window !== 'undefined') {
+    window.ScoringSystem = ScoringSystem;
+}

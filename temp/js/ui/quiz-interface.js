@@ -1,7 +1,5 @@
 // ===== UI/QUIZ-INTERFACE.JS =====
-import { BearAnalysis } from './bear-analysis.js';
-import { FeedbackAnimator } from './feedback-animator.js';
-import { HintDisplay } from './hint-display.js';
+// Dependencies loaded via global window objects
 
 class QuizInterface {
     constructor(gameEngine, elements) {
@@ -11,9 +9,9 @@ class QuizInterface {
         this.selectedAnswer = null;
         this.hasAnswered = false;
         
-        this.bearAnalysis = new BearAnalysis(elements.analysisSection);
-        this.feedbackAnimator = new FeedbackAnimator();
-        this.hintDisplay = new HintDisplay();
+        this.bearAnalysis = new window.BearAnalysis(elements.analysisSection);
+        this.feedbackAnimator = new window.FeedbackAnimator();
+        this.hintDisplay = new window.HintDisplay();
         
         this.bindEvents();
     }
@@ -250,5 +248,7 @@ class QuizInterface {
     }
 }
 
-// Export for module usage
-export { QuizInterface };
+// Export for global usage
+if (typeof window !== 'undefined') {
+    window.QuizInterface = QuizInterface;
+}

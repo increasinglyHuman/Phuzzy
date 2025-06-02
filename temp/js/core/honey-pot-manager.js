@@ -84,4 +84,7 @@ class HoneyPotManager {
         };
     }
 }
-export { HoneyPotManager };
+// Export for global usage
+if (typeof window !== 'undefined') {
+    window.HoneyPotManager = HoneyPotManager;
+}

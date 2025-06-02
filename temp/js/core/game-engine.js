@@ -153,4 +153,7 @@ class PhuzzyGameEngine {
     }
 }
 
-export { PhuzzyGameEngine };
+// Export for global usage
+if (typeof window !== 'undefined') {
+    window.PhuzzyGameEngine = PhuzzyGameEngine;
+}

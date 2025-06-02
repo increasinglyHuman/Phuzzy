@@ -54,4 +54,7 @@ class ScenarioManager {
     }
 }
 
-export { ScenarioManager };
+// Export for global usage
+if (typeof window !== 'undefined') {
+    window.ScenarioManager = ScenarioManager;
+}
