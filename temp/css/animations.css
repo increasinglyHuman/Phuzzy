@@ -1,0 +1,295 @@
+/* Phuzzy Think Tank - Animations & Effects */
+
+/* Confetti Animation */
+.confetti {
+    position: fixed;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 1000;
+    animation: confetti-fall 3s linear forwards;
+}
+
+.confetti:nth-child(odd) {
+    background: #ff6b6b;
+    animation-delay: 0s;
+}
+
+.confetti:nth-child(even) {
+    background: #4ecdc4;
+    animation-delay: 0.5s;
+}
+
+.confetti:nth-child(3n) {
+    background: #45b7d1;
+    animation-delay: 1s;
+}
+
+.confetti:nth-child(4n) {
+    background: #f9ca24;
+    animation-delay: 1.5s;
+}
+
+.confetti:nth-child(5n) {
+    background: #f0932b;
+    animation-delay: 2s;
+}
+
+@keyframes confetti-fall {
+    0% {
+        transform: translateY(-100vh) rotate(0deg);
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(100vh) rotate(720deg);
+        opacity: 0;
+    }
+}
+
+/* Sparkle Effects */
+.sparkle {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: #ffd700;
+    border-radius: 50%;
+    animation: sparkle 1.5s ease-in-out infinite;
+}
+
+@keyframes sparkle {
+    0%, 100% {
+        opacity: 0;
+        transform: scale(0);
+    }
+    50% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Button Hover Effects */
+.quiz-option {
+    position: relative;
+    overflow: hidden;
+}
+
+.quiz-option::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+    transition: left 0.5s;
+}
+
+.quiz-option:hover::before {
+    left: 100%;
+}
+
+/* Feedback Animations */
+.feedback {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    padding: 20px 30px;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    z-index: 10000;
+    font-weight: 600;
+    font-size: 1.1rem;
+}
+
+.feedback.correct {
+    border-left: 5px solid #48bb78;
+    color: #2f855a;
+}
+
+.feedback.incorrect {
+    border-left: 5px solid #f56565;
+    color: #c53030;
+}
+
+.fade-in {
+    animation: fadeInOut 3s ease-in-out forwards;
+}
+
+@keyframes fadeInOut {
+    0% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.8);
+    }
+    20%, 80% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+    }
+    100% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.8);
+    }
+}
+
+/* Progress Bar Animation */
+.scenario-progress-bar {
+    animation: progressFill 0.8s ease-out forwards;
+}
+
+@keyframes progressFill {
+    from {
+        width: 0%;
+    }
+    to {
+        width: var(--progress-width);
+    }
+}
+
+/* Bear Analysis Reveal */
+.bear-analysis {
+    opacity: 0;
+    transform: translateY(20px);
+    animation: slideUp 0.6s ease-out forwards;
+}
+
+.bear-analysis:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+@keyframes slideUp {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Meter Fill Animation */
+.meter-fill {
+    width: 0;
+    animation: fillMeter 1.5s ease-out forwards;
+}
+
+@keyframes fillMeter {
+    to {
+        width: var(--meter-width);
+    }
+}
+
+/* Mini Meter Animations */
+.mini-meter-fill {
+    width: 0;
+    transition: width 1s ease-out;
+}
+
+.mini-meter-fill.animate {
+    width: var(--fill-width);
+}
+
+/* Pulse Effect for Score */
+.score-pulse {
+    animation: scorePulse 0.6s ease-in-out;
+}
+
+@keyframes scorePulse {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.2);
+    }
+}
+
+/* Honey Pot Usage Animation */
+.honey-pot.using {
+    animation: honeyUsed 0.8s ease-out forwards;
+}
+
+@keyframes honeyUsed {
+    0% {
+        transform: scale(1) rotate(0deg);
+    }
+    50% {
+        transform: scale(1.3) rotate(10deg);
+    }
+    100% {
+        transform: scale(0.7) rotate(0deg);
+        opacity: 0.3;
+        filter: grayscale(100%);
+    }
+}
+
+.honey-pot.used {
+    opacity: 0.3;
+    filter: grayscale(100%);
+}
+
+/* Page Transition */
+.page-transition {
+    opacity: 0;
+    transform: translateX(20px);
+    animation: pageSlide 0.5s ease-out forwards;
+}
+
+@keyframes pageSlide {
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* Success Celebration */
+.celebration {
+    animation: celebrate 2s ease-in-out;
+}
+
+@keyframes celebrate {
+    0%, 100% {
+        transform: scale(1);
+    }
+    25% {
+        transform: scale(1.05) rotate(2deg);
+    }
+    75% {
+        transform: scale(1.05) rotate(-2deg);
+    }
+}
+
+/* Loading Spinner */
+.loading-spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid rgba(255,255,255,0.3);
+    border-top: 4px solid white;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 0 auto;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Bounce Animation for Loading Bear */
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% {
+        transform: translateY(0);
+    }
+    40% {
+        transform: translateY(-10px);
+    }
+    60% {
+        transform: translateY(-5px);
+    }
+}
+
+@keyframes loading {
+    0% {
+        transform: translateX(-100%);
+    }
+    100% {
+        transform: translateX(100%);
+    }
+}

@@ -1,0 +1,499 @@
+{
+  "version": "1.0.0",
+  "scenarios": [
+    {
+      "id": "miracle-supplement-001",
+      "title": "The Miracle Supplement",
+      "text": "Dr. Sarah Chen, a Harvard-trained biochemist, posted on LinkedIn: 'After 15 years researching aging, I'm excited about NAD+ supplements. Our study of 200 participants showed 23% improvement in cellular energy markers. However, results varied significantly - 30% saw no change. The supplements cost $80/month. While promising, we need larger studies. Also, exercise showed similar benefits in our control group. I take them personally, but can't make blanket recommendations yet.'",
+      "claim": "NAD+ supplements may help with aging, but more research is needed",
+      "correctAnswer": "balanced",
+      "answerWeights": {
+        "balanced": 100,
+        "logic": 70,
+        "emotion": 30,
+        "agenda": 20
+      },
+      "analysis": {
+        "logic": {
+          "scores": {
+            "evidence": 8.0,
+            "consistency": 8.5,
+            "source": 9.0,
+            "agenda": 3.0
+          },
+          "indicators": ["qualified-expert", "specific-data", "acknowledges-limits", "mentions-alternatives"],
+          "explanation": "Strong statistical evidence with acknowledged limitations"
+        },
+        "emotion": {
+          "scores": {
+            "fear": 3.0,
+            "belonging": 4.5,
+            "pride": 5.0,
+            "manipulation": 2.5
+          },
+          "triggers": ["harvard-credibility", "aging-concern", "hope-solution", "professional-trust"],
+          "explanation": "Moderate emotional appeal supports but doesn't overshadow evidence"
+        }
+      },
+      "wisdom": "This represents responsible scientific communication: strong credentials presented without arrogance, specific data with acknowledged limitations, and personal disclosure without pushy sales tactics.",
+      "hints": {
+        "keywords": ["data", "study", "however", "results", "varied", "need larger studies"],
+        "strategy": "balanced",
+        "hintMessage": "Look for statistics, sources, and nuanced thinking!"
+      },
+      "metadata": {
+        "tags": ["science", "health", "balanced-argument", "supplements"],
+        "difficulty": 3,
+        "educationalFocus": "recognizing-responsible-science-communication",
+        "commonMisconceptions": ["all-health-claims-are-scams", "credentials-equal-truth"],
+        "addedDate": "2024-01-01"
+      }
+    },
+    {
+      "id": "neighborhood-watch-002",
+      "title": "The Neighborhood Watch Alert",
+      "text": "Posted in NextDoor by Jim Maxwell: URGENT - BE AWARE!!! 🚨🚨🚨 I saw a van driving slowly down Oak Street yesterday. It had out-of-state plates!!! This is EXACTLY how those trafficking rings operate that I read about on Facebook. They're probably scouting our children! I called 911 but they said 'driving slowly isn't a crime' - can you BELIEVE that?? The police won't protect us, so WE must protect ourselves! Everyone needs to buy security cameras NOW. My brother sells them - DM me for a 'neighbor discount.' SHARE THIS TO SAVE LIVES!!!",
+      "claim": "Suspicious van indicates danger; everyone must buy security cameras immediately",
+      "correctAnswer": "emotion",
+      "answerWeights": {
+        "emotion": 100,
+        "agenda": 85,
+        "logic": 15,
+        "balanced": 10
+      },
+      "analysis": {
+        "logic": {
+          "scores": {
+            "evidence": 0.5,
+            "consistency": 1.0,
+            "source": 0.5,
+            "agenda": 9.5
+          },
+          "indicators": ["zero-evidence", "facebook-source", "hidden-sales", "pure-speculation"],
+          "explanation": "No actual evidence of threat, just fear-based speculation"
+        },
+        "emotion": {
+          "scores": {
+            "fear": 10.0,
+            "belonging": 8.0,
+            "pride": 6.5,
+            "manipulation": 9.5
+          },
+          "triggers": ["child-safety-panic", "police-wont-help", "us-vs-them", "urgent-pressure"],
+          "explanation": "Maximum fear manipulation to drive sales"
+        }
+      },
+      "wisdom": "Textbook fear-mongering with a profit motive. Notice how a mundane observation (slow-driving van) escalates to trafficking rings, then conveniently pivots to selling security cameras.",
+      "hints": {
+        "keywords": ["URGENT", "BELIEVE", "protect ourselves", "NOW", "SAVE LIVES"],
+        "strategy": "emotion",
+        "hintMessage": "Look for dramatic language and emotional triggers!"
+      },
+      "metadata": {
+        "tags": ["security", "fear-mongering", "sales-pitch", "neighborhood"],
+        "difficulty": 2,
+        "educationalFocus": "recognizing-fear-based-marketing",
+        "commonMisconceptions": ["all-safety-concerns-are-valid", "urgency-equals-importance"],
+        "addedDate": "2024-01-01"
+      }
+    },
+    {
+      "id": "climate-study-003",
+      "title": "The Climate Study",
+      "text": "The Eco-Truth Institute released their findings: '97% of scientists are LYING about climate change! Our research proves that Earth's temperature hasn't changed in 50 years. We surveyed 50 scientists who agree with us. The mainstream media won't report this because they're controlled by the renewable energy lobby. Wake up, people! They want to destroy our economy with their fake green agenda. Coal and oil are natural - how can nature be bad?'",
+      "claim": "Climate change is a hoax perpetrated by the renewable energy industry",
+      "correctAnswer": "logic",
+      "answerWeights": {
+        "logic": 100,
+        "agenda": 80,
+        "emotion": 60,
+        "balanced": 5
+      },
+      "analysis": {
+        "logic": {
+          "scores": {
+            "evidence": 1.0,
+            "consistency": 1.5,
+            "source": 2.0,
+            "agenda": 9.0
+          },
+          "indicators": ["cherry-picked-sample", "contradicts-evidence", "dubious-institute", "natural-good-fallacy"],
+          "explanation": "Tiny sample presented as overturning mountains of evidence"
+        },
+        "emotion": {
+          "scores": {
+            "fear": 7.0,
+            "belonging": 8.5,
+            "pride": 8.0,
+            "manipulation": 8.5
+          },
+          "triggers": ["theyre-lying", "economic-fear", "wake-up-superiority", "anti-establishment"],
+          "explanation": "Appeals to conspiracy theories and economic fears"
+        }
+      },
+      "wisdom": "This exemplifies how disinformation works: tiny grain of data (50 unnamed scientists) presented as overturning mountains of evidence. The 'Institute' name sounds official but lacks credibility.",
+      "hints": {
+        "keywords": ["50 scientists", "surveyed", "who agree with us", "LYING", "Wake up"],
+        "strategy": "logic",
+        "hintMessage": "Check the evidence quality and look for unsupported claims!"
+      },
+      "metadata": {
+        "tags": ["climate", "disinformation", "conspiracy", "science-denial"],
+        "difficulty": 3,
+        "educationalFocus": "identifying-disinformation-tactics",
+        "commonMisconceptions": ["both-sides-equal", "contrarian-equals-smart"],
+        "addedDate": "2024-01-01"
+      }
+    },
+    {
+      "id": "teachers-concern-004",
+      "title": "The Teacher's Concern",
+      "text": "Mrs. Rodriguez emailed parents: 'I'm seeing concerning behavior changes in several students after winter break. Five kids who were previously engaged are now constantly tired, irritable, and their grades dropped 15-20%. I spoke with them individually - all mentioned staying up past 2 AM on phones/games. I'm attaching some research on teen sleep needs and screen time. Could we work together on consistent bedtimes? I'm happy to discuss strategies that have worked for other families. Please reach out if you'd like to talk.'",
+      "claim": "Screen time and poor sleep are affecting student performance",
+      "correctAnswer": "balanced",
+      "answerWeights": {
+        "balanced": 100,
+        "logic": 75,
+        "emotion": 50,
+        "agenda": 15
+      },
+      "analysis": {
+        "logic": {
+          "scores": {
+            "evidence": 7.5,
+            "consistency": 8.0,
+            "source": 7.0,
+            "agenda": 2.5
+          },
+          "indicators": ["direct-observation", "specific-changes", "student-reports", "collaborative"],
+          "explanation": "Specific observations with measured approach"
+        },
+        "emotion": {
+          "scores": {
+            "fear": 4.0,
+            "belonging": 6.0,
+            "pride": 3.0,
+            "manipulation": 3.0
+          },
+          "triggers": ["academic-concern", "partnership-request", "health-worry", "teacher-care"],
+          "explanation": "Appropriate concern without catastrophizing"
+        }
+      },
+      "wisdom": "Professional communication addressing a real issue with specific observations. The teacher presents evidence without catastrophizing, offers resources, and seeks collaboration rather than demanding compliance.",
+      "hints": {
+        "keywords": ["15-20%", "research", "work together", "strategies", "discuss"],
+        "strategy": "balanced",
+        "hintMessage": "Notice the balance of concern with collaborative solutions!"
+      },
+      "metadata": {
+        "tags": ["education", "screen-time", "sleep", "parenting"],
+        "difficulty": 2,
+        "educationalFocus": "recognizing-professional-communication",
+        "commonMisconceptions": ["all-screen-concerns-are-panic", "data-means-manipulation"],
+        "addedDate": "2024-01-01"
+      }
+    },
+    {
+      "id": "investment-scam-005",
+      "title": "The Investment Opportunity",
+      "text": "🚀 LAST CHANCE! My mentor made $500K last year with this ONE SIMPLE TRICK! Stop being a wage slave! 😤 While you're reading this, I'm on a beach in Bali living my BEST LIFE! 🏖️ The system is RIGGED against you, but I found the SECRET. Only sharing with the next 10 people who are SERIOUS about financial freedom. Your family is counting on you - don't let them down! What's stopping you from being rich? FEAR? Your kids deserve better! DM me 'FREEDOM' now! ⏰",
+      "claim": "Secret investment trick guarantees wealth and financial freedom",
+      "correctAnswer": "emotion",
+      "answerWeights": {
+        "emotion": 100,
+        "agenda": 95,
+        "logic": 5,
+        "balanced": 0
+      },
+      "analysis": {
+        "logic": {
+          "scores": {
+            "evidence": 0.0,
+            "consistency": 1.0,
+            "source": 0.0,
+            "agenda": 10.0
+          },
+          "indicators": ["no-information", "simple-trick-scam", "fake-urgency", "profit-motive"],
+          "explanation": "Zero substance, pure emotional manipulation"
+        },
+        "emotion": {
+          "scores": {
+            "fear": 9.0,
+            "belonging": 7.5,
+            "pride": 9.5,
+            "manipulation": 10.0
+          },
+          "triggers": ["kids-deserve-better", "fomo-last-chance", "wage-slave-shame", "lifestyle-envy"],
+          "explanation": "Hits every emotional button: shame, guilt, envy, fear"
+        }
+      },
+      "wisdom": "Classic get-rich-quick scam hitting every emotional button: shame about current life, guilt about family, envy of success, fear of missing out. Zero substance, pure manipulation.",
+      "hints": {
+        "keywords": ["LAST CHANCE", "ONE SIMPLE TRICK", "wage slave", "SECRET", "DM me"],
+        "strategy": "emotion",
+        "hintMessage": "This is pure emotional manipulation - look for the pressure tactics!"
+      },
+      "metadata": {
+        "tags": ["scam", "financial", "get-rich-quick", "social-media"],
+        "difficulty": 1,
+        "educationalFocus": "spotting-financial-scams",
+        "commonMisconceptions": ["some-get-rich-quick-work", "successful-people-share-secrets"],
+        "addedDate": "2024-01-01"
+      }
+    },
+    {
+      "id": "food-additive-006",
+      "title": "The Food Additive Report",
+      "text": "Consumer Safety Alliance published: 'After reviewing 47 studies on Red Dye 40, we found mixed results. Six studies linked it to hyperactivity in children with ADHD. Twelve studies found no connection. The FDA maintains it's safe at current levels. European countries require warning labels. The dye is in 90% of candies and many medications. Parents of sensitive children might consider limiting intake. We recommend reading labels and making informed choices based on your family's needs.'",
+      "claim": "Red Dye 40 may affect some children; parents should make informed choices",
+      "correctAnswer": "balanced",
+      "answerWeights": {
+        "balanced": 100,
+        "logic": 70,
+        "emotion": 40,
+        "agenda": 25
+      },
+      "analysis": {
+        "logic": {
+          "scores": {
+            "evidence": 7.0,
+            "consistency": 8.0,
+            "source": 7.5,
+            "agenda": 3.5
+          },
+          "indicators": ["multiple-studies", "conflicting-data", "regulatory-positions", "practical-guidance"],
+          "explanation": "Presents conflicting evidence honestly"
+        },
+        "emotion": {
+          "scores": {
+            "fear": 4.5,
+            "belonging": 3.5,
+            "pride": 4.0,
+            "manipulation": 3.0
+          },
+          "triggers": ["child-health", "common-exposure", "empowerment-info", "international-comparison"],
+          "explanation": "Moderate concern matches mixed evidence"
+        }
+      },
+      "wisdom": "Responsible reporting on a complex issue. Presents conflicting evidence honestly, acknowledges uncertainty, provides context from different authorities, and empowers rather than prescribes.",
+      "hints": {
+        "keywords": ["47 studies", "mixed results", "FDA maintains", "recommend reading", "informed choices"],
+        "strategy": "balanced",
+        "hintMessage": "Look for nuanced presentation of conflicting evidence!"
+      },
+      "metadata": {
+        "tags": ["health", "food-safety", "parenting", "regulation"],
+        "difficulty": 3,
+        "educationalFocus": "understanding-mixed-evidence",
+        "commonMisconceptions": ["all-additives-bad", "fda-always-right"],
+        "addedDate": "2024-01-01"
+      }
+    },
+    {
+      "id": "fitness-influencer-007",
+      "title": "The Fitness Influencer",
+      "text": "Ladies, are you tired of being invisible? 😔 I used to HATE my body until I discovered the ANCIENT SECRET that plastic surgeons don't want you to know! Just 5 minutes a day! No diet needed! Look at my transformation! 🔥 [heavily filtered photos] Doctors HATE this one weird trick because it would put them out of business! Only $197 for my exclusive program - but if you swipe up RIGHT NOW, it's just $47! That's less than your coffee budget! ☕ Don't you deserve to feel beautiful? Your husband will thank me! 💕",
+      "claim": "Ancient secret exercise eliminates need for diet or surgery",
+      "correctAnswer": "agenda",
+      "answerWeights": {
+        "agenda": 100,
+        "emotion": 90,
+        "logic": 10,
+        "balanced": 5
+      },
+      "analysis": {
+        "logic": {
+          "scores": {
+            "evidence": 0.5,
+            "consistency": 1.0,
+            "source": 1.0,
+            "agenda": 10.0
+          },
+          "indicators": ["filtered-photos", "ancient-secret-nonsense", "anti-doctor", "aggressive-sales"],
+          "explanation": "No real evidence, just marketing tactics"
+        },
+        "emotion": {
+          "scores": {
+            "fear": 8.0,
+            "belonging": 6.5,
+            "pride": 9.0,
+            "manipulation": 9.5
+          },
+          "triggers": ["body-shame", "relationship-insecurity", "urgency-pressure", "beauty-anxiety"],
+          "explanation": "Exploits body image and relationship insecurities"
+        }
+      },
+      "wisdom": "Predatory marketing targeting body insecurity. Red flags: 'ancient secrets,' doctor conspiracy, fake urgency pricing, promises without effort. The filtered photos and marriage pressure reveal the manipulative agenda.",
+      "hints": {
+        "keywords": ["$197", "$47", "swipe up RIGHT NOW", "exclusive program", "Doctors HATE"],
+        "strategy": "agenda",
+        "hintMessage": "Find the hidden sales motive and urgency tactics!"
+      },
+      "metadata": {
+        "tags": ["fitness", "body-image", "scam", "social-media"],
+        "difficulty": 2,
+        "educationalFocus": "recognizing-predatory-marketing",
+        "commonMisconceptions": ["influencers-are-honest", "transformation-photos-real"],
+        "addedDate": "2024-01-01"
+      }
+    },
+    {
+      "id": "university-study-008",
+      "title": "The University Study",
+      "text": "MIT researchers concluded a 5-year study on remote work productivity: 'We tracked 2,400 employees across 15 companies. Overall productivity increased 13% for remote workers, but results varied by role. Creative tasks showed 22% improvement, while collaborative projects decreased 8% in efficiency. Employee satisfaction rose 31%, sick days dropped 25%. However, junior employees reported 40% less mentorship. Companies saving on office space averaged $11,000 per employee annually. Full report at mit.edu/remotework2025.'",
+      "claim": "Remote work shows mixed results with overall productivity gains but mentorship challenges",
+      "correctAnswer": "balanced",
+      "answerWeights": {
+        "balanced": 100,
+        "logic": 85,
+        "emotion": 20,
+        "agenda": 10
+      },
+      "analysis": {
+        "logic": {
+          "scores": {
+            "evidence": 9.0,
+            "consistency": 9.0,
+            "source": 9.5,
+            "agenda": 1.5
+          },
+          "indicators": ["large-sample", "specific-metrics", "nuanced-findings", "credible-institution"],
+          "explanation": "Exemplary research methodology and presentation"
+        },
+        "emotion": {
+          "scores": {
+            "fear": 2.0,
+            "belonging": 3.0,
+            "pride": 3.5,
+            "manipulation": 2.0
+          },
+          "triggers": ["work-relevance", "data-confidence", "change-acceptance", "academic-authority"],
+          "explanation": "Minimal emotional appeal, lets data speak"
+        }
+      },
+      "wisdom": "Exemplary research communication: comprehensive methodology, specific results, acknowledges trade-offs, provides actionable data. Low emotional appeal lets facts speak for themselves.",
+      "hints": {
+        "keywords": ["2,400 employees", "13%", "varied by role", "However", "Full report"],
+        "strategy": "balanced",
+        "hintMessage": "Notice the comprehensive data and acknowledgment of trade-offs!"
+      },
+      "metadata": {
+        "tags": ["workplace", "research", "remote-work", "productivity"],
+        "difficulty": 2,
+        "educationalFocus": "recognizing-quality-research",
+        "commonMisconceptions": ["all-studies-biased", "complexity-means-dishonesty"],
+        "addedDate": "2024-01-01"
+      }
+    },
+    {
+      "id": "parenting-forum-009",
+      "title": "The Parenting Forum Post",
+      "text": "MOMS - This will SHOCK you! 😱 I caught my 12-year-old on a VIDEO GAME CHAT with a 40-YEAR-OLD MAN!!! These predators are EVERYWHERE! Every second your child is online, they're in DANGER! I threw away ALL electronics - no phones, tablets, computers, NOTHING! Some parents called me 'extreme' but I'd rather have a living child than a popular one! If you're not monitoring every keystroke, you're basically handing your baby to predators! WAKE UP before it's too late!!!",
+      "claim": "All children must be banned from electronics to prevent predator contact",
+      "correctAnswer": "emotion",
+      "answerWeights": {
+        "emotion": 100,
+        "logic": 30,
+        "agenda": 50,
+        "balanced": 10
+      },
+      "analysis": {
+        "logic": {
+          "scores": {
+            "evidence": 2.0,
+            "consistency": 2.5,
+            "source": 1.5,
+            "agenda": 6.0
+          },
+          "indicators": ["one-incident-total-ban", "extreme-response", "no-context", "fear-over-education"],
+          "explanation": "One incident leads to extreme overreaction"
+        },
+        "emotion": {
+          "scores": {
+            "fear": 10.0,
+            "belonging": 7.0,
+            "pride": 8.5,
+            "manipulation": 8.0
+          },
+          "triggers": ["predator-terror", "technology-panic", "protective-parent", "life-death-framing"],
+          "explanation": "Maximum fear about child safety"
+        }
+      },
+      "wisdom": "While online safety is crucial, this response is pure panic. One concerning incident leads to destroying all technology - an extreme overreaction that could harm the child's education and social development.",
+      "hints": {
+        "keywords": ["SHOCK", "EVERYWHERE", "DANGER", "threw away ALL", "WAKE UP"],
+        "strategy": "emotion",
+        "hintMessage": "Look for panic language and extreme overreactions!"
+      },
+      "metadata": {
+        "tags": ["parenting", "online-safety", "technology", "panic"],
+        "difficulty": 2,
+        "educationalFocus": "balanced-approach-to-safety",
+        "commonMisconceptions": ["all-caution-is-good", "technology-always-dangerous"],
+        "addedDate": "2024-01-01"
+      }
+    },
+    {
+      "id": "community-garden-010",
+      "title": "The Community Garden Proposal",
+      "text": "City Councilwoman Lee presented: 'Converting the vacant lot on 5th Street to a community garden would cost $45,000 initially. Our analysis shows: 200 families within walking distance, 67% surveyed expressed interest, local schools want to participate. Similar gardens in Austin and Portland reduced neighborhood crime by 15% and increased property values 8%. Maintenance would require 20 volunteer hours weekly plus $5,000 annually. Concerns include parking loss (12 spaces) and potential noise. I recommend a 1-year pilot program with quarterly reviews.'",
+      "claim": "Community garden offers benefits but requires investment and has trade-offs",
+      "correctAnswer": "balanced",
+      "answerWeights": {
+        "balanced": 100,
+        "logic": 80,
+        "emotion": 45,
+        "agenda": 30
+      },
+      "analysis": {
+        "logic": {
+          "scores": {
+            "evidence": 8.5,
+            "consistency": 8.5,
+            "source": 8.0,
+            "agenda": 3.0
+          },
+          "indicators": ["cost-benefit", "survey-data", "comparable-examples", "acknowledges-downsides"],
+          "explanation": "Thorough analysis with pros and cons"
+        },
+        "emotion": {
+          "scores": {
+            "fear": 2.5,
+            "belonging": 7.0,
+            "pride": 5.5,
+            "manipulation": 3.5
+          },
+          "triggers": ["community-building", "neighborhood-improvement", "family-activity", "property-value"],
+          "explanation": "Positive emotions balanced with practical concerns"
+        }
+      },
+      "wisdom": "Professional proposal balancing enthusiasm with realism. Strong data supports the concept while honestly addressing costs and concerns. The pilot program approach shows wisdom.",
+      "hints": {
+        "keywords": ["$45,000", "67% surveyed", "Similar gardens", "Concerns include", "pilot program"],
+        "strategy": "balanced",
+        "hintMessage": "Look for data, comparisons, and acknowledgment of downsides!"
+      },
+      "metadata": {
+        "tags": ["civic", "community", "urban-planning", "proposal"],
+        "difficulty": 3,
+        "educationalFocus": "evaluating-civic-proposals",
+        "commonMisconceptions": ["government-always-wasteful", "positive-means-biased"],
+        "addedDate": "2024-01-01"
+      }
+    }
+  ],
+  "schema": {
+    "version": "1.0.0",
+    "answerTypes": ["logic", "emotion", "balanced", "agenda"],
+    "scoreRanges": {
+      "low": [0, 3.3],
+      "medium": [3.4, 6.6],
+      "high": [6.7, 10]
+    },
+    "difficultyLevels": {
+      "1": "Easy - Obvious manipulation",
+      "2": "Medium - Requires some analysis",
+      "3": "Hard - Subtle differences"
+    }
+  }
+}

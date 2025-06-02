@@ -1,0 +1,13 @@
+/* Themes CSS */
+:root {
+  --primary-color: #A67153;
+  --secondary-color: #8B4513;
+  --background-color: #f5e6d3;
+  --text-color: #333;
+}
+.theme-dark {
+  --primary-color: #D2691E;
+  --secondary-color: #CD853F;
+  --background-color: #2c2416;
+  --text-color: #f5e6d3;
+}

@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🐻 Phuzzy's Think Tank - Where Bears Balance Brain & Heart</title>
+    
+    <!-- CSS Files -->
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/animations.css">
+    <link rel="stylesheet" href="css/themes.css">
+    
+    <!-- Global Config -->
+    <script>
+        window.PHUZZY_CONFIG = {
+            apiEndpoint: '/api/scenarios',
+            analyticsEndpoint: '/api/analytics',
+            scenariosPerRound: 10,
+            honeyPotsPerRound: 3
+        };
+    </script>
+</head>
+<body>
+    <!-- Score Tracker -->
+    <div class="score-tracker" id="score-tracker">
+        <div style="font-size: 1.8em;">💫 RIZ: <span id="user-score">0</span>/<span id="total-scenarios">0</span></div>
+        <div class="honey-pot-container" id="honey-pots">
+            <span class="honey-pot" id="honey-pot-1">🍯</span>
+            <span class="honey-pot" id="honey-pot-2">🍯</span>
+            <span class="honey-pot" id="honey-pot-3">🍯</span>
+        </div>
+    </div>
+    
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>🐻 Phuzzy's Think Tank</h1>
+            <p>Where Bears Balance Brain & Heart</p>
+        </div>
+        
+        <!-- Game Content -->
+        <div id="game-content">
+            <!-- Scenario Box -->
+            <div class="scenario-box">
+                <h2 class="scenario-title" id="scenario-title">Loading...</h2>
+                <p class="scenario-counter" id="scenario-counter">Scenario 1 of 10</p>
+                <p class="scenario-text" id="scenario-text"></p>
+                <div class="claim" id="claim-text"></div>
+            </div>
+            
+            <!-- Quiz Section -->
+            <div class="interactive-section" id="quiz-section">
+                <div class="quiz-question">What's the PRIMARY issue with this argument?</div>
+                <div class="quiz-options">
+                    <div class="quiz-option" data-value="logic">
+                        <span class="option-icon">🧠</span>
+                        <span class="option-text">Weak logical evidence</span>
+                    </div>
+                    <div class="quiz-option" data-value="emotion">
+                        <span class="option-icon">💖</span>
+                        <span class="option-text">Emotional manipulation</span>
+                    </div>
+                    <div class="quiz-option" data-value="balanced">
+                        <span class="option-icon">⚖️</span>
+                        <span class="option-text">Actually well-balanced</span>
+                    </div>
+                    <div class="quiz-option" data-value="agenda">
+                        <span class="option-icon">🎯</span>
+                        <span class="option-text">Hidden agenda/bias</span>
+                    </div>
+                </div>
+                <button class="hint-button" id="hint-button">
+                    🍯 Use Honey Pot for Hint (<span id="honey-count">3</span> left)
+                </button>
+                <button class="submit-button" id="submit-button" disabled>Submit Answer</button>
+            </div>
+            
+            <!-- Detailed Analysis Section -->
+            <div class="detailed-analysis-section" id="detailed-analysis"></div>
+            
+            <!-- Navigation -->
+            <div class="button-container">
+                <button class="next-button" id="next-button">Next Scenario →</button>
+            </div>
+        </div>
+        
+        <!-- End Game Screen -->
+        <div class="end-game" id="end-game">
+            <div class="results-card">
+                <h1 class="results-title">🐻 Phuzzy's Think Tank</h1>
+                
+                <div class="badge-section">
+                    <div class="final-badge" id="final-badge">🏆</div>
+                    <div class="stats-summary">
+                        <h2 id="badge-title">Calculating...</h2>
+                        <p id="badge-message"></p>
+                        <div class="stat-row">
+                            <span class="stat-label">Final RIZ Score:</span>
+                            <span class="stat-value" id="final-score"></span>
+                        </div>
+                        <div class="stat-row">
+                            <span class="stat-label">Accuracy:</span>
+                            <span class="stat-value" id="accuracy-percent"></span>
+                        </div>
+                        <div class="stat-row">
+                            <span class="stat-label">Honey Pots Used:</span>
+                            <span class="stat-value" id="honey-used"></span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mini-meters" id="performance-meters">
+                    <h3>Your Performance Analysis</h3>
+                    <div class="mini-meter-row">
+                        <span class="mini-meter-label">Logic Detection</span>
+                        <div class="mini-meter-container">
+                            <div class="mini-meter-fill logic-fill" id="logic-performance"></div>
+                        </div>
+                    </div>
+                    <div class="mini-meter-row">
+                        <span class="mini-meter-label">Emotion Sensing</span>
+                        <div class="mini-meter-container">
+                            <div class="mini-meter-fill emotion-fill" id="emotion-performance"></div>
+                        </div>
+                    </div>
+                    <div class="mini-meter-row">
+                        <span class="mini-meter-label">Balance Wisdom</span>
+                        <div class="mini-meter-container">
+                            <div class="mini-meter-fill balanced-fill" id="balance-performance"></div>
+                        </div>
+                    </div>
+                    <div class="mini-meter-row">
+                        <span class="mini-meter-label">Agenda Detection</span>
+                        <div class="mini-meter-container">
+                            <div class="mini-meter-fill agenda-fill" id="agenda-performance"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="share-section">
+                    <h3 class="share-title">Share Your Think Tank Results!</h3>
+                    <div class="social-buttons">
+                        <a href="#" class="social-button social-facebook" id="share-facebook">
+                            <span>📘</span> Facebook
+                        </a>
+                        <a href="#" class="social-button social-twitter" id="share-twitter">
+                            <span>🐦</span> Twitter/X
+                        </a>
+                        <a href="#" class="social-button social-linkedin" id="share-linkedin">
+                            <span>💼</span> LinkedIn
+                        </a>
+                        <a href="#" class="social-button social-copy" id="share-copy">
+                            <span>📋</span> Copy Link
+                        </a>
+                    </div>
+                </div>
+                
+                <button class="replay-button" onclick="location.reload()">
+                    🔄 Play Again
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Loading Screen -->
+    <div class="loading-screen" id="loading-screen">
+        <div class="loading-content">
+            <div class="loading-bear">🐻</div>
+            <h2>Loading Phuzzy's Think Tank...</h2>
+            <div class="loading-bar">
+                <div class="loading-progress"></div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Main Game Script -->
+    <script type="module">
+        // Import all modules
+        import { PhuzzyGameEngine } from './js/core/game-engine.js';
+        import { ScenarioManager } from './js/core/scenario-manager.js';
+        import { ScoringSystem } from './js/core/scoring-system.js';
+        import { HoneyPotManager } from './js/core/honey-pot-manager.js';
+        import { AnalyticsTracker } from './js/utils/analytics-tracker.js';
+        import { QuizInterface } from './js/ui/quiz-interface.js';
+        import { SocialSharing } from './js/ui/social-sharing.js';
+        
+        // Initialize game
+        async function initializeGame() {
+            try {
+                // Create game engine
+                const gameEngine = new PhuzzyGameEngine(window.PHUZZY_CONFIG);
+                
+                // Get UI elements
+                const elements = {
+                    // Score tracker
+                    scoreTracker: document.getElementById('score-tracker'),
+                    userScore: document.getElementById('user-score'),
+                    totalScenarios: document.getElementById('total-scenarios'),
+                    honeyPotIcons: document.querySelectorAll('.honey-pot'),
+                    honeyPotCount: document.getElementById('honey-count'),
+                    
+                    // Game content
+                    gameContent: document.getElementById('game-content'),
+                    scenarioTitle: document.getElementById('scenario-title'),
+                    scenarioText: document.getElementById('scenario-text'),
+                    scenarioCounter: document.getElementById('scenario-counter'),
+                    claimText: document.getElementById('claim-text'),
+                    
+                    // Quiz elements
+                    answerOptions: document.querySelectorAll('.quiz-option'),
+                    submitButton: document.getElementById('submit-button'),
+                    honeyPotButton: document.getElementById('hint-button'),
+                    nextButton: document.getElementById('next-button'),
+                    
+                    // Analysis
+                    analysisSection: document.getElementById('detailed-analysis'),
+                    
+                    // End game
+                    endGame: document.getElementById('end-game'),
+                    finalScore: document.getElementById('final-score'),
+                    accuracyPercent: document.getElementById('accuracy-percent'),
+                    honeyUsed: document.getElementById('honey-used'),
+                    finalBadge: document.getElementById('final-badge'),
+                    badgeTitle: document.getElementById('badge-title'),
+                    badgeMessage: document.getElementById('badge-message'),
+                    logicPerformance: document.getElementById('logic-performance'),
+                    emotionPerformance: document.getElementById('emotion-performance'),
+                    balancePerformance: document.getElementById('balance-performance'),
+                    agendaPerformance: document.getElementById('agenda-performance')
+                };
+                
+                // Create UI controller
+                const quizInterface = new QuizInterface(gameEngine, elements);
+                gameEngine.uiController = quizInterface;
+                
+                // Initialize social sharing
+                const socialSharing = new SocialSharing();
+                socialSharing.init();
+                
+                // Initialize game
+                await gameEngine.initialize();
+                
+                // Hide loading screen
+                document.getElementById('loading-screen').style.display = 'none';
+                
+                // Start game
+                await gameEngine.startGame();
+                
+                // Make score tracker visible after scroll
+                let hasScrolled = false;
+                window.addEventListener('scroll', () => {
+                    if (!hasScrolled && window.pageYOffset > 100) {
+                        hasScrolled = true;
+                        elements.scoreTracker.classList.add('visible');
+                    }
+                });
+                
+            } catch (error) {
+                console.error('Failed to initialize game:', error);
+                document.getElementById('loading-screen').innerHTML = `
+                    <div class="error-message">
+                        <h2>😢 Oops! Something went wrong</h2>
+                        <p>${error.message}</p>
+                        <button onclick="location.reload()">Try Again</button>
+                    </div>
+                `;
+            }
+        }
+        
+        // Start initialization when DOM is ready
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initializeGame);
+        } else {
+            initializeGame();
+        }
+    </script>
+</body>
+</html>

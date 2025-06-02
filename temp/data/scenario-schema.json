@@ -1,0 +1,44 @@
+{
+  "scenario": {
+    "id": "unique-id",
+    "title": "The School Safety Email",
+    "text": "...",
+    "claim": "...",
+    "correctAnswer": "emotion",
+    "answerWeights": {
+      "emotion": 100,
+      "agenda": 90,
+      "logic": 40,
+      "balanced": 20
+    },
+    "analysis": {
+      "logic": {
+        "scores": {
+          "evidence": 2.5,
+          "consistency": 3.0,
+          "source": 2.0,
+          "agenda": 8.5
+        },
+        "indicators": ["cherry-picked", "no-local-data", "false-urgency"],
+        "explanation": "..."
+      },
+      "emotion": {
+        "scores": {
+          "fear": 9.5,
+          "belonging": 6.0,
+          "pride": 3.0,
+          "manipulation": 9.0
+        },
+        "triggers": ["protective-instinct", "urgency", "guilt"],
+        "explanation": "..."
+      }
+    },
+    "hints": {
+      "keywords": ["danger", "babies", "immediately"],
+      "strategy": "emotion-heavy"
+    },
+    "tags": ["parenting", "security", "fear-based"],
+    "difficulty": 2,
+    "educationalNotes": "..."
+  }
+}

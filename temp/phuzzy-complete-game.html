@@ -1,0 +1,2481 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🐻 Phuzzy's Think Tank - Where Bears Balance Brain & Heart</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .header h1 {
+            color: #5a67d8;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            color: #666;
+            font-size: 1.2em;
+        }
+        
+        .score-tracker {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: white;
+            padding: 15px 25px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            font-weight: bold;
+            color: #5a67d8;
+            z-index: 100;
+            transition: all 0.3s ease;
+            opacity: 0;
+            transform: translateY(-20px);
+        }
+        
+        .score-tracker.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .honey-pot-container {
+            margin-top: 10px;
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+        }
+        
+        .honey-pot {
+            font-size: 2em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+        }
+        
+        .honey-pot:hover:not(.honey-used) {
+            transform: translateY(-3px) scale(1.1);
+            filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
+        }
+        
+        .honey-pot.honey-used {
+            opacity: 0.3;
+            cursor: not-allowed;
+            filter: grayscale(1);
+        }
+        
+        .scenario-box {
+            background: #f7fafc;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 30px;
+            border: 2px solid #e2e8f0;
+        }
+        
+        .scenario-title {
+            color: #2d3748;
+            font-size: 1.4em;
+            margin-bottom: 15px;
+        }
+        
+        .scenario-text {
+            color: #4a5568;
+            line-height: 1.8;
+            font-size: 1.1em;
+            margin-bottom: 20px;
+            font-style: italic;
+        }
+        
+        .claim {
+            background: #fff;
+            padding: 15px;
+            border-left: 4px solid #5a67d8;
+            margin: 20px 0;
+            font-weight: bold;
+            color: #2d3748;
+        }
+        
+        .interactive-section {
+            background: linear-gradient(135deg, #f6e05e 0%, #f6ad55 100%);
+            border-radius: 15px;
+            padding: 25px;
+            margin: 30px 0;
+            color: #744210;
+            transition: all 0.5s ease;
+        }
+        
+        .interactive-section.hidden {
+            display: none;
+        }
+        
+        .quiz-question {
+            font-size: 1.3em;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+        
+        .quiz-options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .quiz-option {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 3px solid transparent;
+            text-align: center;
+        }
+        
+        .quiz-option:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .quiz-option.selected {
+            border-color: #5a67d8;
+            background: #e6f2ff;
+        }
+        
+        .hint-button {
+            background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+            color: #78350f;
+            border: none;
+            padding: 8px 20px;
+            font-size: 1em;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 15px auto;
+            display: block;
+            font-weight: bold;
+        }
+        
+        .hint-button:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(245, 158, 11, 0.3);
+        }
+        
+        .hint-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .submit-button {
+            background: #5a67d8;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            font-size: 1.1em;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: block;
+            margin: 0 auto;
+        }
+        
+        .submit-button:hover:not(:disabled) {
+            background: #4c51bf;
+            transform: translateY(-2px);
+        }
+        
+        .submit-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .button-container {
+            text-align: center;
+            margin-top: 30px;
+        }
+        
+        .next-button {
+            background: #5a67d8;
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.1em;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: none;
+        }
+        
+        .next-button.visible {
+            display: inline-block;
+        }
+        
+        .next-button:hover {
+            background: #4c51bf;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .hint-highlight {
+            background: rgba(251, 191, 36, 0.3);
+            padding: 2px 4px;
+            border-radius: 4px;
+            animation: pulse-highlight 2s ease-in-out infinite;
+        }
+        
+        .hint-highlight.logic-hint {
+            background: rgba(66, 153, 225, 0.3);
+            box-shadow: 0 0 10px rgba(66, 153, 225, 0.5);
+        }
+        
+        .hint-highlight.emotion-hint {
+            background: rgba(237, 100, 166, 0.3);
+            box-shadow: 0 0 10px rgba(237, 100, 166, 0.5);
+        }
+        
+        .hint-highlight.balanced-hint {
+            background: rgba(246, 224, 94, 0.3);
+            box-shadow: 0 0 10px rgba(246, 224, 94, 0.5);
+        }
+        
+        .hint-highlight.agenda-hint {
+            background: rgba(245, 101, 101, 0.3);
+            box-shadow: 0 0 10px rgba(245, 101, 101, 0.5);
+        }
+        
+        .hint-indicator {
+            position: fixed;
+            top: 50%;
+            right: 20px;
+            transform: translateY(-50%);
+            font-size: 3em;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            z-index: 150;
+            animation: slideIn 0.5s ease-out;
+        }
+        
+        @keyframes slideIn {
+            from {
+                transform: translateY(-50%) translateX(100px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(-50%) translateX(0);
+                opacity: 1;
+            }
+        }
+        
+        .bear-reaction {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 8em;
+            z-index: 200;
+            animation: bearPop 1.5s ease-out forwards;
+            pointer-events: none;
+        }
+        
+        @keyframes bearPop {
+            0% { 
+                opacity: 0;
+                transform: translate(-50%, -50%) scale(0.5);
+            }
+            50% { 
+                opacity: 1;
+                transform: translate(-50%, -50%) scale(1.2);
+            }
+            100% { 
+                opacity: 0;
+                transform: translate(-50%, -50%) scale(1);
+            }
+        }
+        
+        .sparkle {
+            position: fixed;
+            font-size: 1.5em;
+            animation: floatUp 2s ease-out forwards;
+            pointer-events: none;
+            z-index: 150;
+        }
+        
+        @keyframes floatUp {
+            0% {
+                opacity: 1;
+                transform: translateY(0) rotate(0deg);
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(-150px) rotate(360deg);
+            }
+        }
+        
+        /* Dual Bear Analysis Styles */
+        .detailed-analysis-section {
+            display: none;
+            margin-top: 30px;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+        
+        .detailed-analysis-section.visible {
+            display: block;
+            opacity: 1;
+        }
+        
+        .analysis-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+        
+        .bear-panel {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+        
+        .bear-panel:hover {
+            transform: translateY(-5px);
+        }
+        
+        .logic-panel {
+            border-top: 4px solid #4299e1;
+        }
+        
+        .emotion-panel {
+            border-top: 4px solid #ed64a6;
+        }
+        
+        .bear-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .bear-emoji {
+            font-size: 3em;
+            margin-right: 15px;
+        }
+        
+        .bear-name {
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+        
+        .logic-name {
+            color: #4299e1;
+        }
+        
+        .emotion-name {
+            color: #ed64a6;
+        }
+        
+        .metric {
+            margin: 15px 0;
+        }
+        
+        .metric-label {
+            font-weight: 600;
+            color: #4a5568;
+            margin-bottom: 5px;
+        }
+        
+        .meter-container {
+            background: #e2e8f0;
+            border-radius: 10px;
+            height: 30px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .meter-fill {
+            height: 100%;
+            border-radius: 10px;
+            transition: width 1s ease-out;
+            position: relative;
+        }
+        
+        .logic-fill {
+            background: linear-gradient(90deg, #4299e1, #3182ce);
+        }
+        
+        .emotion-fill {
+            background: linear-gradient(90deg, #ed64a6, #d53f8c);
+        }
+        
+        .meter-value {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: white;
+            font-weight: bold;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+        }
+        
+        .wisdom-panel {
+            background: linear-gradient(135deg, #f6e05e 0%, #f6ad55 100%);
+            border-radius: 15px;
+            padding: 25px;
+            margin-top: 30px;
+            color: #744210;
+        }
+        
+        .wisdom-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .wisdom-content {
+            font-size: 1.1em;
+            line-height: 1.6;
+        }
+        
+        .balance-meter {
+            margin: 20px 0;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 10px;
+        }
+        
+        .balance-label {
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+        }
+        
+        .balance-visual {
+            height: 40px;
+            background: linear-gradient(90deg, #4299e1 0%, #f6e05e 50%, #ed64a6 100%);
+            border-radius: 20px;
+            position: relative;
+            overflow: visible;
+            margin-bottom: 10px;
+        }
+        
+        .balance-indicator {
+            position: absolute;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            width: 40px;
+            height: 40px;
+            background: white;
+            border-radius: 50%;
+            transition: left 1s ease-out;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5em;
+        }
+        
+        .balance-labels {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.9em;
+            color: #666;
+        }
+        
+        .factors-list {
+            margin-top: 15px;
+        }
+        
+        .factor-item {
+            display: flex;
+            align-items: center;
+            margin: 8px 0;
+            padding: 8px;
+            background: #f7fafc;
+            border-radius: 8px;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        .thinking {
+            animation: pulse 2s infinite;
+        }
+        
+        .manipulation-warning {
+            margin-top: 15px;
+            padding: 15px;
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+            border-radius: 10px;
+            display: none;
+            color: white;
+            box-shadow: 0 4px 15px rgba(238, 90, 36, 0.3);
+        }
+        
+        .manipulation-warning.visible {
+            display: block;
+        }
+        
+        .end-game {
+            display: none;
+            text-align: center;
+            padding: 40px;
+            background: linear-gradient(135deg, #f6e05e 0%, #f6ad55 100%);
+            border-radius: 20px;
+            margin-top: 30px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .end-game.visible {
+            display: block;
+        }
+        
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: #5a67d8;
+            animation: confetti-fall 3s linear forwards;
+        }
+        
+        @keyframes confetti-fall {
+            0% {
+                transform: translateY(-100vh) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh) rotate(720deg);
+                opacity: 0;
+            }
+        }
+        
+        .results-title {
+            font-size: 3em;
+            background: linear-gradient(45deg, #5a67d8, #ed64a6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 30px;
+            font-weight: bold;
+            animation: title-glow 2s ease-in-out infinite alternate;
+        }
+        
+        @keyframes title-glow {
+            0% { filter: drop-shadow(0 0 10px rgba(90, 103, 216, 0.5)); }
+            100% { filter: drop-shadow(0 0 20px rgba(237, 100, 166, 0.8)); }
+        }
+        
+        .results-card {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            margin: 20px auto;
+            max-width: 600px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            position: relative;
+        }
+        
+        .badge-section {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+        
+        .final-badge {
+            font-size: 6em;
+            animation: sparkle-badge 2s infinite;
+        }
+        
+        @keyframes sparkle-badge {
+            0%, 100% { transform: scale(1) rotate(0deg); }
+            25% { transform: scale(1.1) rotate(-5deg); }
+            50% { transform: scale(1.2) rotate(0deg); }
+            75% { transform: scale(1.1) rotate(5deg); }
+        }
+        
+        .stats-summary {
+            text-align: left;
+        }
+        
+        .stat-row {
+            display: flex;
+            justify-content: space-between;
+            margin: 10px 0;
+            font-size: 1.1em;
+        }
+        
+        .stat-label {
+            color: #666;
+        }
+        
+        .stat-value {
+            font-weight: bold;
+            color: #5a67d8;
+        }
+        
+        .mini-meters {
+            margin: 30px 0;
+        }
+        
+        .mini-meter-row {
+            display: flex;
+            align-items: center;
+            margin: 15px 0;
+            gap: 15px;
+        }
+        
+        .mini-meter-label {
+            width: 120px;
+            font-weight: 600;
+            color: #4a5568;
+            font-size: 0.9em;
+        }
+        
+        .mini-meter-container {
+            flex: 1;
+            background: #e2e8f0;
+            border-radius: 5px;
+            height: 15px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .mini-meter-fill {
+            height: 100%;
+            border-radius: 5px;
+            transition: width 1s ease-out;
+        }
+        
+        .share-section {
+            margin-top: 40px;
+        }
+        
+        .share-title {
+            font-size: 1.3em;
+            margin-bottom: 20px;
+            color: #2d3748;
+            font-weight: bold;
+        }
+        
+        .social-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .social-button {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            border-radius: 30px;
+            text-decoration: none;
+            color: white;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .social-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        .social-facebook {
+            background: #1877f2;
+        }
+        
+        .social-twitter {
+            background: #1da1f2;
+        }
+        
+        .social-linkedin {
+            background: #0a66c2;
+        }
+        
+        .social-tiktok {
+            background: #000;
+        }
+        
+        .social-copy {
+            background: #5a67d8;
+        }
+        
+        .wisdom-quote {
+            margin: 30px 0;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 15px;
+            font-style: italic;
+            color: #744210;
+            border-left: 4px solid #f6ad55;
+        }
+        
+        .achievement-unlocked {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 30px 50px;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            z-index: 300;
+            animation: achievement-pop 0.5s ease-out;
+        }
+        
+        @keyframes achievement-pop {
+            0% {
+                transform: translate(-50%, -50%) scale(0);
+                opacity: 0;
+            }
+            80% {
+                transform: translate(-50%, -50%) scale(1.1);
+            }
+            100% {
+                transform: translate(-50%, -50%) scale(1);
+                opacity: 1;
+            }
+        }
+        
+        .replay-button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.1em;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+            font-weight: bold;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }
+        
+        .replay-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+        }
+    </style>
+</head>
+<body>
+    <div class="score-tracker" id="score-tracker">
+        <div style="font-size: 1.8em;">💫 RIZ: <span id="user-score">0</span>/<span id="total-scenarios">3</span></div>
+        <div class="honey-pot-container" id="honey-pots">
+            <span class="honey-pot" onclick="useHoneyPot()">🍯</span>
+            <span class="honey-pot" onclick="useHoneyPot()">🍯</span>
+            <span class="honey-pot" onclick="useHoneyPot()">🍯</span>
+        </div>
+    </div>
+    
+    <div class="container">
+        <div class="header">
+            <h1>🐻 Phuzzy's Think Tank</h1>
+            <p>Where Bears Balance Brain & Heart</p>
+        </div>
+        
+        <div id="game-content">
+            <div class="scenario-box">
+                <h2 class="scenario-title" id="scenario-title">Scenario 1: The School Safety Email</h2>
+                <p class="scenario-text" id="scenario-text">
+                    Mrs. Henderson sent an urgent email to all parents: Our children are in danger! Three schools in our state had incidents this month. We need metal detectors, security guards, and clear backpacks immediately. Every day we wait puts our babies at risk. The security company gave us a quote for $200,000. Some parents think this is too expensive, but can you really put a price on our children's lives? If even ONE child gets hurt because we didn't act, their blood is on our hands. Vote YES at tomorrow's meeting!
+                </p>
+                <div class="claim" id="claim-text">
+                    Claim: "We must implement expensive security measures immediately or children will be hurt"
+                </div>
+            </div>
+            
+            <div class="interactive-section" id="quiz-section">
+                <div class="quiz-question">What's the PRIMARY issue with this argument?</div>
+                <div class="quiz-options">
+                    <div class="quiz-option" data-value="logic" onclick="selectOption(this)">Weak logical evidence</div>
+                    <div class="quiz-option" data-value="emotion" onclick="selectOption(this)">Emotional manipulation</div>
+                    <div class="quiz-option" data-value="balanced" onclick="selectOption(this)">Actually well-balanced</div>
+                    <div class="quiz-option" data-value="agenda" onclick="selectOption(this)">Hidden agenda/bias</div>
+                </div>
+                <button class="hint-button" onclick="useHoneyPot()" id="hint-button">
+                    🍯 Use Honey Pot for Hint (<span id="honey-count">3</span> left)
+                </button>
+                <button class="submit-button" onclick="submitAnswer()" disabled id="submit-button">Submit Answer</button>
+            </div>
+            
+            <div class="detailed-analysis-section" id="detailed-analysis">
+                <div class="analysis-grid">
+                    <div class="bear-panel logic-panel">
+                        <div class="bear-header">
+                            <span class="bear-emoji thinking" id="logic-bear">🧠</span>
+                            <span class="bear-name logic-name">Logic Bear</span>
+                        </div>
+                        
+                        <div class="metric">
+                            <div class="metric-label">Evidence Quality</div>
+                            <div class="meter-container">
+                                <div class="meter-fill logic-fill" id="evidence-meter" style="width: 0%">
+                                    <span class="meter-value" id="evidence-value">0/10</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="metric">
+                            <div class="metric-label">Logical Consistency</div>
+                            <div class="meter-container">
+                                <div class="meter-fill logic-fill" id="logic-meter" style="width: 0%">
+                                    <span class="meter-value" id="logic-value">0/10</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="metric">
+                            <div class="metric-label">Source Reliability</div>
+                            <div class="meter-container">
+                                <div class="meter-fill logic-fill" id="source-meter" style="width: 0%">
+                                    <span class="meter-value" id="source-value">0/10</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="metric">
+                            <div class="metric-label">Hidden Agenda Risk</div>
+                            <div class="meter-container">
+                                <div class="meter-fill logic-fill" id="agenda-meter" style="width: 0%">
+                                    <span class="meter-value" id="agenda-value">0/10</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="factors-list">
+                            <h4>Logical Issues Found:</h4>
+                            <div id="logic-factors"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="bear-panel emotion-panel">
+                        <div class="bear-header">
+                            <span class="bear-emoji thinking" id="emotion-bear">💖</span>
+                            <span class="bear-name emotion-name">Emotion Bear</span>
+                        </div>
+                        
+                        <div class="metric">
+                            <div class="metric-label">Fear/Safety Appeal</div>
+                            <div class="meter-container">
+                                <div class="meter-fill emotion-fill" id="fear-meter" style="width: 0%">
+                                    <span class="meter-value" id="fear-value">0/10</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="metric">
+                            <div class="metric-label">Belonging/Identity</div>
+                            <div class="meter-container">
+                                <div class="meter-fill emotion-fill" id="belonging-meter" style="width: 0%">
+                                    <span class="meter-value" id="belonging-value">0/10</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="metric">
+                            <div class="metric-label">Pride/Status Appeal</div>
+                            <div class="meter-container">
+                                <div class="meter-fill emotion-fill" id="pride-meter" style="width: 0%">
+                                    <span class="meter-value" id="pride-value">0/10</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="metric">
+                            <div class="metric-label">Emotional Manipulation Risk</div>
+                            <div class="meter-container">
+                                <div class="meter-fill emotion-fill" id="emotion-agenda-meter" style="width: 0%">
+                                    <span class="meter-value" id="emotion-agenda-value">0/10</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="factors-list">
+                            <h4>Emotional Triggers Detected:</h4>
+                            <div id="emotion-factors"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="wisdom-panel">
+                    <div class="wisdom-header">
+                        <span class="bear-emoji">🦉</span>
+                        <span class="bear-name">Wisdom Bear's Integration</span>
+                    </div>
+                    <div class="wisdom-content" id="wisdom-content">
+                        Analyzing the balance between logic and emotion...
+                    </div>
+                    
+                    <div class="balance-meter">
+                        <div class="balance-label">Logic ↔ Emotion Balance</div>
+                        <div class="balance-visual">
+                            <div class="balance-indicator" id="balance-indicator" style="left: 50%">
+                                <span id="balance-icon">⚖️</span>
+                            </div>
+                        </div>
+                        <div class="balance-labels">
+                            <span>🧠 Pure Logic</span>
+                            <span>⚖️ Balanced</span>
+                            <span>💖 Pure Emotion</span>
+                        </div>
+                    </div>
+                    
+                    <div class="manipulation-warning" id="manipulation-warning">
+                        <strong style="font-size: 1.2em;">🚨 Manipulation Alert!</strong>
+                        <div id="manipulation-text" style="margin-top: 8px; font-size: 1.05em;"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="button-container">
+                <button class="next-button" id="next-button" onclick="nextScenario()">Next Scenario →</button>
+            </div>
+        </div>
+        
+        <div class="end-game" id="end-game">
+            <div class="results-card">
+                <h1 class="results-title">🐻 Phuzzy's Think Tank</h1>
+                
+                <div class="badge-section">
+                    <div class="final-badge" id="final-badge">🏆</div>
+                    <div class="stats-summary">
+                        <h2 id="badge-title">Fuzzy Thinker</h2>
+                        <div class="stat-row">
+                            <span class="stat-label">Final RIZ Score:</span>
+                            <span class="stat-value" id="final-score-text">0/3</span>
+                        </div>
+                        <div class="stat-row">
+                            <span class="stat-label">Accuracy:</span>
+                            <span class="stat-value" id="accuracy-percent">0%</span>
+                        </div>
+                        <div class="stat-row">
+                            <span class="stat-label">Honey Pots Used:</span>
+                            <span class="stat-value" id="honey-used">0/3</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mini-meters" id="performance-meters">
+                    <h3 style="margin-bottom: 15px; color: #2d3748;">Your Performance Analysis</h3>
+                    <div class="mini-meter-row">
+                        <span class="mini-meter-label">Logic Detection</span>
+                        <div class="mini-meter-container">
+                            <div class="mini-meter-fill logic-fill" id="logic-performance" style="width: 0%"></div>
+                        </div>
+                    </div>
+                    <div class="mini-meter-row">
+                        <span class="mini-meter-label">Emotion Sensing</span>
+                        <div class="mini-meter-container">
+                            <div class="mini-meter-fill emotion-fill" id="emotion-performance" style="width: 0%"></div>
+                        </div>
+                    </div>
+                    <div class="mini-meter-row">
+                        <span class="mini-meter-label">Balance Wisdom</span>
+                        <div class="mini-meter-container">
+                            <div class="mini-meter-fill" id="balance-performance" style="width: 0%; background: linear-gradient(90deg, #f6e05e, #f6ad55);"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="wisdom-quote" id="wisdom-quote">
+                    "The wise bear knows: Clear thinking requires both a sharp mind and an open heart."
+                </div>
+                
+                <div class="share-section">
+                    <h3 class="share-title">Share Your Think Tank Results!</h3>
+                    <div class="social-buttons">
+                        <a href="#" class="social-button social-facebook" onclick="shareToFacebook(); return false;">
+                            <span>📘</span> Facebook
+                        </a>
+                        <a href="#" class="social-button social-twitter" onclick="shareToTwitter(); return false;">
+                            <span>🐦</span> Twitter/X
+                        </a>
+                        <a href="#" class="social-button social-linkedin" onclick="shareToLinkedIn(); return false;">
+                            <span>💼</span> LinkedIn
+                        </a>
+                        <a href="#" class="social-button social-tiktok" onclick="shareToTikTok(); return false;">
+                            <span>🎵</span> TikTok
+                        </a>
+                        <a href="#" class="social-button social-copy" onclick="copyShareLink(); return false;">
+                            <span>📋</span> Copy Link
+                        </a>
+                    </div>
+                </div>
+                
+                <button class="replay-button" onclick="location.reload()">
+                    🔄 Play Again
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        const scenarios = [
+            {
+                title: "The Miracle Supplement",
+                text: "Dr. Sarah Chen, a Harvard-trained biochemist, posted on LinkedIn: 'After 15 years researching aging, I'm excited about NAD+ supplements. Our study of 200 participants showed 23% improvement in cellular energy markers. However, results varied significantly - 30% saw no change. The supplements cost $80/month. While promising, we need larger studies. Also, exercise showed similar benefits in our control group. I take them personally, but can't make blanket recommendations yet.'",
+                claim: "NAD+ supplements may help with aging, but more research is needed",
+                correctAnswer: "balanced",
+                logic: {
+                    evidence: 8.0,
+                    consistency: 8.5,
+                    source: 9.0,
+                    agenda: 3.0,
+                    issues: [
+                        "✓ Qualified expert source",
+                        "✓ Specific study data shared",
+                        "✓ Acknowledges limitations",
+                        "✓ Mentions alternatives"
+                    ]
+                },
+                emotion: {
+                    fear: 3.0,
+                    belonging: 4.5,
+                    pride: 5.0,
+                    agenda: 2.5,
+                    triggers: [
+                        "🎓 Harvard credibility",
+                        "⏰ Aging concerns",
+                        "💊 Hope for solution",
+                        "🤝 Professional trust"
+                    ]
+                },
+                wisdom: "This represents responsible scientific communication: strong credentials presented without arrogance, specific data with acknowledged limitations, and personal disclosure without pushy sales tactics. The moderate emotional appeal supports but doesn't overshadow the evidence.",
+                manipulation: false,
+                manipulationText: ""
+            },
+            {
+                title: "The Neighborhood Watch Alert",
+                text: "Posted in NextDoor by Jim Maxwell: URGENT - BE AWARE!!! 🚨🚨🚨 I saw a van driving slowly down Oak Street yesterday. It had out-of-state plates!!! This is EXACTLY how those trafficking rings operate that I read about on Facebook. They're probably scouting our children! I called 911 but they said 'driving slowly isn't a crime' - can you BELIEVE that?? The police won't protect us, so WE must protect ourselves! Everyone needs to buy security cameras NOW. My brother sells them - DM me for a 'neighbor discount.' SHARE THIS TO SAVE LIVES!!!",
+                claim: "Suspicious van indicates danger; everyone must buy security cameras immediately",
+                correctAnswer: "emotion",
+                logic: {
+                    evidence: 0.5,
+                    consistency: 1.0,
+                    source: 0.5,
+                    agenda: 9.5,
+                    issues: [
+                        "🚫 Zero evidence of threat",
+                        "📱 'Read on Facebook' source",
+                        "💰 Hidden sales agenda",
+                        "😱 Pure speculation"
+                    ]
+                },
+                emotion: {
+                    fear: 10.0,
+                    belonging: 8.0,
+                    pride: 6.5,
+                    agenda: 9.5,
+                    triggers: [
+                        "🚸 Child safety panic",
+                        "🚔 'Police won't help' narrative",
+                        "👥 Us vs. them mentality",
+                        "⚡ URGENT!!! pressure"
+                    ]
+                },
+                wisdom: "Textbook fear-mongering with a profit motive. Notice how a mundane observation (slow-driving van) escalates to trafficking rings, then conveniently pivots to selling security cameras. The multiple exclamation marks and caps lock are manipulation red flags.",
+                manipulation: true,
+                manipulationText: "Manufactured panic to sell security systems. Classic fear-based marketing exploiting parental anxiety."
+            },
+            {
+                title: "The Climate Study",
+                text: "The Eco-Truth Institute released their findings: '97% of scientists are LYING about climate change! Our research proves that Earth's temperature hasn't changed in 50 years. We surveyed 50 scientists who agree with us. The mainstream media won't report this because they're controlled by the renewable energy lobby. Wake up, people! They want to destroy our economy with their fake green agenda. Coal and oil are natural - how can nature be bad?'",
+                claim: "Climate change is a hoax perpetrated by the renewable energy industry",
+                correctAnswer: "logic",
+                logic: {
+                    evidence: 1.0,
+                    consistency: 1.5,
+                    source: 2.0,
+                    agenda: 9.0,
+                    issues: [
+                        "🍒 Cherry-picked sample",
+                        "❌ Contradicts vast evidence",
+                        "🏭 'Institute' likely industry-funded",
+                        "🤔 'Natural = good' fallacy"
+                    ]
+                },
+                emotion: {
+                    fear: 7.0,
+                    belonging: 8.5,
+                    pride: 8.0,
+                    agenda: 8.5,
+                    triggers: [
+                        "😤 'They're lying to you'",
+                        "💰 Economic fear",
+                        "🐑 'Wake up' superiority",
+                        "🏴 Anti-establishment appeal"
+                    ]
+                },
+                wisdom: "This exemplifies how disinformation works: tiny grain of data (50 unnamed scientists) presented as overturning mountains of evidence. The 'Institute' name sounds official but lacks credibility. Appeals to conspiracy theories and economic fears.",
+                manipulation: true,
+                manipulationText: "Disinformation disguised as research. Uses conspiracy rhetoric to dismiss scientific consensus."
+            },
+            {
+                title: "The Teacher's Concern",
+                text: "Mrs. Rodriguez emailed parents: 'I'm seeing concerning behavior changes in several students after winter break. Five kids who were previously engaged are now constantly tired, irritable, and their grades dropped 15-20%. I spoke with them individually - all mentioned staying up past 2 AM on phones/games. I'm attaching some research on teen sleep needs and screen time. Could we work together on consistent bedtimes? I'm happy to discuss strategies that have worked for other families. Please reach out if you'd like to talk.'",
+                claim: "Screen time and poor sleep are affecting student performance",
+                correctAnswer: "balanced",
+                logic: {
+                    evidence: 7.5,
+                    consistency: 8.0,
+                    source: 7.0,
+                    agenda: 2.5,
+                    issues: [
+                        "✓ Direct observation data",
+                        "✓ Specific behavioral changes",
+                        "✓ Student self-reporting",
+                        "✓ Collaborative approach"
+                    ]
+                },
+                emotion: {
+                    fear: 4.0,
+                    belonging: 6.0,
+                    pride: 3.0,
+                    agenda: 3.0,
+                    triggers: [
+                        "📚 Academic concern",
+                        "🤝 Partnership request",
+                        "😴 Health worry",
+                        "👩‍🏫 Teacher care"
+                    ]
+                },
+                wisdom: "Professional communication addressing a real issue with specific observations. The teacher presents evidence without catastrophizing, offers resources, and seeks collaboration rather than demanding compliance. Emotional appeal is appropriate to the situation.",
+                manipulation: false,
+                manipulationText: ""
+            },
+            {
+                title: "The Investment Opportunity",
+                text: "🚀 LAST CHANCE! My mentor made $500K last year with this ONE SIMPLE TRICK! Stop being a wage slave! 😤 While you're reading this, I'm on a beach in Bali living my BEST LIFE! 🏖️ The system is RIGGED against you, but I found the SECRET. Only sharing with the next 10 people who are SERIOUS about financial freedom. Your family is counting on you - don't let them down! What's stopping you from being rich? FEAR? Your kids deserve better! DM me 'FREEDOM' now! ⏰",
+                claim: "Secret investment trick guarantees wealth and financial freedom",
+                correctAnswer: "emotion",
+                logic: {
+                    evidence: 0.0,
+                    consistency: 1.0,
+                    source: 0.0,
+                    agenda: 10.0,
+                    issues: [
+                        "🚩 No actual information",
+                        "❌ 'One simple trick' scam",
+                        "🎭 Fake urgency/scarcity",
+                        "💸 Clear profit motive"
+                    ]
+                },
+                emotion: {
+                    fear: 9.0,
+                    belonging: 7.5,
+                    pride: 9.5,
+                    agenda: 10.0,
+                    triggers: [
+                        "😰 'Kids deserve better' guilt",
+                        "🏃 FOMO - 'last chance'",
+                        "💪 'Wage slave' shame",
+                        "🏝️ Lifestyle envy"
+                    ]
+                },
+                wisdom: "Classic get-rich-quick scam hitting every emotional button: shame about current life, guilt about family, envy of success, fear of missing out. Zero substance, pure manipulation. Real wealth-building involves specific strategies, not 'secrets.'",
+                manipulation: true,
+                manipulationText: "Predatory financial scam using shame, guilt, and FOMO to exploit financial insecurity."
+            },
+            {
+                title: "The Food Additive Report",
+                text: "Consumer Safety Alliance published: 'After reviewing 47 studies on Red Dye 40, we found mixed results. Six studies linked it to hyperactivity in children with ADHD. Twelve studies found no connection. The FDA maintains it's safe at current levels. European countries require warning labels. The dye is in 90% of candies and many medications. Parents of sensitive children might consider limiting intake. We recommend reading labels and making informed choices based on your family's needs.'",
+                claim: "Red Dye 40 may affect some children; parents should make informed choices",
+                correctAnswer: "balanced",
+                logic: {
+                    evidence: 7.0,
+                    consistency: 8.0,
+                    source: 7.5,
+                    agenda: 3.5,
+                    issues: [
+                        "✓ Multiple studies cited",
+                        "✓ Shows conflicting data",
+                        "✓ Regulatory positions noted",
+                        "✓ Practical guidance"
+                    ]
+                },
+                emotion: {
+                    fear: 4.5,
+                    belonging: 3.5,
+                    pride: 4.0,
+                    agenda: 3.0,
+                    triggers: [
+                        "👶 Child health concern",
+                        "🍬 Common exposure worry",
+                        "📖 Empowerment through info",
+                        "🌍 International comparison"
+                    ]
+                },
+                wisdom: "Responsible reporting on a complex issue. Presents conflicting evidence honestly, acknowledges uncertainty, provides context from different authorities, and empowers rather than prescribes. The moderate concern matches the mixed evidence.",
+                manipulation: false,
+                manipulationText: ""
+            },
+            {
+                title: "The Fitness Influencer",
+                text: "Ladies, are you tired of being invisible? 😔 I used to HATE my body until I discovered the ANCIENT SECRET that plastic surgeons don't want you to know! Just 5 minutes a day! No diet needed! Look at my transformation! 🔥 [heavily filtered photos] Doctors HATE this one weird trick because it would put them out of business! Only $197 for my exclusive program - but if you swipe up RIGHT NOW, it's just $47! That's less than your coffee budget! ☕ Don't you deserve to feel beautiful? Your husband will thank me! 💕",
+                claim: "Ancient secret exercise eliminates need for diet or surgery",
+                correctAnswer: "agenda",
+                logic: {
+                    evidence: 0.5,
+                    consistency: 1.0,
+                    source: 1.0,
+                    agenda: 10.0,
+                    issues: [
+                        "📸 Filtered/fake photos",
+                        "🏛️ 'Ancient secret' nonsense",
+                        "⚕️ Anti-doctor conspiracy",
+                        "💵 Aggressive sales tactics"
+                    ]
+                },
+                emotion: {
+                    fear: 8.0,
+                    belonging: 6.5,
+                    pride: 9.0,
+                    agenda: 9.5,
+                    triggers: [
+                        "😢 Body shame activation",
+                        "👰 Relationship insecurity",
+                        "⏰ Urgency pressure",
+                        "💃 Beauty standard anxiety"
+                    ]
+                },
+                wisdom: "Predatory marketing targeting body insecurity. Red flags: 'ancient secrets,' doctor conspiracy, fake urgency pricing, promises without effort. The filtered photos and marriage pressure reveal the manipulative agenda.",
+                manipulation: true,
+                manipulationText: "Body-shaming sales tactics exploiting insecurity with false promises and fake urgency."
+            },
+            {
+                title: "The University Study",
+                text: "MIT researchers concluded a 5-year study on remote work productivity: 'We tracked 2,400 employees across 15 companies. Overall productivity increased 13% for remote workers, but results varied by role. Creative tasks showed 22% improvement, while collaborative projects decreased 8% in efficiency. Employee satisfaction rose 31%, sick days dropped 25%. However, junior employees reported 40% less mentorship. Companies saving on office space averaged $11,000 per employee annually. Full report at mit.edu/remotework2025.'",
+                claim: "Remote work shows mixed results with overall productivity gains but mentorship challenges",
+                correctAnswer: "balanced",
+                logic: {
+                    evidence: 9.0,
+                    consistency: 9.0,
+                    source: 9.5,
+                    agenda: 1.5,
+                    issues: [
+                        "✓ Large sample size",
+                        "✓ Specific metrics",
+                        "✓ Nuanced findings",
+                        "✓ Credible institution"
+                    ]
+                },
+                emotion: {
+                    fear: 2.0,
+                    belonging: 3.0,
+                    pride: 3.5,
+                    agenda: 2.0,
+                    triggers: [
+                        "💼 Work relevance",
+                        "📊 Data confidence",
+                        "🏢 Change acceptance",
+                        "📚 Academic authority"
+                    ]
+                },
+                wisdom: "Exemplary research communication: comprehensive methodology, specific results, acknowledges trade-offs, provides actionable data. Low emotional appeal lets facts speak for themselves. This builds trust through transparency.",
+                manipulation: false,
+                manipulationText: ""
+            },
+            {
+                title: "The Parenting Forum Post",
+                text: "MOMS - This will SHOCK you! 😱 I caught my 12-year-old on a VIDEO GAME CHAT with a 40-YEAR-OLD MAN!!! These predators are EVERYWHERE! Every second your child is online, they're in DANGER! I threw away ALL electronics - no phones, tablets, computers, NOTHING! Some parents called me 'extreme' but I'd rather have a living child than a popular one! If you're not monitoring every keystroke, you're basically handing your baby to predators! WAKE UP before it's too late!!!",
+                claim: "All children must be banned from electronics to prevent predator contact",
+                correctAnswer: "emotion",
+                logic: {
+                    evidence: 2.0,
+                    consistency: 2.5,
+                    source: 1.5,
+                    agenda: 6.0,
+                    issues: [
+                        "📱 One incident = total ban",
+                        "🔥 Extreme response",
+                        "👤 No context given",
+                        "🚁 Fear over education"
+                    ]
+                },
+                emotion: {
+                    fear: 10.0,
+                    belonging: 7.0,
+                    pride: 8.5,
+                    agenda: 8.0,
+                    triggers: [
+                        "👹 Predator terror",
+                        "📱 Technology panic",
+                        "👩‍👧 Protective parent identity",
+                        "💀 Life/death framing"
+                    ]
+                },
+                wisdom: "While online safety is crucial, this response is pure panic. One concerning incident leads to destroying all technology - an extreme overreaction that could harm the child's education and social development. Real digital safety involves education, not isolation.",
+                manipulation: true,
+                manipulationText: "Weaponizing legitimate safety concerns to spread technology panic and shame other parents."
+            },
+            {
+                title: "The Community Garden Proposal",
+                text: "City Councilwoman Lee presented: 'Converting the vacant lot on 5th Street to a community garden would cost $45,000 initially. Our analysis shows: 200 families within walking distance, 67% surveyed expressed interest, local schools want to participate. Similar gardens in Austin and Portland reduced neighborhood crime by 15% and increased property values 8%. Maintenance would require 20 volunteer hours weekly plus $5,000 annually. Concerns include parking loss (12 spaces) and potential noise. I recommend a 1-year pilot program with quarterly reviews.'",
+                claim: "Community garden offers benefits but requires investment and has trade-offs",
+                correctAnswer: "balanced",
+                logic: {
+                    evidence: 8.5,
+                    consistency: 8.5,
+                    source: 8.0,
+                    agenda: 3.0,
+                    issues: [
+                        "✓ Cost-benefit analysis",
+                        "✓ Community survey data",
+                        "✓ Comparable examples",
+                        "✓ Acknowledges downsides"
+                    ]
+                },
+                emotion: {
+                    fear: 2.5,
+                    belonging: 7.0,
+                    pride: 5.5,
+                    agenda: 3.5,
+                    triggers: [
+                        "🌱 Community building",
+                        "🏡 Neighborhood improvement",
+                        "👨‍👩‍👧‍👦 Family activity",
+                        "📈 Property value hope"
+                    ]
+                },
+                wisdom: "Professional proposal balancing enthusiasm with realism. Strong data supports the concept while honestly addressing costs and concerns. The pilot program approach shows wisdom - testing before full commitment. This is how civic decisions should be presented.",
+                manipulation: false,
+                manipulationText: ""
+            }
+        ];
+        
+        let currentScenario = 0;
+        let userScore = 0;
+        let selectedAnswer = null;
+        let hasAnswered = false;
+        let honeyPots = 3;
+        let scenariosCompleted = [];
+        let userAnswers = []; // Track user answers for performance analysis
+        
+        function selectOption(element) {
+            if (hasAnswered) return;
+            
+            document.querySelectorAll('.quiz-option').forEach(opt => {
+                opt.classList.remove('selected');
+            });
+            element.classList.add('selected');
+            selectedAnswer = element.dataset.value;
+            document.getElementById('submit-button').disabled = false;
+        }
+        
+        function updateHoneyDisplay() {
+            const honeyContainer = document.getElementById('honey-pots');
+            const honeyPotElements = honeyContainer.querySelectorAll('.honey-pot');
+            
+            honeyPotElements.forEach((pot, index) => {
+                if (index >= honeyPots) {
+                    pot.classList.add('honey-used');
+                } else {
+                    pot.classList.remove('honey-used');
+                }
+            });
+            
+            document.getElementById('honey-count').textContent = honeyPots;
+            document.getElementById('hint-button').disabled = honeyPots === 0 || hasAnswered;
+            
+            if (honeyPots === 0) {
+                document.getElementById('hint-button').innerHTML = '🍯 No Honey Pots Left!';
+            }
+        }
+        
+        function useHoneyPot() {
+            if (honeyPots === 0 || hasAnswered) return;
+            
+            honeyPots--;
+            updateHoneyDisplay();
+            
+            const scenario = scenarios[currentScenario];
+            const text = document.getElementById('scenario-text');
+            let highlightedText = text.innerHTML;
+            
+            // Remove any existing highlights first
+            highlightedText = highlightedText.replace(/<span class="hint-highlight[^"]*">/g, '');
+            highlightedText = highlightedText.replace(/<\/span>/g, '');
+            
+            let hintClass = '';
+            let hintIcon = '';
+            let hintMessage = '';
+            
+            if (scenario.correctAnswer === 'emotion') {
+                hintClass = 'emotion-hint';
+                hintIcon = '💖';
+                hintMessage = 'Look for emotional triggers...';
+                const emotionWords = ['danger', 'babies', 'blood', 'hurt', 'immediately', 'URGENT', 'SHOCK', 'dying', 'innocent', 'terrified', 'nightmare', 'devastating'];
+                emotionWords.forEach(word => {
+                    const regex = new RegExp(`\\b${word}\\b`, 'gi');
+                    highlightedText = highlightedText.replace(regex, `<span class="hint-highlight ${hintClass}">        function useHoneyPot() {
+            if (honeyPots === 0 || hasAnswered) return;
+            
+            honeyPots--;
+            updateHoneyDisplay();
+            
+            const scenario = scenarios[currentScenario];
+            const text = document.getElementById('scenario-text');
+            let highlightedText = text.textContent;
+            
+            if (scenario.correctAnswer === 'emotion') {
+                const emotionWords = ['danger', 'babies', 'blood', 'hurt', 'immediately'];
+                emotionWords.forEach(word => {
+                    const regex = new RegExp(word, 'gi');
+                    highlightedText = highlightedText.replace(regex, '<span class="hint-highlight">$&</span>');
+                });
+            } else if (scenario.correctAnswer === 'logic') {
+                const logicWords = ['neighbor', 'another family', 'probably', 'so-called'];
+                logicWords.forEach(word => {
+                    const regex = new RegExp(word, 'gi');
+                    highlightedText = highlightedText.replace(regex, '<span class="hint-highlight">$&</span>');
+                });
+            } else if (scenario.correctAnswer === 'balanced') {
+                const balancedWords = ['data', 'percent', 'costs', 'however'];
+                balancedWords.forEach(word => {
+                    const regex = new RegExp(word, 'gi');
+                    highlightedText = highlightedText.replace(regex, '<span class="hint-highlight">$&</span>');
+                });
+            }
+            
+            text.innerHTML = highlightedText;
+        }</span>`);
+                });
+            } else if (scenario.correctAnswer === 'logic') {
+                hintClass = 'logic-hint';
+                hintIcon = '🧠';
+                hintMessage = 'Check the evidence quality...';
+                const logicWords = ['neighbor', 'another family', 'probably', 'so-called', 'I read', 'someone told me', 'everyone knows', 'obviously', 'my friend said'];
+                logicWords.forEach(word => {
+                    const regex = new RegExp(`\\b${word}\\b`, 'gi');
+                    highlightedText = highlightedText.replace(regex, `<span class="hint-highlight ${hintClass}">        function useHoneyPot() {
+            if (honeyPots === 0 || hasAnswered) return;
+            
+            honeyPots--;
+            updateHoneyDisplay();
+            
+            const scenario = scenarios[currentScenario];
+            const text = document.getElementById('scenario-text');
+            let highlightedText = text.textContent;
+            
+            if (scenario.correctAnswer === 'emotion') {
+                const emotionWords = ['danger', 'babies', 'blood', 'hurt', 'immediately'];
+                emotionWords.forEach(word => {
+                    const regex = new RegExp(word, 'gi');
+                    highlightedText = highlightedText.replace(regex, '<span class="hint-highlight">$&</span>');
+                });
+            } else if (scenario.correctAnswer === 'logic') {
+                const logicWords = ['neighbor', 'another family', 'probably', 'so-called'];
+                logicWords.forEach(word => {
+                    const regex = new RegExp(word, 'gi');
+                    highlightedText = highlightedText.replace(regex, '<span class="hint-highlight">$&</span>');
+                });
+            } else if (scenario.correctAnswer === 'balanced') {
+                const balancedWords = ['data', 'percent', 'costs', 'however'];
+                balancedWords.forEach(word => {
+                    const regex = new RegExp(word, 'gi');
+                    highlightedText = highlightedText.replace(regex, '<span class="hint-highlight">$&</span>');
+                });
+            }
+            
+            text.innerHTML = highlightedText;
+        }</span>`);
+                });
+            } else if (scenario.correctAnswer === 'balanced') {
+                hintClass = 'balanced-hint';
+                hintIcon = '⚖️';
+                hintMessage = 'Notice the balance...';
+                const balancedWords = ['data', 'percent', 'study', 'however', 'costs', 'analysis', 'evidence', 'research', 'statistics', 'measured'];
+                balancedWords.forEach(word => {
+                    const regex = new RegExp(`\\b${word}\\b`, 'gi');
+                    highlightedText = highlightedText.replace(regex, `<span class="hint-highlight ${hintClass}">        function useHoneyPot() {
+            if (honeyPots === 0 || hasAnswered) return;
+            
+            honeyPots--;
+            updateHoneyDisplay();
+            
+            const scenario = scenarios[currentScenario];
+            const text = document.getElementById('scenario-text');
+            let highlightedText = text.textContent;
+            
+            if (scenario.correctAnswer === 'emotion') {
+                const emotionWords = ['danger', 'babies', 'blood', 'hurt', 'immediately'];
+                emotionWords.forEach(word => {
+                    const regex = new RegExp(word, 'gi');
+                    highlightedText = highlightedText.replace(regex, '<span class="hint-highlight">$&</span>');
+                });
+            } else if (scenario.correctAnswer === 'logic') {
+                const logicWords = ['neighbor', 'another family', 'probably', 'so-called'];
+                logicWords.forEach(word => {
+                    const regex = new RegExp(word, 'gi');
+                    highlightedText = highlightedText.replace(regex, '<span class="hint-highlight">$&</span>');
+                });
+            } else if (scenario.correctAnswer === 'balanced') {
+                const balancedWords = ['data', 'percent', 'costs', 'however'];
+                balancedWords.forEach(word => {
+                    const regex = new RegExp(word, 'gi');
+                    highlightedText = highlightedText.replace(regex, '<span class="hint-highlight">$&</span>');
+                });
+            }
+            
+            text.innerHTML = highlightedText;
+        }</span>`);
+                });
+            } else if (scenario.correctAnswer === 'agenda') {
+                hintClass = 'agenda-hint';
+                hintIcon = '🎯';
+                hintMessage = 'Find the hidden motive...';
+                const agendaWords = ['buy', 'purchase', 'only \\
+        
+        function createSparkle(x, y) {
+            const sparkles = ['✨', '💫', '⭐', '🌟'];
+            const sparkle = document.createElement('div');
+            sparkle.className = 'sparkle';
+            sparkle.textContent = sparkles[Math.floor(Math.random() * sparkles.length)];
+            sparkle.style.left = x + 'px';
+            sparkle.style.top = y + 'px';
+            document.body.appendChild(sparkle);
+            
+            setTimeout(() => sparkle.remove(), 2000);
+        }
+        
+        function showBearReaction(result) {
+            const reactions = {
+                perfect: { emoji: '🎉', message: 'Perfect!', size: 'large' },
+                close: { emoji: '😊', message: 'Almost there!', size: 'small' },
+                partial: { emoji: '🤔', message: 'Keep thinking...', size: 'small' },
+                wrong: { emoji: '😢', message: 'Study harder!', size: 'small' }
+            };
+            
+            const reaction = reactions[result];
+            
+            const bear = document.createElement('div');
+            bear.className = `bear-reaction ${reaction.size === 'small' ? 'small' : ''}`;
+            bear.textContent = reaction.emoji;
+            document.body.appendChild(bear);
+            
+            const feedback = document.createElement('div');
+            feedback.className = 'feedback-text';
+            feedback.textContent = reaction.message;
+            document.body.appendChild(feedback);
+            
+            setTimeout(() => {
+                bear.remove();
+                feedback.remove();
+            }, 1500);
+        }
+        
+        function calculateAnswerScore(userAnswer, scenario) {
+            // Define scoring matrix for each scenario type
+            const correct = scenario.correctAnswer;
+            
+            if (userAnswer === correct) return 'perfect';
+            
+            // Logic-heavy scenarios
+            if (correct === 'logic') {
+                if (userAnswer === 'agenda') return 'close'; // Often related
+                if (userAnswer === 'balanced') return 'partial';
+                return 'wrong'; // emotion
+            }
+            
+            // Emotion-heavy scenarios
+            if (correct === 'emotion') {
+                if (userAnswer === 'agenda') return 'close'; // Manipulation often uses emotion
+                if (userAnswer === 'logic') return 'partial';
+                return 'wrong'; // balanced
+            }
+            
+            // Balanced scenarios
+            if (correct === 'balanced') {
+                if (userAnswer === 'logic' || userAnswer === 'emotion') return 'partial'; // Half right
+                return 'wrong'; // agenda
+            }
+            
+            // Agenda scenarios
+            if (correct === 'agenda') {
+                if (userAnswer === 'emotion') return 'close'; // Agendas often use emotion
+                if (userAnswer === 'logic') return 'partial';
+                return 'wrong'; // balanced
+            }
+            
+            return 'wrong';
+        }
+        
+        function createSparkleExplosion() {
+            const scoreTracker = document.getElementById('score-tracker');
+            const rect = scoreTracker.getBoundingClientRect();
+            
+            for (let i = 0; i < 15; i++) {
+                setTimeout(() => {
+                    const x = rect.left + rect.width / 2 + (Math.random() - 0.5) * 100;
+                    const y = rect.top + rect.height / 2 + (Math.random() - 0.5) * 50;
+                    createSparkle(x, y);
+                }, i * 100);
+            }
+        }
+        
+        function animateMeter(elementId, value, duration = 1000) {
+            const element = document.getElementById(elementId);
+            const valueElement = document.getElementById(elementId.replace('-meter', '-value'));
+            
+            setTimeout(() => {
+                element.style.width = `${value * 10}%`;
+                if (valueElement) {
+                    valueElement.textContent = `${value}/10`;
+                }
+            }, duration);
+        }
+        
+        function displayFactors(containerId, factors) {
+            const container = document.getElementById(containerId);
+            container.innerHTML = '';
+            
+            factors.forEach((factor, index) => {
+                setTimeout(() => {
+                    const item = document.createElement('div');
+                    item.className = 'factor-item';
+                    item.innerHTML = factor;
+                    container.appendChild(item);
+                }, 200 * (index + 1));
+            });
+        }
+        
+        function calculateBalance(logicAvg, emotionAvg) {
+            const total = logicAvg + emotionAvg;
+            if (total === 0) return 50;
+            return (emotionAvg / total) * 100;
+        }
+        
+        function showDetailedAnalysis() {
+            const scenario = scenarios[currentScenario];
+            const analysisSection = document.getElementById('detailed-analysis');
+            
+            // Hide quiz section after a delay
+            setTimeout(() => {
+                document.getElementById('quiz-section').classList.add('hidden');
+            }, 2000);
+            
+            // Show analysis section
+            setTimeout(() => {
+                analysisSection.classList.add('visible');
+                
+                // Start bear animations
+                document.getElementById('logic-bear').classList.add('thinking');
+                document.getElementById('emotion-bear').classList.add('thinking');
+                
+                // Animate logic meters
+                setTimeout(() => {
+                    animateMeter('evidence-meter', scenario.logic.evidence, 0);
+                    animateMeter('logic-meter', scenario.logic.consistency, 200);
+                    animateMeter('source-meter', scenario.logic.source, 400);
+                    animateMeter('agenda-meter', scenario.logic.agenda, 600);
+                    displayFactors('logic-factors', scenario.logic.issues);
+                    document.getElementById('logic-bear').classList.remove('thinking');
+                }, 1000);
+                
+                // Animate emotion meters
+                setTimeout(() => {
+                    animateMeter('fear-meter', scenario.emotion.fear, 0);
+                    animateMeter('belonging-meter', scenario.emotion.belonging, 200);
+                    animateMeter('pride-meter', scenario.emotion.pride, 400);
+                    animateMeter('emotion-agenda-meter', scenario.emotion.agenda, 600);
+                    displayFactors('emotion-factors', scenario.emotion.triggers);
+                    document.getElementById('emotion-bear').classList.remove('thinking');
+                }, 1500);
+                
+                // Show wisdom analysis
+                setTimeout(() => {
+                    document.getElementById('wisdom-content').textContent = scenario.wisdom;
+                    
+                    // Calculate averages
+                    const logicAvg = (scenario.logic.evidence + scenario.logic.consistency + scenario.logic.source) / 3;
+                    const emotionAvg = (scenario.emotion.fear + scenario.emotion.belonging + scenario.emotion.pride) / 3;
+                    
+                    // Animate balance indicator
+                    const balance = calculateBalance(logicAvg, emotionAvg);
+                    document.getElementById('balance-indicator').style.left = `${balance}%`;
+                    
+                    // Update balance icon
+                    const icon = balance < 30 ? '🧠' : balance > 70 ? '💖' : '⚖️';
+                    document.getElementById('balance-icon').textContent = icon;
+                    
+                    // Show manipulation warning if needed
+                    if (scenario.manipulation) {
+                        document.getElementById('manipulation-text').textContent = scenario.manipulationText;
+                        document.getElementById('manipulation-warning').classList.add('visible');
+                    } else {
+                        document.getElementById('manipulation-warning').classList.remove('visible');
+                    }
+                    
+                    // Show next button
+                    document.getElementById('next-button').classList.add('visible');
+                }, 3000);
+                
+            }, 2500);
+        }
+        
+        function submitAnswer() {
+            if (!selectedAnswer || hasAnswered) return;
+            
+            hasAnswered = true;
+            scenariosCompleted.push(currentScenario);
+            userAnswers.push(selectedAnswer); // Track the answer
+            const correct = selectedAnswer === scenarios[currentScenario].correctAnswer;
+            
+            if (correct) {
+                userScore++;
+                document.getElementById('user-score').textContent = userScore;
+                createSparkleExplosion();
+            }
+            
+            showBearReaction(correct);
+            showDetailedAnalysis();
+            
+            document.getElementById('submit-button').disabled = true;
+            document.getElementById('hint-button').disabled = true;
+        }
+        
+        function resetAnalysisMeters() {
+            const meters = ['evidence', 'logic', 'source', 'agenda', 'fear', 'belonging', 'pride', 'emotion-agenda'];
+            meters.forEach(type => {
+                document.getElementById(`${type}-meter`).style.width = '0%';
+                const valueEl = document.getElementById(`${type}-value`);
+                if (valueEl) valueEl.textContent = '0/10';
+            });
+            
+            document.getElementById('logic-factors').innerHTML = '';
+            document.getElementById('emotion-factors').innerHTML = '';
+            document.getElementById('manipulation-warning').classList.remove('visible');
+        }
+        
+        function nextScenario() {
+            // Find next unplayed scenario
+            let nextIndex = -1;
+            for (let i = 0; i < scenarios.length; i++) {
+                if (!scenariosCompleted.includes(i)) {
+                    nextIndex = i;
+                    break;
+                }
+            }
+            
+            if (nextIndex === -1 || scenariosCompleted.length >= scenarios.length) {
+                showEndGame();
+                return;
+            }
+            
+            currentScenario = nextIndex;
+            hasAnswered = false;
+            selectedAnswer = null;
+            
+            // Reset UI
+            document.querySelectorAll('.quiz-option').forEach(opt => {
+                opt.classList.remove('selected');
+            });
+            document.getElementById('submit-button').disabled = true;
+            document.getElementById('hint-button').disabled = honeyPots === 0;
+            document.getElementById('detailed-analysis').classList.remove('visible');
+            document.getElementById('quiz-section').classList.remove('hidden');
+            document.getElementById('next-button').classList.remove('visible');
+            
+            // Reset meters
+            resetAnalysisMeters();
+            
+            // Reset scenario text to remove highlights
+            const scenario = scenarios[currentScenario];
+            document.getElementById('scenario-title').textContent = `Scenario ${scenariosCompleted.length + 1}: ${scenario.title}`;
+            document.getElementById('scenario-text').innerHTML = scenario.text;
+            document.getElementById('claim-text').textContent = `Claim: "${scenario.claim}"`;
+            
+            // Reset any hint styling
+            const scenarioText = document.getElementById('scenario-text');
+            scenarioText.style.backgroundColor = '';
+            scenarioText.style.border = '';
+            scenarioText.style.padding = '';
+            scenarioText.style.borderRadius = '';
+            document.getElementById('total-scenarios').textContent = scenarios.length;
+            
+            // Scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+        
+        function showEndGame() {
+            document.getElementById('game-content').style.display = 'none';
+            document.getElementById('end-game').classList.add('visible');
+            
+            // Create confetti effect
+            createConfetti();
+            
+            const percentage = (userScore / scenarios.length) * 100;
+            let badge, title, message, wisdomQuote;
+            
+            if (percentage === 100) {
+                badge = '💎';
+                title = 'Phuzzy Diamond Master';
+                message = 'Perfect score! You have mastered Phuzzy thinking!';
+                wisdomQuote = '"A diamond mind cuts through deception with both logic and compassion. You see clearly with Phuzzy wisdom!" - Wisdom Bear';
+            } else if (percentage >= 66) {
+                badge = '🥇';
+                title = 'Phuzzy Gold Guardian';
+                message = 'Excellent work! You see through most manipulation with Phuzzy wisdom.';
+                wisdomQuote = '"Gold shines brightest when tested. Your Phuzzy skills are well-honed!" - Wisdom Bear';
+            } else if (percentage >= 33) {
+                badge = '🥈';
+                title = 'Phuzzy Silver Scout';
+                message = 'Good job! Keep practicing your Phuzzy thinking.';
+                wisdomQuote = '"Every journey begins with curiosity. You\'re on the Phuzzy path!" - Wisdom Bear';
+            } else {
+                badge = '🥉';
+                title = 'Phuzzy Bronze Cub';
+                message = 'Nice start! There\'s room to grow your Phuzzy thinking skills.';
+                wisdomQuote = '"Even the mightiest oak started as an acorn. Keep learning, young Phuzzy!" - Wisdom Bear';
+            }
+            
+            // Set badge and title
+            document.getElementById('final-badge').textContent = badge;
+            document.getElementById('badge-title').textContent = title;
+            document.getElementById('final-score-text').textContent = userScore + '/' + scenarios.length;
+            document.getElementById('accuracy-percent').textContent = Math.round(percentage) + '%';
+            document.getElementById('honey-used').textContent = (3 - honeyPots) + '/3';
+            document.getElementById('wisdom-quote').textContent = wisdomQuote;
+            
+            // Show achievement animation
+            showAchievement(badge, title);
+            
+            // Animate performance meters
+            setTimeout(function() {
+                animatePerformanceMeters();
+            }, 1000);
+        }
+        
+        function createConfetti() {
+            const colors = ['#5a67d8', '#ed64a6', '#f6e05e', '#4299e1', '#f6ad55'];
+            const endGame = document.getElementById('end-game');
+            
+            for (let i = 0; i < 50; i++) {
+                setTimeout(function() {
+                    const confetti = document.createElement('div');
+                    confetti.className = 'confetti';
+                    confetti.style.left = Math.random() * 100 + '%';
+                    confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                    confetti.style.animationDelay = Math.random() * 2 + 's';
+                    confetti.style.animationDuration = (Math.random() * 2 + 3) + 's';
+                    endGame.appendChild(confetti);
+                    
+                    setTimeout(function() { confetti.remove(); }, 5000);
+                }, i * 50);
+            }
+        }
+        
+        function showAchievement(badge, title) {
+            const achievement = document.createElement('div');
+            achievement.className = 'achievement-unlocked';
+            achievement.innerHTML = '<h2 style="margin-bottom: 15px; color: #5a67d8;">Achievement Unlocked!</h2>' +
+                '<div style="font-size: 4em; margin: 20px 0;">' + badge + '</div>' +
+                '<h3 style="color: #2d3748;">' + title + '</h3>';
+            document.body.appendChild(achievement);
+            
+            setTimeout(function() { achievement.remove(); }, 3000);
+        }
+        
+        function animatePerformanceMeters() {
+            // Calculate actual performance based on user choices
+            let logicCorrect = 0;
+            let emotionCorrect = 0;
+            let balanceCorrect = 0;
+            let totalLogic = 0;
+            let totalEmotion = 0;
+            let totalBalance = 0;
+            
+            scenariosCompleted.forEach((scenarioIndex, i) => {
+                const scenario = scenarios[scenarioIndex];
+                const userAnswer = userAnswers[i];
+                
+                if (scenario.correctAnswer === 'logic') {
+                    totalLogic++;
+                    if (userAnswer === 'logic') logicCorrect++;
+                } else if (scenario.correctAnswer === 'emotion') {
+                    totalEmotion++;
+                    if (userAnswer === 'emotion') emotionCorrect++;
+                } else if (scenario.correctAnswer === 'balanced') {
+                    totalBalance++;
+                    if (userAnswer === 'balanced') balanceCorrect++;
+                }
+            });
+            
+            // Calculate percentages (with fallback for categories not tested)
+            const logicScore = totalLogic > 0 ? (logicCorrect / totalLogic) * 100 : 50;
+            const emotionScore = totalEmotion > 0 ? (emotionCorrect / totalEmotion) * 100 : 50;
+            const balanceScore = totalBalance > 0 ? (balanceCorrect / totalBalance) * 100 : 50;
+            
+            document.getElementById('logic-performance').style.width = logicScore + '%';
+            document.getElementById('emotion-performance').style.width = emotionScore + '%';
+            document.getElementById('balance-performance').style.width = balanceScore + '%';
+        }
+        
+        // Social sharing functions
+        function shareToFacebook() {
+            const gameUrl = encodeURIComponent('https://www.p0qp0q.com/thinkTank/');
+            const shareText = encodeURIComponent(getShareText());
+            window.open(`https://www.facebook.com/sharer/sharer.php?u=${gameUrl}&quote=${shareText}`, '_blank');
+        }
+        
+        function shareToTwitter() {
+            const gameUrl = encodeURIComponent('https://www.p0qp0q.com/thinkTank/');
+            const shareText = encodeURIComponent(getShareText());
+            window.open(`https://twitter.com/intent/tweet?text=${shareText}&url=${gameUrl}`, '_blank');
+        }
+        
+        function shareToLinkedIn() {
+            const gameUrl = encodeURIComponent('https://www.p0qp0q.com/thinkTank/');
+            const shareText = encodeURIComponent(getShareText());
+            window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${gameUrl}`, '_blank');
+        }
+        
+        function shareToTikTok() {
+            // TikTok doesn't have direct web sharing, so we'll copy a formatted message
+            const shareText = getShareText() + '\n\nPlay at: https://www.p0qp0q.com/thinkTank/';
+            navigator.clipboard.writeText(shareText);
+            alert('Text copied! Open TikTok and paste in your caption. 🎵');
+        }
+        
+        function copyShareLink() {
+            const shareText = getShareText() + '\n\nPlay at: https://www.p0qp0q.com/thinkTank/';
+            navigator.clipboard.writeText(shareText);
+            
+            // Visual feedback
+            const button = event.target.closest('.social-button');
+            const originalText = button.innerHTML;
+            button.innerHTML = '<span>✅</span> Copied!';
+            setTimeout(() => {
+                button.innerHTML = originalText;
+            }, 2000);
+        }
+        
+        function getShareText() {
+            const badge = document.getElementById('final-badge').textContent;
+            const title = document.getElementById('badge-title').textContent;
+            const score = document.getElementById('final-score-text').textContent;
+            return `🐻 I earned ${badge} ${title} with ${score} RIZ in Phuzzy's Think Tank! Can you balance logic and emotion better than me? 🧠💖`;
+        }
+        
+        // Helper function - you'd need to implement tracking user answers
+        function getAnswerForScenario(index) {
+            // This would need to be tracked during the game
+            return scenarios[scenariosCompleted[index]].correctAnswer;
+        }
+        
+        function shareScore() {
+            // Deprecated - replaced by individual social functions
+            copyShareLink();
+        }
+        
+        // Scroll detection for score tracker
+        window.addEventListener('scroll', function() {
+            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            const scoreTracker = document.getElementById('score-tracker');
+            
+            if (scrollTop > 100) {
+                scoreTracker.classList.add('visible');
+            } else {
+                scoreTracker.classList.remove('visible');
+            }
+        });
+        
+        // Initialize
+        updateHoneyDisplay();
+        document.getElementById('total-scenarios').textContent = scenarios.length;
+    </script>
+</body>
+</html>, 'limited time', 'DM me', 'swipe up', 'discount', 'my course', 'sign up'];
+                agendaWords.forEach(word => {
+                    const regex = new RegExp(`\\b${word}\\b`, 'gi');
+                    highlightedText = highlightedText.replace(regex, `<span class="hint-highlight ${hintClass}">        function useHoneyPot() {
+            if (honeyPots === 0 || hasAnswered) return;
+            
+            honeyPots--;
+            updateHoneyDisplay();
+            
+            const scenario = scenarios[currentScenario];
+            const text = document.getElementById('scenario-text');
+            let highlightedText = text.textContent;
+            
+            if (scenario.correctAnswer === 'emotion') {
+                const emotionWords = ['danger', 'babies', 'blood', 'hurt', 'immediately'];
+                emotionWords.forEach(word => {
+                    const regex = new RegExp(word, 'gi');
+                    highlightedText = highlightedText.replace(regex, '<span class="hint-highlight">$&</span>');
+                });
+            } else if (scenario.correctAnswer === 'logic') {
+                const logicWords = ['neighbor', 'another family', 'probably', 'so-called'];
+                logicWords.forEach(word => {
+                    const regex = new RegExp(word, 'gi');
+                    highlightedText = highlightedText.replace(regex, '<span class="hint-highlight">$&</span>');
+                });
+            } else if (scenario.correctAnswer === 'balanced') {
+                const balancedWords = ['data', 'percent', 'costs', 'however'];
+                balancedWords.forEach(word => {
+                    const regex = new RegExp(word, 'gi');
+                    highlightedText = highlightedText.replace(regex, '<span class="hint-highlight">$&</span>');
+                });
+            }
+            
+            text.innerHTML = highlightedText;
+        }</span>`);
+                });
+            }
+            
+            text.innerHTML = highlightedText;
+            
+            // Show hint indicator
+            showHintIndicator(hintIcon, hintMessage);
+        }
+        
+        function showHintIndicator(icon, message) {
+            const indicator = document.createElement('div');
+            indicator.className = 'hint-indicator';
+            indicator.innerHTML = `
+                <div>${icon}</div>
+                <div style="font-size: 0.5em; margin-top: 10px; color: #4a5568;">${message}</div>
+            `;
+            document.body.appendChild(indicator);
+            
+            setTimeout(() => indicator.remove(), 3000);
+        }
+        
+        function createSparkle(x, y) {
+            const sparkles = ['✨', '💫', '⭐', '🌟'];
+            const sparkle = document.createElement('div');
+            sparkle.className = 'sparkle';
+            sparkle.textContent = sparkles[Math.floor(Math.random() * sparkles.length)];
+            sparkle.style.left = x + 'px';
+            sparkle.style.top = y + 'px';
+            document.body.appendChild(sparkle);
+            
+            setTimeout(() => sparkle.remove(), 2000);
+        }
+        
+        function showBearReaction(isCorrect) {
+            const bear = document.createElement('div');
+            bear.className = 'bear-reaction';
+            bear.textContent = isCorrect ? '🎉' : '😢';
+            document.body.appendChild(bear);
+            
+            setTimeout(() => bear.remove(), 1500);
+        }
+        
+        function createSparkleExplosion() {
+            const scoreTracker = document.getElementById('score-tracker');
+            const rect = scoreTracker.getBoundingClientRect();
+            
+            for (let i = 0; i < 15; i++) {
+                setTimeout(() => {
+                    const x = rect.left + rect.width / 2 + (Math.random() - 0.5) * 100;
+                    const y = rect.top + rect.height / 2 + (Math.random() - 0.5) * 50;
+                    createSparkle(x, y);
+                }, i * 100);
+            }
+        }
+        
+        function animateMeter(elementId, value, duration = 1000) {
+            const element = document.getElementById(elementId);
+            const valueElement = document.getElementById(elementId.replace('-meter', '-value'));
+            
+            setTimeout(() => {
+                element.style.width = `${value * 10}%`;
+                if (valueElement) {
+                    valueElement.textContent = `${value}/10`;
+                }
+            }, duration);
+        }
+        
+        function displayFactors(containerId, factors) {
+            const container = document.getElementById(containerId);
+            container.innerHTML = '';
+            
+            factors.forEach((factor, index) => {
+                setTimeout(() => {
+                    const item = document.createElement('div');
+                    item.className = 'factor-item';
+                    item.innerHTML = factor;
+                    container.appendChild(item);
+                }, 200 * (index + 1));
+            });
+        }
+        
+        function calculateBalance(logicAvg, emotionAvg) {
+            const total = logicAvg + emotionAvg;
+            if (total === 0) return 50;
+            return (emotionAvg / total) * 100;
+        }
+        
+        function showDetailedAnalysis() {
+            const scenario = scenarios[currentScenario];
+            const analysisSection = document.getElementById('detailed-analysis');
+            
+            // Hide quiz section after a delay
+            setTimeout(() => {
+                document.getElementById('quiz-section').classList.add('hidden');
+            }, 2000);
+            
+            // Show analysis section
+            setTimeout(() => {
+                analysisSection.classList.add('visible');
+                
+                // Start bear animations
+                document.getElementById('logic-bear').classList.add('thinking');
+                document.getElementById('emotion-bear').classList.add('thinking');
+                
+                // Animate logic meters
+                setTimeout(() => {
+                    animateMeter('evidence-meter', scenario.logic.evidence, 0);
+                    animateMeter('logic-meter', scenario.logic.consistency, 200);
+                    animateMeter('source-meter', scenario.logic.source, 400);
+                    animateMeter('agenda-meter', scenario.logic.agenda, 600);
+                    displayFactors('logic-factors', scenario.logic.issues);
+                    document.getElementById('logic-bear').classList.remove('thinking');
+                }, 1000);
+                
+                // Animate emotion meters
+                setTimeout(() => {
+                    animateMeter('fear-meter', scenario.emotion.fear, 0);
+                    animateMeter('belonging-meter', scenario.emotion.belonging, 200);
+                    animateMeter('pride-meter', scenario.emotion.pride, 400);
+                    animateMeter('emotion-agenda-meter', scenario.emotion.agenda, 600);
+                    displayFactors('emotion-factors', scenario.emotion.triggers);
+                    document.getElementById('emotion-bear').classList.remove('thinking');
+                }, 1500);
+                
+                // Show wisdom analysis
+                setTimeout(() => {
+                    document.getElementById('wisdom-content').textContent = scenario.wisdom;
+                    
+                    // Calculate averages
+                    const logicAvg = (scenario.logic.evidence + scenario.logic.consistency + scenario.logic.source) / 3;
+                    const emotionAvg = (scenario.emotion.fear + scenario.emotion.belonging + scenario.emotion.pride) / 3;
+                    
+                    // Animate balance indicator
+                    const balance = calculateBalance(logicAvg, emotionAvg);
+                    document.getElementById('balance-indicator').style.left = `${balance}%`;
+                    
+                    // Update balance icon
+                    const icon = balance < 30 ? '🧠' : balance > 70 ? '💖' : '⚖️';
+                    document.getElementById('balance-icon').textContent = icon;
+                    
+                    // Show manipulation warning if needed
+                    if (scenario.manipulation) {
+                        document.getElementById('manipulation-text').textContent = scenario.manipulationText;
+                        document.getElementById('manipulation-warning').classList.add('visible');
+                    } else {
+                        document.getElementById('manipulation-warning').classList.remove('visible');
+                    }
+                    
+                    // Show next button
+                    document.getElementById('next-button').classList.add('visible');
+                }, 3000);
+                
+            }, 2500);
+        }
+        
+        function submitAnswer() {
+            if (!selectedAnswer || hasAnswered) return;
+            
+            hasAnswered = true;
+            scenariosCompleted.push(currentScenario);
+            userAnswers.push(selectedAnswer); // Track the answer
+            const correct = selectedAnswer === scenarios[currentScenario].correctAnswer;
+            
+            if (correct) {
+                userScore++;
+                document.getElementById('user-score').textContent = userScore;
+                createSparkleExplosion();
+            }
+            
+            showBearReaction(correct);
+            showDetailedAnalysis();
+            
+            document.getElementById('submit-button').disabled = true;
+            document.getElementById('hint-button').disabled = true;
+        }
+        
+        function resetAnalysisMeters() {
+            const meters = ['evidence', 'logic', 'source', 'agenda', 'fear', 'belonging', 'pride', 'emotion-agenda'];
+            meters.forEach(type => {
+                document.getElementById(`${type}-meter`).style.width = '0%';
+                const valueEl = document.getElementById(`${type}-value`);
+                if (valueEl) valueEl.textContent = '0/10';
+            });
+            
+            document.getElementById('logic-factors').innerHTML = '';
+            document.getElementById('emotion-factors').innerHTML = '';
+            document.getElementById('manipulation-warning').classList.remove('visible');
+        }
+        
+        function nextScenario() {
+            // Find next unplayed scenario
+            let nextIndex = -1;
+            for (let i = 0; i < scenarios.length; i++) {
+                if (!scenariosCompleted.includes(i)) {
+                    nextIndex = i;
+                    break;
+                }
+            }
+            
+            if (nextIndex === -1 || scenariosCompleted.length >= scenarios.length) {
+                showEndGame();
+                return;
+            }
+            
+            currentScenario = nextIndex;
+            hasAnswered = false;
+            selectedAnswer = null;
+            
+            // Reset UI
+            document.querySelectorAll('.quiz-option').forEach(opt => {
+                opt.classList.remove('selected');
+            });
+            document.getElementById('submit-button').disabled = true;
+            document.getElementById('hint-button').disabled = honeyPots === 0;
+            document.getElementById('detailed-analysis').classList.remove('visible');
+            document.getElementById('quiz-section').classList.remove('hidden');
+            document.getElementById('next-button').classList.remove('visible');
+            
+            // Reset meters
+            resetAnalysisMeters();
+            
+            // Load new scenario
+            const scenario = scenarios[currentScenario];
+            document.getElementById('scenario-title').textContent = `Scenario ${scenariosCompleted.length + 1}: ${scenario.title}`;
+            document.getElementById('scenario-text').textContent = scenario.text;
+            document.getElementById('claim-text').textContent = `Claim: "${scenario.claim}"`;
+            document.getElementById('total-scenarios').textContent = scenarios.length;
+            
+            // Scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+        
+        function showEndGame() {
+            document.getElementById('game-content').style.display = 'none';
+            document.getElementById('end-game').classList.add('visible');
+            
+            // Create confetti effect
+            createConfetti();
+            
+            const percentage = (userScore / scenarios.length) * 100;
+            let badge, title, message, wisdomQuote;
+            
+            if (percentage === 100) {
+                badge = '💎';
+                title = 'Phuzzy Diamond Master';
+                message = 'Perfect score! You have mastered Phuzzy thinking!';
+                wisdomQuote = '"A diamond mind cuts through deception with both logic and compassion. You see clearly with Phuzzy wisdom!" - Wisdom Bear';
+            } else if (percentage >= 66) {
+                badge = '🥇';
+                title = 'Phuzzy Gold Guardian';
+                message = 'Excellent work! You see through most manipulation with Phuzzy wisdom.';
+                wisdomQuote = '"Gold shines brightest when tested. Your Phuzzy skills are well-honed!" - Wisdom Bear';
+            } else if (percentage >= 33) {
+                badge = '🥈';
+                title = 'Phuzzy Silver Scout';
+                message = 'Good job! Keep practicing your Phuzzy thinking.';
+                wisdomQuote = '"Every journey begins with curiosity. You\'re on the Phuzzy path!" - Wisdom Bear';
+            } else {
+                badge = '🥉';
+                title = 'Phuzzy Bronze Cub';
+                message = 'Nice start! There\'s room to grow your Phuzzy thinking skills.';
+                wisdomQuote = '"Even the mightiest oak started as an acorn. Keep learning, young Phuzzy!" - Wisdom Bear';
+            }
+            
+            // Set badge and title
+            document.getElementById('final-badge').textContent = badge;
+            document.getElementById('badge-title').textContent = title;
+            document.getElementById('final-score-text').textContent = `${userScore}/${scenarios.length}`;
+            document.getElementById('accuracy-percent').textContent = `${Math.round(percentage)}%`;
+            document.getElementById('honey-used').textContent = `${3 - honeyPots}/3`;
+            document.getElementById('wisdom-quote').textContent = wisdomQuote;
+            
+            // Show achievement animation
+            showAchievement(badge, title);
+            
+            // Animate performance meters
+            setTimeout(() => {
+                animatePerformanceMeters();
+            }, 1000);
+        }
+        
+        function createConfetti() {
+            const colors = ['#5a67d8', '#ed64a6', '#f6e05e', '#4299e1', '#f6ad55'];
+            const endGame = document.getElementById('end-game');
+            
+            for (let i = 0; i < 50; i++) {
+                setTimeout(() => {
+                    const confetti = document.createElement('div');
+                    confetti.className = 'confetti';
+                    confetti.style.left = Math.random() * 100 + '%';
+                    confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                    confetti.style.animationDelay = Math.random() * 2 + 's';
+                    confetti.style.animationDuration = (Math.random() * 2 + 3) + 's';
+                    endGame.appendChild(confetti);
+                    
+                    setTimeout(() => confetti.remove(), 5000);
+                }, i * 50);
+            }
+        }
+        
+        function showAchievement(badge, title) {
+            const achievement = document.createElement('div');
+            achievement.className = 'achievement-unlocked';
+            achievement.innerHTML = `
+                <h2 style="margin-bottom: 15px; color: #5a67d8;">Achievement Unlocked!</h2>
+                <div style="font-size: 4em; margin: 20px 0;">${badge}</div>
+                <h3 style="color: #2d3748;">${title}</h3>
+            `;
+            document.body.appendChild(achievement);
+            
+            setTimeout(() => achievement.remove(), 3000);
+        }
+        
+        function animatePerformanceMeters() {
+            // Calculate actual performance based on user choices
+            let logicCorrect = 0;
+            let emotionCorrect = 0;
+            let balanceCorrect = 0;
+            let totalLogic = 0;
+            let totalEmotion = 0;
+            let totalBalance = 0;
+            
+            scenariosCompleted.forEach((scenarioIndex, i) => {
+                const scenario = scenarios[scenarioIndex];
+                const userAnswer = userAnswers[i];
+                
+                if (scenario.correctAnswer === 'logic') {
+                    totalLogic++;
+                    if (userAnswer === 'logic') logicCorrect++;
+                } else if (scenario.correctAnswer === 'emotion') {
+                    totalEmotion++;
+                    if (userAnswer === 'emotion') emotionCorrect++;
+                } else if (scenario.correctAnswer === 'balanced') {
+                    totalBalance++;
+                    if (userAnswer === 'balanced') balanceCorrect++;
+                }
+            });
+            
+            // Calculate percentages (with fallback for categories not tested)
+            const logicScore = totalLogic > 0 ? (logicCorrect / totalLogic) * 100 : 50;
+            const emotionScore = totalEmotion > 0 ? (emotionCorrect / totalEmotion) * 100 : 50;
+            const balanceScore = totalBalance > 0 ? (balanceCorrect / totalBalance) * 100 : 50;
+            
+            document.getElementById('logic-performance').style.width = logicScore + '%';
+            document.getElementById('emotion-performance').style.width = emotionScore + '%';
+            document.getElementById('balance-performance').style.width = balanceScore + '%';
+        }
+        
+        // Social sharing functions
+        function shareToFacebook() {
+            const gameUrl = encodeURIComponent('https://www.p0qp0q.com/thinkTank/');
+            const shareText = encodeURIComponent(getShareText());
+            window.open(`https://www.facebook.com/sharer/sharer.php?u=${gameUrl}&quote=${shareText}`, '_blank');
+        }
+        
+        function shareToTwitter() {
+            const gameUrl = encodeURIComponent('https://www.p0qp0q.com/thinkTank/');
+            const shareText = encodeURIComponent(getShareText());
+            window.open(`https://twitter.com/intent/tweet?text=${shareText}&url=${gameUrl}`, '_blank');
+        }
+        
+        function shareToLinkedIn() {
+            const gameUrl = encodeURIComponent('https://www.p0qp0q.com/thinkTank/');
+            const shareText = encodeURIComponent(getShareText());
+            window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${gameUrl}`, '_blank');
+        }
+        
+        function shareToTikTok() {
+            // TikTok doesn't have direct web sharing, so we'll copy a formatted message
+            const shareText = getShareText() + '\n\nPlay at: https://www.p0qp0q.com/thinkTank/';
+            navigator.clipboard.writeText(shareText);
+            alert('Text copied! Open TikTok and paste in your caption. 🎵');
+        }
+        
+        function copyShareLink() {
+            const shareText = getShareText() + '\n\nPlay at: https://www.p0qp0q.com/thinkTank/';
+            navigator.clipboard.writeText(shareText);
+            
+            // Visual feedback
+            const button = event.target.closest('.social-button');
+            const originalText = button.innerHTML;
+            button.innerHTML = '<span>✅</span> Copied!';
+            setTimeout(() => {
+                button.innerHTML = originalText;
+            }, 2000);
+        }
+        
+        function getShareText() {
+            const badge = document.getElementById('final-badge').textContent;
+            const title = document.getElementById('badge-title').textContent;
+            const score = document.getElementById('final-score-text').textContent;
+            return `🐻 I earned ${badge} ${title} with ${score} RIZ in Phuzzy's Think Tank! Can you balance logic and emotion better than me? 🧠💖`;
+        }
+        
+        // Helper function - you'd need to implement tracking user answers
+        function getAnswerForScenario(index) {
+            // This would need to be tracked during the game
+            return scenarios[scenariosCompleted[index]].correctAnswer;
+        }
+        
+        function shareScore() {
+            // Deprecated - replaced by individual social functions
+            copyShareLink();
+        }
+        
+        // Scroll detection for score tracker
+        window.addEventListener('scroll', function() {
+            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            const scoreTracker = document.getElementById('score-tracker');
+            
+            if (scrollTop > 100) {
+                scoreTracker.classList.add('visible');
+            } else {
+                scoreTracker.classList.remove('visible');
+            }
+        });
+        
+        // Initialize
+        updateHoneyDisplay();
+        document.getElementById('total-scenarios').textContent = scenarios.length;
+    </script>
+</body>
+</html>
