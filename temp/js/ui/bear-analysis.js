@@ -6,134 +6,122 @@ class BearAnalysis {
     }
     
     setupHTML() {
-        this.container.innerHTML = "
-            <div class="analysis-grid">
-                <div class="bear-panel logic-panel">
-                    <div class="bear-header">
-                        <span class="bear-emoji thinking" id="logic-bear">🧠</span>
-                        <span class="bear-name logic-name">Logic Bear</span>
-                    </div>
+        this.container.innerHTML = 
+            '<div class="analysis-grid">' +
+                '<div class="bear-panel logic-panel">' +
+                    '<div class="bear-header">' +
+                        '<span class="bear-emoji thinking" id="logic-bear">🧠</span>' +
+                        '<span class="bear-name logic-name">Logic Bear</span>' +
+                    '</div>' +
                     
-                    <div class="metric">
-                        <div class="metric-label">Evidence Quality</div>
-                        <div class="meter-container">
-                            <div class="meter-fill logic-fill" id="evidence-meter" style="width: 0%">
-                                <span class="meter-value" id="evidence-value">0/10</span>
-                            </div>
-                        </div>
-                    </div>
+                    '<div class="metric">' +
+                        '<div class="metric-label">Evidence Quality</div>' +
+                        '<div class="meter-container">' +
+                            '<div class="meter-fill logic-fill" id="evidence-meter" style="width: 0%">' +
+                                '<span class="meter-value" id="evidence-value">0/10</span>' +
+                            '</div>' +
+                        '</div>' +
+                    '</div>' +
                     
-                    <div class="metric">
-                        <div class="metric-label">Logical Consistency</div>
-                        <div class="meter-container">
-                            <div class="meter-fill logic-fill" id="logic-meter" style="width: 0%">
-                                <span class="meter-value" id="logic-value">0/10</span>
-                            </div>
-                        </div>
-                    </div>
+                    '<div class="metric">' +
+                        '<div class="metric-label">Logical Consistency</div>' +
+                        '<div class="meter-container">' +
+                            '<div class="meter-fill logic-fill" id="logic-meter" style="width: 0%">' +
+                                '<span class="meter-value" id="logic-value">0/10</span>' +
+                            '</div>' +
+                        '</div>' +
+                    '</div>' +
                     
-                    <div class="metric">
-                        <div class="metric-label">Source Reliability</div>
-                        <div class="meter-container">
-                            <div class="meter-fill logic-fill" id="source-meter" style="width: 0%">
-                                <span class="meter-value" id="source-value">0/10</span>
-                            </div>
-                        </div>
-                    </div>
+                    '<div class="metric">' +
+                        '<div class="metric-label">Source Reliability</div>' +
+                        '<div class="meter-container">' +
+                            '<div class="meter-fill logic-fill" id="source-meter" style="width: 0%">' +
+                                '<span class="meter-value" id="source-value">0/10</span>' +
+                            '</div>' +
+                        '</div>' +
+                    '</div>' +
                     
-                    <div class="metric">
-                        <div class="metric-label">Hidden Agenda Risk</div>
-                        <div class="meter-container">
-                            <div class="meter-fill logic-fill" id="agenda-meter" style="width: 0%">
-                                <span class="meter-value" id="agenda-value">0/10</span>
-                            </div>
-                        </div>
-                    </div>
+                    '<div class="metric">' +
+                        '<div class="metric-label">Hidden Agenda Risk</div>' +
+                        '<div class="meter-container">' +
+                            '<div class="meter-fill logic-fill" id="agenda-meter" style="width: 0%">' +
+                                '<span class="meter-value" id="agenda-value">0/10</span>' +
+                            '</div>' +
+                        '</div>' +
+                    '</div>' +
                     
-                    <div class="factors-list">
-                        <h4>Logical Issues Found:</h4>
-                        <div id="logic-factors"></div>
-                    </div>
-                </div>
+                    '<div class="factors-list">' +
+                        '<h4>Logical Issues Found:</h4>' +
+                        '<div id="logic-factors"></div>' +
+                    '</div>' +
+                '</div>' +
                 
-                <div class="bear-panel emotion-panel">
-                    <div class="bear-header">
-                        <span class="bear-emoji thinking" id="emotion-bear">💖</span>
-                        <span class="bear-name emotion-name">Emotion Bear</span>
-                    </div>
+                '<div class="bear-panel emotion-panel">' +
+                    '<div class="bear-header">' +
+                        '<span class="bear-emoji thinking" id="emotion-bear">💖</span>' +
+                        '<span class="bear-name emotion-name">Emotion Bear</span>' +
+                    '</div>' +
                     
-                    <div class="metric">
-                        <div class="metric-label">Fear/Safety Appeal</div>
-                        <div class="meter-container">
-                            <div class="meter-fill emotion-fill" id="fear-meter" style="width: 0%">
-                                <span class="meter-value" id="fear-value">0/10</span>
-                            </div>
-                        </div>
-                    </div>
+                    '<div class="metric">' +
+                        '<div class="metric-label">Fear/Safety Appeal</div>' +
+                        '<div class="meter-container">' +
+                            '<div class="meter-fill emotion-fill" id="fear-meter" style="width: 0%">' +
+                                '<span class="meter-value" id="fear-value">0/10</span>' +
+                            '</div>' +
+                        '</div>' +
+                    '</div>' +
                     
-                    <div class="metric">
-                        <div class="metric-label">Belonging/Identity</div>
-                        <div class="meter-container">
-                            <div class="meter-fill emotion-fill" id="belonging-meter" style="width: 0%">
-                                <span class="meter-value" id="belonging-value">0/10</span>
-                            </div>
-                        </div>
-                    </div>
+                    '<div class="metric">' +
+                        '<div class="metric-label">Belonging/Identity</div>' +
+                        '<div class="meter-container">' +
+                            '<div class="meter-fill emotion-fill" id="belonging-meter" style="width: 0%">' +
+                                '<span class="meter-value" id="belonging-value">0/10</span>' +
+                            '</div>' +
+                        '</div>' +
+                    '</div>' +
                     
-                    <div class="metric">
-                        <div class="metric-label">Pride/Status Appeal</div>
-                        <div class="meter-container">
-                            <div class="meter-fill emotion-fill" id="pride-meter" style="width: 0%">
-                                <span class="meter-value" id="pride-value">0/10</span>
-                            </div>
-                        </div>
-                    </div>
+                    '<div class="metric">' +
+                        '<div class="metric-label">Pride/Status Appeal</div>' +
+                        '<div class="meter-container">' +
+                            '<div class="meter-fill emotion-fill" id="pride-meter" style="width: 0%">' +
+                                '<span class="meter-value" id="pride-value">0/10</span>' +
+                            '</div>' +
+                        '</div>' +
+                    '</div>' +
                     
-                    <div class="metric">
-                        <div class="metric-label">Emotional Manipulation Risk</div>
-                        <div class="meter-container">
-                            <div class="meter-fill emotion-fill" id="emotion-agenda-meter" style="width: 0%">
-                                <span class="meter-value" id="emotion-agenda-value">0/10</span>
-                            </div>
-                        </div>
-                    </div>
+                    '<div class="metric">' +
+                        '<div class="metric-label">Emotional Manipulation Risk</div>' +
+                        '<div class="meter-container">' +
+                            '<div class="meter-fill emotion-fill" id="emotion-agenda-meter" style="width: 0%">' +
+                                '<span class="meter-value" id="emotion-agenda-value">0/10</span>' +
+                            '</div>' +
+                        '</div>' +
+                    '</div>' +
                     
-                    <div class="factors-list">
-                        <h4>Emotional Triggers Detected:</h4>
-                        <div id="emotion-factors"></div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="wisdom-panel">
-                <div class="wisdom-header">
-                    <span class="bear-emoji">🦉</span>
-                    <span class="bear-name">Wisdom Bear's Integration</span>
-                </div>
-                <div class="wisdom-content" id="wisdom-content">
-                    Analyzing the balance between logic and emotion...
-                </div>
+                    '<div class="factors-list">' +
+                        '<h4>Emotional Triggers Detected:</h4>' +
+                        '<div id="emotion-factors"></div>' +
+                    '</div>' +
+                '</div>' +
                 
-                <div class="balance-meter">
-                    <div class="balance-label">Logic ↔ Emotion Balance</div>
-                    <div class="balance-visual">
-                        <div class="balance-indicator" id="balance-indicator" style="left: 50%">
-                            <span id="balance-icon">⚖️</span>
-                        </div>
-                    </div>
-                    <div class="balance-labels">
-                        <span>🧠 Pure Logic</span>
-                        <span>⚖️ Balanced</span>
-                        <span>💖 Pure Emotion</span>
-                    </div>
-                </div>
+                '<div class="balance-section">' +
+                    '<div class="balance-bar">' +
+                        '<div class="balance-track">' +
+                            '<div class="balance-indicator" id="balance-indicator">' +
+                                '<span class="balance-icon" id="balance-icon">⚖️</span>' +
+                            '</div>' +
+                        '</div>' +
+                        '<div class="balance-labels">' +
+                            '<span class="bear-name">Wisdom Bear\'s Integration</span>' +
+                        '</div>' +
+                    '</div>' +
+                '</div>' +
                 
-                <div class="manipulation-warning" id="manipulation-warning">
-                    <strong style="font-size: 1.2em;">🚨 Manipulation Alert!</strong>
-                    <div id="manipulation-text" style="margin-top: 8px; font-size: 1.05em;"></div>
-                </div>
-            </div>
-        ";
+                '<div class="manipulation-warning" id="manipulation-warning">' +
+                    '<strong style="font-size: 1.2em;">🚨 Manipulation Alert!</strong>' +
+                    '<div id="manipulation-text" style="margin-top: 8px; font-size: 1.05em;"></div>' +
+                '</div>' +
+            '</div>';
     }
     
     showDualBearAnalysis(scenario) {
@@ -141,7 +129,7 @@ class BearAnalysis {
         document.getElementById('logic-bear').classList.add('thinking');
         document.getElementById('emotion-bear').classList.add('thinking');
         
-        // Animate logic meters
+        // Set delay for realistic thinking time
         var self = this;
         setTimeout(function() {
             self.animateMeter('evidence-meter', scenario.analysis.logic.scores.evidence, 0);
@@ -152,7 +140,6 @@ class BearAnalysis {
             document.getElementById('logic-bear').classList.remove('thinking');
         }, 1000);
         
-        // Animate emotion meters
         setTimeout(function() {
             self.animateMeter('fear-meter', scenario.analysis.emotion.scores.fear, 0);
             self.animateMeter('belonging-meter', scenario.analysis.emotion.scores.belonging, 200);
@@ -162,123 +149,103 @@ class BearAnalysis {
             document.getElementById('emotion-bear').classList.remove('thinking');
         }, 1500);
         
-        // Show wisdom analysis
+        // Update balance indicator
         setTimeout(function() {
-            document.getElementById('wisdom-content').textContent = scenario.wisdom;
-            
-            // Calculate averages
-            var logicAvg = (
-                scenario.analysis.logic.scores.evidence + 
-                scenario.analysis.logic.scores.consistency + 
-                scenario.analysis.logic.scores.source
-            ) / 3;
-            
-            var emotionAvg = (
-                scenario.analysis.emotion.scores.fear + 
-                scenario.analysis.emotion.scores.belonging + 
-                scenario.analysis.emotion.scores.pride
-            ) / 3;
-            
-            // Animate balance indicator
-            var balance = self.calculateBalance(logicAvg, emotionAvg);
-            document.getElementById('balance-indicator').style.left = balance + '%';
-            
-            // Update balance icon
-            var icon = balance < 30 ? '🧠' : balance > 70 ? '💖' : '⚖️';
-            document.getElementById('balance-icon').textContent = icon;
-            
-            // Show manipulation warning if needed
-            var manipWarning = document.getElementById('manipulation-warning');
-            if (scenario.analysis.logic.scores.agenda > 7 || scenario.analysis.emotion.scores.manipulation > 7) {
-                document.getElementById('manipulation-text').textContent = 
-                    self.getManipulationText(scenario.correctAnswer);
-                manipWarning.style.display = 'block';
-            } else {
-                manipWarning.style.display = 'none';
-            }
-        }, 3000);
+            self.updateBalanceIndicator(scenario);
+        }, 2000);
+        
+        // Show manipulation warning if needed
+        setTimeout(function() {
+            self.checkForManipulation(scenario);
+        }, 2500);
     }
     
-    animateMeter(elementId, value, delay) {
-        if (typeof delay === 'undefined') delay = 0;
-        var element = document.getElementById(elementId);
-        var valueElement = document.getElementById(elementId.replace('-meter', '-value'));
-        
+    animateMeter(meterId, value, delay) {
+        var self = this;
         setTimeout(function() {
-            element.style.width = (value * 10) + '%';
-            if (valueElement) {
-                valueElement.textContent = value + '/10';
+            var meter = document.getElementById(meterId);
+            var valueSpan = document.getElementById(meterId.replace('-meter', '-value'));
+            
+            if (meter && valueSpan) {
+                meter.style.width = (value * 10) + '%';
+                valueSpan.textContent = value + '/10';
+                
+                // Add pulse effect
+                meter.classList.add('meter-pulse');
+                setTimeout(function() {
+                    meter.classList.remove('meter-pulse');
+                }, 600);
             }
         }, delay);
     }
     
     displayFactors(containerId, factors) {
         var container = document.getElementById(containerId);
+        if (!container) return;
+        
         container.innerHTML = '';
-        
-        var factorMap = {
-            // Logic indicators
-            'cherry-picked': '🍒 Cherry-picked examples',
-            'no-evidence': '🚫 No evidence provided',
-            'anecdotal': '📖 Only anecdotal evidence',
-            'false-urgency': '⏰ False urgency created',
-            'dismissed-experts': '🎓 Dismisses expert opinion',
-            'conspiracy': '🕵️ Conspiracy thinking',
-            'strong-data': '✓ Strong statistical evidence',
-            'credible-source': '✓ Credible sources cited',
-            'acknowledges-limits': '✓ Acknowledges limitations',
-            
-            // Emotion triggers
-            'child-safety': '👶 Child safety fears',
-            'fomo': '😰 FOMO pressure',
-            'guilt': '😔 Guilt manipulation',
-            'us-vs-them': '👥 Us vs them mentality',
-            'lifestyle-envy': '🏝️ Lifestyle envy',
-            'protective-instinct': '🛡️ Protective instinct',
-            'hope': '🌟 Hope/optimism appeal',
-            'community': '🤝 Community belonging',
-            'empowerment': '💪 Empowerment feeling'
-        };
-        
-        factors.forEach(function(factor, index) {
-            setTimeout(function() {
-                var item = document.createElement('div');
-                item.className = 'factor-item';
-                item.innerHTML = factorMap[factor] || factor;
-                container.appendChild(item);
-            }, 200 * (index + 1));
+        factors.forEach(function(factor) {
+            var factorDiv = document.createElement('div');
+            factorDiv.className = 'factor-item';
+            factorDiv.innerHTML = '• ' + factor.replace(/-/g, ' ');
+            container.appendChild(factorDiv);
         });
     }
     
-    calculateBalance(logicAvg, emotionAvg) {
-        var total = logicAvg + emotionAvg;
-        if (total === 0) return 50;
-        return (emotionAvg / total) * 100;
+    updateBalanceIndicator(scenario) {
+        var logicTotal = Object.values(scenario.analysis.logic.scores).reduce(function(a, b) { return a + b; }, 0) / 4;
+        var emotionTotal = Object.values(scenario.analysis.emotion.scores).reduce(function(a, b) { return a + b; }, 0) / 4;
+        
+        var balance = (logicTotal / (logicTotal + emotionTotal)) * 100;
+        var indicator = document.getElementById('balance-indicator');
+        var icon = document.getElementById('balance-icon');
+        
+        if (indicator) {
+            indicator.style.left = balance + '%';
+            
+            if (balance < 30) {
+                icon.textContent = '💖';
+                icon.title = 'Emotion-heavy argument';
+            } else if (balance > 70) {
+                icon.textContent = '🧠';
+                icon.title = 'Logic-heavy argument';
+            } else {
+                icon.textContent = '⚖️';
+                icon.title = 'Balanced argument';
+            }
+        }
     }
     
-    getManipulationText(correctAnswer) {
-        var texts = {
-            emotion: 'Extreme emotional manipulation detected - bypassing critical thinking',
-            logic: 'Severe logical flaws used to support hidden agenda',
-            agenda: 'Clear profit motive or hidden agenda driving this argument',
-            balanced: 'Subtle bias detected despite apparent balance'
-        };
-        return texts[correctAnswer] || 'Manipulation tactics detected';
+    checkForManipulation(scenario) {
+        var manipulationScore = scenario.analysis.emotion.scores.manipulation;
+        var warning = document.getElementById('manipulation-warning');
+        var text = document.getElementById('manipulation-text');
+        
+        if (manipulationScore > 7 && warning && text) {
+            text.textContent = 'High manipulation detected! This argument heavily relies on emotional triggers rather than solid evidence.';
+            warning.style.display = 'block';
+            warning.classList.add('pulse-warning');
+        }
     }
     
     reset() {
-        // Reset all meters
-        var meters = ['evidence', 'logic', 'source', 'agenda', 'fear', 'belonging', 'pride', 'emotion-agenda'];
-        meters.forEach(function(type) {
-            var meter = document.getElementById(type + '-meter');
+        // Reset meters
+        var meters = ['evidence-meter', 'logic-meter', 'source-meter', 'agenda-meter', 
+                     'fear-meter', 'belonging-meter', 'pride-meter', 'emotion-agenda-meter'];
+        
+        meters.forEach(function(meterId) {
+            var meter = document.getElementById(meterId);
+            var valueSpan = document.getElementById(meterId.replace('-meter', '-value'));
             if (meter) meter.style.width = '0%';
-            var value = document.getElementById(type + '-value');
-            if (value) value.textContent = '0/10';
+            if (valueSpan) valueSpan.textContent = '0/10';
         });
         
         // Clear factors
-        document.getElementById('logic-factors').innerHTML = '';
-        document.getElementById('emotion-factors').innerHTML = '';
+        var factorContainers = ['logic-factors', 'emotion-factors'];
+        factorContainers.forEach(function(containerId) {
+            var container = document.getElementById(containerId);
+            if (container) container.innerHTML = '';
+        });
         
         // Reset bears
         document.getElementById('logic-bear').classList.remove('thinking');
