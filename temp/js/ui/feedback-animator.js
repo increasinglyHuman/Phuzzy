@@ -1,5 +1,5 @@
 // Feedback Animator
-export class FeedbackAnimator {
+class FeedbackAnimator {
     constructor() {
         this.container = document.getElementById("game-content");
     }
@@ -16,4 +16,9 @@ export class FeedbackAnimator {
     showResult(isCorrect, message) {
         this.showFeedback(isCorrect, message);
     }
+}
+
+// Export for global usage
+if (typeof window !== 'undefined') {
+    window.FeedbackAnimator = FeedbackAnimator;
 }

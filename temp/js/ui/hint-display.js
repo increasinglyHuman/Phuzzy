@@ -28,9 +28,7 @@ function HintDisplay() {
     };
 }
 
-// Export for module usage
-if (typeof module !== 'undefined' && module.exports) {
-    module.exports = { HintDisplay: HintDisplay };
-} else if (typeof window !== 'undefined') {
+// Export for global usage
+if (typeof window !== 'undefined') {
     window.HintDisplay = HintDisplay;
 }
